@@ -23,6 +23,7 @@ export default Vue.extend({
         }
     },
     async mounted(){
+        console.log(process.env);
         this.context = '마운트';    
         this.weathers = await getWeather('APIKEY');
     }

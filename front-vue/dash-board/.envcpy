@@ -1,0 +1,4 @@
+
+## API Guide Url -> https://home.openweathermap.org/
+## 오픈웨더 API 키
+VUE_APP_WEATHER_API=''; 
