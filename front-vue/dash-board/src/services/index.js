@@ -1,7 +1,9 @@
 import Axios from "axios";
+import { citys } from "../util/City.js"
+import { weatherService as WeatherService} from "./weather/WeatherService";
+/**
+ * 
+ */
 
-export const getWeather = (APIKEY) =>{
-    let url = `https://api.openweathermap.org/data/2.5/onecall?lat=60.99&lon=30.9&appid=${APIKEY}`;
 
-    return Axios.get(url)
-}
+export const weatherService = WeatherService;
