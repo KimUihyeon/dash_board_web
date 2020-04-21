@@ -1,7 +1,5 @@
 <template>
   <div class="home">
-    <img alt="Vue logo" src="../assets/logo.png">
-    <HelloWorld msg="Welcome to Your Vue.js App"/>
     <WaetherBox v-bind:weather=weather></WaetherBox>
     <Time v-bind:dateTime=dateTime></Time>
   </div>
