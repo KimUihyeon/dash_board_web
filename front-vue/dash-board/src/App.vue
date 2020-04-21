@@ -1,21 +1,19 @@
 <template>
   <div id="app">
-    <div class="blurred-box">
-      <div class="user-login-box">
-        <span class="user-icon"></span>
-        <div class="user-name">Kim Uihyeon</div>
-        <input class="user-password" type="text" />
-      </div>
-      
-    </div>
-    
-    <div id="nav">
-      <router-link to="/">Home</router-link> |
-      <router-link to="/about">About</router-link>
-    </div>
+    <Header/>
     <router-view/>
   </div>
 </template>
+
+<script>
+
+import Header from "@/components/common/Header.vue"
+export default {
+  components : {
+    Header,
+  }
+}
+</script>
 
 <style>
 #app {
@@ -40,6 +38,9 @@
 }
 
 
+.inputBox{
+  margin: 5px 0px;
+}
 /* code pen */
 /* code pen */
 /* code pen */
@@ -75,31 +76,6 @@ body{
   font-weight: 400;
  -webkit-font-smoothing: antialiased; 
 }
-
-.blurred-box{
-  position: relative;
-  width: 250px;
-  top: calc(50% - 175px);
-  left: calc(50% - 125px);
-  background: inherit;
-  border-radius: 2px;
-  overflow: hidden;
-}
-
-.blurred-box:after{
- content: '';
- width: 300px;
- height: 300px;
- background: inherit; 
- position: absolute;
- left: -25px;
- right: 0;
- top: -25px;  
- bottom: 0;
- box-shadow: inset 0 0 0 200px rgba(255,255,255,0.05);
- filter: blur(10px);
-}
-
 
 /* Form which you dont need */
 .user-login-box{

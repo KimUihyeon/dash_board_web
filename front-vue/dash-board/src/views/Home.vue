@@ -1,12 +1,14 @@
 <template>
   <div class="home">
-    <WaetherBox v-bind:weather=weather></WaetherBox>
-    <Time v-bind:dateTime=dateTime></Time>
+    <Login v-bind:isHistory='false'/>
+    <!-- <WaetherBox v-bind:weather=weather></WaetherBox> -->
+    <!-- <Time v-bind:dateTime=dateTime></Time> -->
   </div>
 </template>
 
 <script>
 // @ is an alias to /src
+import Login from '@/components/common/Login.vue'
 import HelloWorld from '@/components/HelloWorld.vue'
 import WaetherBox from "@/components/weather/WeatherBox.vue";
 import Time from "@/components/timer/Time.vue";
@@ -17,7 +19,8 @@ export default {
   components: {
     HelloWorld,
     WaetherBox,
-    Time
+    Time,
+    Login,
   },
   data(){
     return {
