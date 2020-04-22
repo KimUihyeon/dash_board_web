@@ -5,8 +5,12 @@
         <div>
             test.vue
         </div>
-        <div>
+        
+        <div @click="storeDataChange">
             {{weathers}} 
+        </div>
+        <div>
+            {{storeData}}
         </div>
     </div>
 </template>
@@ -34,6 +38,16 @@ export default Vue.extend({
 
         let weather2 = await weatherService.getCurrentWeather(location.cityId);
         console.log(weather2);
+    },
+    computed : {
+        storeData (){
+            return this.$store.getters.getStoreData;
+        }
+    },
+    methods : {
+        storeDataChange : function () {
+            this.$store.state.storeData++;
+        }
     }
     
 })

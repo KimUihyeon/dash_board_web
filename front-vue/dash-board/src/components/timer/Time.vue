@@ -9,12 +9,27 @@
     </div>
 </template>
 
-
 <script>
 import moment from 'moment';
+import { mapGetters } from 'vuex'
 export default {
     name : 'Time',
-    props : [ 'dateTime'],
+    mounted() {
+        this.synchronizDateTime();
+    },
+    computed : {
+        ...mapGetters({
+            dateTime : 'currentDateTime'
+        })
+    },
+    methods : {
+        synchronizDateTime() {
+            let process = () => { 
+                this.$store.commit('synchronizDateTime');
+            }
+            setInterval(process,1000);
+        }
+    }
 }
 </script>
 

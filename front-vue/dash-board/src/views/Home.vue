@@ -2,7 +2,7 @@
   <div class="home">
     <Login v-bind:isHistory='false'/>
     <!-- <WaetherBox v-bind:weather=weather></WaetherBox> -->
-    <!-- <Time v-bind:dateTime=dateTime></Time> -->
+    <Time></Time>
   </div>
 </template>
 
@@ -29,8 +29,6 @@ export default {
     }
   },
   mounted(){
-    console.log(this);
-    console.log('mounted');
     this.timerStart();
   },
   methods : {
