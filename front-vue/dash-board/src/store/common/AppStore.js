@@ -13,9 +13,6 @@ const state = {
 }
 
 const getters = {
-    aaa(){
-
-    }
 }
 
 const actions = {

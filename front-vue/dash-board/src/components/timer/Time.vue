@@ -15,20 +15,12 @@ import { mapGetters } from 'vuex'
 export default {
     name : 'Time',
     mounted() {
-        this.synchronizDateTime();
+        this.$store.dispatch('synchronizDateTimeThead');
     },
     computed : {
         ...mapGetters({
             dateTime : 'currentDateTime'
         })
-    },
-    methods : {
-        synchronizDateTime() {
-            let process = () => { 
-                this.$store.commit('synchronizDateTime');
-            }
-            setInterval(process,1000);
-        }
     }
 }
 </script>

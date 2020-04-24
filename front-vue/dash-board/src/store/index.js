@@ -1,17 +1,17 @@
 import Vue from 'vue'
 import Vuex from 'vuex'
-import { date } from '../util'
 
 import { appStoreBudle } from './common/AppStore';
 import { userStoreBudle } from './common/UserStore';
 import { locationStoreBudle } from './common/LocationSotre';
 import { todoStoreBudle } from './todo/TodoStore';
 import { weatherStoreBudle } from './weather/WeatherStore';
+import { timerStoreBudle } from './common/TimerStore'
 
 Vue.use(Vuex);
 
 
-let stores = [ appStoreBudle, userStoreBudle , locationStoreBudle , todoStoreBudle , weatherStoreBudle ];
+let stores = [ appStoreBudle, userStoreBudle , locationStoreBudle , todoStoreBudle , weatherStoreBudle ,timerStoreBudle ];
 
 /**
  *  state : {
@@ -42,9 +42,12 @@ stores.forEach(store=>{
   }
 
   for(var actFunc in store.actions){
-    actions[mutationFunc] = store.actions[mutationFunc];
+    actions[actFunc] = store.actions[actFunc];
   }
 })
+
+
+console.log(actions);
 
 
 if( process.env.NODE_ENV.indexOf('dev') !== -1 ){
@@ -54,22 +57,12 @@ if( process.env.NODE_ENV.indexOf('dev') !== -1 ){
 export default new Vuex.Store({
   state : {
     ...state,
-    time : date.now()
   },
   getters: {
-    abcd : function (state){
-      return 'abcd';
-    },
-    currentDateTime : function (state) {
-      return state.time;
-    },
-//    ...getters,
+    ...getters,
   },
   mutations: {
     ...mutations,
-    synchronizDateTime : function (state, payload){
-      state.time = date.now();
-    }
   },
   actions: {
     ...actions,

@@ -1,16 +1,7 @@
 <template>
     <div>
-        <h1>{{context}}</h1>
-        
-        <div>
-            test.vue
-        </div>
-        
         <div @click="storeDataChange">
             {{weathers}} 
-        </div>
-        <div>
-            {{storeData}}
         </div>
     </div>
 </template>
@@ -24,7 +15,6 @@ export default Vue.extend({
     name : 'Test',
     data :  () => {
         return {
-            context: 'test.vue -> data rendering',
             weathers : []
         }
     },
@@ -37,17 +27,11 @@ export default Vue.extend({
         }
 
         let weather2 = await weatherService.getCurrentWeather(location.cityId);
-        console.log(weather2);
+        this.weathers = weather2;
     },
     computed : {
-        storeData (){
-            return this.$store.getters.getStoreData;
-        }
     },
     methods : {
-        storeDataChange : function () {
-            this.$store.state.storeData++;
-        }
     }
     
 })
