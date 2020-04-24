@@ -1,0 +1,10 @@
+
+/* 스위치 */
+.el-switch__core ,
+.el-switch__core:after{
+    border-radius: 3px !important;
+}
+
+.el-switch__core {
+    border-radius: 3px !important;
+}

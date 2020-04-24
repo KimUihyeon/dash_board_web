@@ -1,6 +1,6 @@
 import { convertByUnixDateTime, now } from './DateUtil'
 import { get } from './AxiosUtil'
-import { isEmpty , isNull } from './Data';
+import {  isNull } from './Data';
 import moment from 'moment';
 
 // #dateTime
@@ -14,12 +14,9 @@ export const date = {
 }
 
 export const data = {
-    isEmpty,
     isNull : isNull
 }
 
-
-// #rest ful
 // #rest ful
 export const rest = {
     get,

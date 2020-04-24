@@ -2,15 +2,17 @@
     <div>
         <div>{{ttt}}</div>
         <Test></Test>
+        <Search></Search>
     </div>
 </template>
 
 
 <script>
 import Test from '@/components/Test'
+import Search from '@/components/common/Search'
 export default {
     name :  'TestPage',
-    components : { Test },
+    components : { Test , Search},
     data(){
         return {
         }

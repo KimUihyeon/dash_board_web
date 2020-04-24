@@ -8,16 +8,37 @@ Vue.use(VueRouter)
 
   const routes = [
   {
-    path: '/',
+    path: '/login',
     name: 'Login',
     alias :  ['/login'],
     component: Home
   },
   {
+    path: '/logout',
+    name: 'TestPage',
+    component : TestPage
+  },
+  {
     path: '/test',
     name: 'TestPage',
     component : TestPage
-  }
+  },
+  {
+    path: '/',
+    name: 'Home',
+    alias :  ['/login'],
+    component: Home
+  },
+  {
+    path: '/todo',
+    name: 'TestPage',
+    component : TestPage
+  },
+  {
+    path: '/weather',
+    name: 'TestPage',
+    component : TestPage
+  },
 ]
 
 const router = new VueRouter({

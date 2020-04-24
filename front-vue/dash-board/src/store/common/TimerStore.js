@@ -28,7 +28,7 @@ const actions = {
         if(!data.isNull(context.state.timer.interval)){
           clearInterval(context.state.timer.interval)
         }
-  
+        
         let process = () => { 
           context.commit('synchronizDateTime');
           console.log('synchronizDateTime');

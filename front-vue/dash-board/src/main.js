@@ -7,6 +7,7 @@ import ElementUI from 'element-ui'
 
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/assets/css/codepen-bg-blurbox.css';
+import '@/assets/css/element-ui-custom.css';
 import '@/assets/css/default.css';
 import '@/assets/css/nav.css';
 

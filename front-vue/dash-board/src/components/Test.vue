@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div @click="storeDataChange">
+        <div>
             {{weathers}} 
         </div>
     </div>
