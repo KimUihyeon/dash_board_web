@@ -3,8 +3,7 @@
         <span class="switchContext">
             {{switchValue}}
         </span>
-        <span v-on:mouseover='aaa' style="
-    display: inline-block;">
+        <span style="display: inline-block;">
             <el-switch
                 v-model="switchValue"
                 v-bind:active-color="activeColor"
@@ -33,11 +32,6 @@ export default {
     data (){
         return {
             switchValue : '' 
-        }
-    },
-    methods:{
-        aaa (){
-            console.log('aaa');
         }
     },
     watch : {

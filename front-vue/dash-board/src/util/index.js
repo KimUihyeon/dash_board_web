@@ -1,6 +1,7 @@
 import { convertByUnixDateTime, now } from './DateUtil'
 import { get } from './AxiosUtil'
-import {  isNull } from './Data';
+import { isNull } from './Data';
+import { showMessage } from './Alert';
 import moment from 'moment';
 
 // #dateTime
@@ -20,4 +21,8 @@ export const data = {
 // #rest ful
 export const rest = {
     get,
+}
+
+export const alert = {
+    showMessage
 }

@@ -1,7 +1,7 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Home from '../views/Home.vue'
-import Login from '../views/common/Login.vue'
+import LoginPage from '../views/common/LoginPage.vue'
 import TestPage from '../views/TestPage.vue'
 
 Vue.use(VueRouter)
@@ -11,7 +11,7 @@ Vue.use(VueRouter)
     path: '/login',
     name: 'Login',
     alias :  ['/login'],
-    component: Home
+    component: LoginPage
   },
   {
     path: '/logout',

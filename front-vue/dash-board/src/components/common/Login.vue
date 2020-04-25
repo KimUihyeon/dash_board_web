@@ -8,12 +8,25 @@
                 <div class="user-name" v-show="isHistory" >Kim Uihyeon</div>
                 <!-- <el-input placeholder="Please input" v-model="pw"></el-input> -->
                 <div class="inputBox">
-                    <input class="user-password" type="text" @keypress="keyPress_handle" placeholder="ID" v-model="id" />
+                    <input 
+                        class="user-password user-login-input" 
+                        type="text" 
+                        v-bind:class="validation.id ? '' : 'not-valide' "
+                        @keydown.enter='keyPress_handle' 
+                        placeholder="ID" 
+                        v-model="id" 
+                    />
                 </div>
                 <div class="inputBox">
-                    <input class="user-password" type="text" @keypress="keyPress_handle" placeholder="pw" v-model="pw" />
+                    <input 
+                        class="user-password user-login-input"
+                        v-bind:class="validation.pw ? '' : 'not-valide' "
+                        type="text" 
+                        @keydown.enter='keyPress_handle'
+                        placeholder="pw" 
+                        v-model="pw" 
+                    />
                 </div>
-
                 <div v-show="isHistory">
                     <span class="login_help">logout</span>
                 </div>
@@ -30,6 +43,7 @@
 
 
 <script>
+import { data , alert } from "../../util";
 export default {
     name : 'Login',
     props : ['isHistory' , 'autoLogin'],
@@ -37,6 +51,11 @@ export default {
         return {
             pw : '',
             id : '',
+            validation : {
+                pw : false,
+                id : false,
+                msg : ''
+            }
         }
     },
     mounted(){
@@ -45,14 +64,47 @@ export default {
     },
     methods : {
         keyPress_handle : function (e){
-            console.log(e)
+            if(!this.validation.id) {
+                this.validation.msg = '아이디를 입력해주세요.(6자 이상)';
+            }
+            if(!this.validation.pw) {
+                this.validation.msg = '패스워드를 입력해주세요.(8자 이상)';
+            }
+
+            if(!this.validation.pw || !this.validation.pw) {
+                alert.showMessage(this, 'error' , this.validation.msg );
+            }
+
+
+        },
+        openMessage() {
+            this.$message.error('Oops, this is a error message.');
+        }
+    },
+    watch : {
+        pw(val, olbVal){
+            if((data.isNull(this.pw) || this.pw.length < 8))
+                this.validation.pw = false;
+            else 
+                this.validation.pw = true;
+        },
+        id(val, olbVal){
+            if((data.isNull(this.id) || this.id.length < 6))
+                this.validation.id = false;
+            else 
+                this.validation.id = true;
         }
     }
+
 }
 </script>
 
 
 <style scoped>  
+
+.not-valide{
+    border: #F44336 1px solid !important;
+}
 
 .blurred-box-smail {
     height: 170px !important;

@@ -9,9 +9,12 @@
 import Login from '@/components/common/Login.vue'
 
 export default {
-  name: 'Login',
+  name: 'LoginPage',
   components: {
     Login,
+  },
+  mounted(){
+    console.log('ttt')
   }
 }
 </script>
