@@ -2,12 +2,15 @@
     <div>
         <div class="blurred-box">
             <div class="user-login-box">
-                <span class="user-icon-outer" v-show="isHistory" v-bind:class="!isHistory ? 'blurred-box-smail':''">
-                    <span class="user-icon"></span>
+                <span class="user-icon-outer" v-show="isLoginCookie" v-bind:class="!isLoginCookie ? 'blurred-box-smail':''">
+                    <span
+                        class="user-icon"
+                        style="background-image: url(https://avatars3.githubusercontent.com/u/30382976?s=460&u=d8c6040…&v=4);"
+                    ></span>
                 </span>
-                <div class="user-name" v-show="isHistory" >Kim Uihyeon</div>
+                <div class="user-name" v-show="isLoginCookie" >Kim Uihyeon</div>
                 <!-- <el-input placeholder="Please input" v-model="pw"></el-input> -->
-                <div class="inputBox">
+                <div class="inputBox" v-show="!isLoginCookie">
                     <input 
                         class="user-password user-login-input" 
                         type="text" 
@@ -17,21 +20,21 @@
                         v-model="id" 
                     />
                 </div>
-                <div class="inputBox">
+                <div class="inputBox" >
                     <input 
                         class="user-password user-login-input"
                         v-bind:class="validation.pw ? '' : 'not-valide' "
-                        type="text" 
+                        type="password" 
                         @keydown.enter='keyPress_handle'
                         placeholder="pw" 
                         v-model="pw" 
                     />
                 </div>
-                <div v-show="isHistory">
-                    <span class="login_help">logout</span>
+                <div v-show="isLoginCookie">
+                    <span class="login_help" @click="logout">logout</span>
                 </div>
 
-                <div v-show="!isHistory">
+                <div v-show="!isLoginCookie">
                     <span class="login_help">signup</span>
                     <span class="login_help"> | </span>
                     <span class="login_help">find ID</span>
@@ -46,11 +49,12 @@
 import { data , alert } from "../../util";
 export default {
     name : 'Login',
-    props : ['isHistory' , 'autoLogin'],
     data(){
         return {
             pw : '',
             id : '',
+            isLoginCookie : false,
+            isAutoLogin : false,
             validation : {
                 pw : false,
                 id : false,
@@ -59,11 +63,18 @@ export default {
         }
     },
     mounted(){
-        this.pw = '';
-        console.log(this.autoLogin)
+        this.init();
     },
     methods : {
+        init () {
+
+            let cookie = data.getCookie('dash_login_history');
+            this.id = data.getCookie('dash_last_login');
+            this.pw = '';
+            this.isLoginCookie = !data.isNull(cookie) ? Boolean(cookie) : false;
+        },
         keyPress_handle : function (e){
+
             if(!this.validation.id) {
                 this.validation.msg = '아이디를 입력해주세요.(6자 이상)';
             }
@@ -74,11 +85,18 @@ export default {
             if(!this.validation.pw || !this.validation.pw) {
                 alert.showMessage(this, 'error' , this.validation.msg );
             }
+            else {
+                this.$router.push('/main');
 
-
+                data.createCookie('dash_login_history',true,365);
+                data.createCookie('dash_last_login',this.id,365);
+            }
         },
-        openMessage() {
-            this.$message.error('Oops, this is a error message.');
+        logout(){
+            data.removeCookie('dash_login_history');
+            data.removeCookie('dash_last_login');
+
+            this.init();
         }
     },
     watch : {
@@ -95,7 +113,6 @@ export default {
                 this.validation.id = true;
         }
     }
-
 }
 </script>
 
@@ -164,7 +181,6 @@ export default {
     height: 100%;
     border-radius: 50%;
     background-size: contain;
-    background-image: url(https://avatars3.githubusercontent.com/u/30382976?s=460&u=d8c6040…&v=4);
 }
 
 </style>

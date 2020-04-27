@@ -1,6 +1,6 @@
 import { convertByUnixDateTime, now } from './DateUtil'
 import { get } from './AxiosUtil'
-import { isNull } from './Data';
+import { isNull, createCookie, getCookie, removeCookie } from './Data';
 import { showMessage } from './Alert';
 import moment from 'moment';
 
@@ -15,7 +15,10 @@ export const date = {
 }
 
 export const data = {
-    isNull : isNull
+    isNull : isNull,
+    createCookie,
+    getCookie,
+    removeCookie
 }
 
 // #rest ful
