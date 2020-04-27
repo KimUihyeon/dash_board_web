@@ -1,6 +1,6 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Home from '../views/Home.vue'
+import Main from '../views/Main.vue'
 import LoginPage from '../views/common/LoginPage.vue'
 import TestPage from '../views/TestPage.vue'
 
@@ -14,9 +14,9 @@ Vue.use(VueRouter)
     component: LoginPage
   },
   {
-    path: '/logout',
+    path: '/main',
     name: 'TestPage',
-    component : TestPage
+    component : Main
   },
   {
     path: '/test',
@@ -27,7 +27,7 @@ Vue.use(VueRouter)
     path: '/',
     name: 'Home',
     alias :  ['/login'],
-    component: Home
+    component: Main
   },
   {
     path: '/todo',

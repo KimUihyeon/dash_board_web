@@ -11,7 +11,7 @@ import WaetherBox from "@/components/weather/WeatherBox.vue";
 import Time from "@/components/timer/Time.vue";
 
 export default {
-  name: 'Home',
+  name: 'Main',
   components: {
     Time,
     WaetherBox

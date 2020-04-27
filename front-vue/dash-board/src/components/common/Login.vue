@@ -47,6 +47,12 @@
 
 <script>
 import { data , alert } from "../../util";
+
+let cookieKey = {
+    loginId : process.env.VUE_APP_COOKIE_NAME_LOGIN,
+    isHistory :  process.env.VUE_APP_COOKIE_NAME_LOGIN_HISOTRY
+}
+console.log(cookieKey);
 export default {
     name : 'Login',
     data(){
@@ -68,8 +74,8 @@ export default {
     methods : {
         init () {
 
-            let cookie = data.getCookie('dash_login_history');
-            this.id = data.getCookie('dash_last_login');
+            let cookie = data.getCookie(cookieKey.isHistory);
+            this.id = data.getCookie(cookieKey.loginId);
             this.pw = '';
             this.isLoginCookie = !data.isNull(cookie) ? Boolean(cookie) : false;
         },
@@ -88,13 +94,13 @@ export default {
             else {
                 this.$router.push('/main');
 
-                data.createCookie('dash_login_history',true,365);
-                data.createCookie('dash_last_login',this.id,365);
+                data.createCookie(cookieKey.isHistory,true,365);
+                data.createCookie(cookieKey.loginId,this.id,365);
             }
         },
         logout(){
-            data.removeCookie('dash_login_history');
-            data.removeCookie('dash_last_login');
+            data.removeCookie(cookieKey.isHistory);
+            data.removeCookie(cookieKey.loginId);
 
             this.init();
         }

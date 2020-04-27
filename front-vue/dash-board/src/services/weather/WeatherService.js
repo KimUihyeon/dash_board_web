@@ -73,7 +73,25 @@ const getCityForcast = (cityId) => {
                +`lang=kr&`
                +`units=metric`;
 
-    return rest.get(url);
+    return rest.get(url)
+        .then(data=>{
+            return data.list
+        }).then(items=>{
+            console.log(items);
+
+            let results = [];
+            items.forEach((item)=>{
+
+                let { main , weather , wind } = item;
+
+                let d = date.convertByUnixDate(item.dt);
+                let resCurrentTemp = new WeatherOneDay(  {} , d , main.temp,
+                                                         main.feels_like, main.humidity,
+                                                         wind.speed , weather , main.temp_max, main.temp_min);
+                results.push(resCurrentTemp);
+            })
+            return results;
+        });
 }
 
 
