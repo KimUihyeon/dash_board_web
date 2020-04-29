@@ -3,6 +3,7 @@ import VueRouter from 'vue-router'
 import Main from '../views/Main.vue'
 import LoginPage from '../views/common/LoginPage.vue'
 import TestPage from '../views/TestPage.vue'
+import TodoPage from '../views/todo/TodoPage.vue'
 
 Vue.use(VueRouter)
 
@@ -32,7 +33,7 @@ Vue.use(VueRouter)
   {
     path: '/todo',
     name: 'TestPage',
-    component : TestPage
+    component : TodoPage
   },
   {
     path: '/weather',
