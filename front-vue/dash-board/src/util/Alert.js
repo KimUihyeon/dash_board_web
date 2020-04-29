@@ -1,3 +1,4 @@
+import { isNull } from "./Data";
 
 /**
  * Element Ui dependency Alert!
@@ -12,4 +13,39 @@ export const showMessage = (vueObject, type, message) => {
         message,
         type
     });
+}
+
+
+export const showConfirm = (vueObject , type, confirmMsg, okCallback , cancelCallback, 
+    okValue, cancleValue) => {
+        
+
+    type = isNull(type) ? 'Warning' : type;
+    okValue = isNull(okValue) ? '확인' : okValue;
+    cancleValue = isNull(cancleValue) ? '취소' : cancleValue;
+
+
+    return  vueObject.$confirm(confirmMsg , type , {
+        confirmButtonText: okValue,
+        cancelButtonText: cancleValue,
+        type: type
+        }).then(() => {
+
+            if(isNull(okCallback)){
+                showMessage(vueObject , 'success' , '확인 되었습니다.');
+            }
+            else{
+                okCallback();
+            }
+
+        }).catch(() => {
+
+
+            if(isNull(cancelCallback)){
+                showMessage(vueObject , 'info' , '취소 되었습니다.');
+            }
+            else{
+                cancelCallback();
+            }  
+        });
 }

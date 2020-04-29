@@ -1,7 +1,7 @@
 import { convertByUnixDateTime, now } from './DateUtil'
 import { get } from './AxiosUtil'
 import { isNull, createCookie, getCookie, removeCookie } from './Data';
-import { showMessage } from './Alert';
+import { showMessage , showConfirm } from './Alert';
 import moment from 'moment';
 
 // #dateTime
@@ -27,5 +27,6 @@ export const rest = {
 }
 
 export const alert = {
-    showMessage
+    showMessage,
+    showConfirm,
 }

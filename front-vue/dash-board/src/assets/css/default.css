@@ -12,3 +12,8 @@
 .inputBox{
   margin: 5px 0px;
 }
+
+
+.text-left{
+  text-align: left !important;
+}
