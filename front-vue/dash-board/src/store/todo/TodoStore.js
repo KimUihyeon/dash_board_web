@@ -32,11 +32,21 @@ const actions = {
         context.commit('setTodoList', { todoList });
     },
     todoItemUpdate : function (context , payload){
+        /**
+         * 신규객체 아이디 -1 처리 디비에서 한번
+         * 서버에 업데이트 된 객체 받아서 자바스크립트에 추가하는 로직에 한번 .. ! 처리할것 !
+         */
 
-        console.log(payload)
         let item = payload.todoItem;
-        todoService.todoItemUpdate('', item );
-        context.commit('updateTodoItem' , { todoItem : item });
+        todoService.todoItemUpdate('', item ); // 디비에 업데이트
+
+        
+        if(item.id === -1){  // 신규
+            context.commit('addTotoItem', {todoItem : item }); // 디비 업데이트 이후에 객체 받아서 처리할것 ..!
+        }
+        else {  // 기존 업데이트
+            context.commit('updateTodoItem' , { todoItem : item }); 
+        }
     }
 
 }
