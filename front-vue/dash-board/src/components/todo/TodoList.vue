@@ -6,6 +6,9 @@
             class="todo-space">
             <TodoItem v-bind:item="item"></TodoItem>
         </div>
+        <div>
+            <input type="text" v-model="todoTitle" @keydown.enter="enterKeyPress_handle"/>
+        </div>
     </div>
 </template>
 
@@ -19,11 +22,22 @@
 import TodoItem from "./TodoItem";
 export default {
     name : 'TodoList',
+    data(){
+        return {
+            todoTitle : '',
+            todoMemo : '',
+        }
+    },
     props :{
         items : Array
     },
     components : {
         TodoItem,
+    },
+    methods:{
+        enterKeyPress_handle(e){
+            this.$store.dis
+        }
     }
     
 }

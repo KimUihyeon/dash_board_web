@@ -16,7 +16,9 @@ export const showMessage = (vueObject, type, message) => {
 }
 
 
-export const showConfirm = (vueObject , type, confirmMsg, okCallback , cancelCallback, 
+export const showConfirm = (
+    vueObject , type, confirmMsg, title,
+    okCallback , cancelCallback, 
     okValue, cancleValue) => {
         
 
@@ -25,7 +27,7 @@ export const showConfirm = (vueObject , type, confirmMsg, okCallback , cancelCal
     cancleValue = isNull(cancleValue) ? '취소' : cancleValue;
 
 
-    return  vueObject.$confirm(confirmMsg , type , {
+    return  vueObject.$confirm(confirmMsg , title , {
         confirmButtonText: okValue,
         cancelButtonText: cancleValue,
         type: type

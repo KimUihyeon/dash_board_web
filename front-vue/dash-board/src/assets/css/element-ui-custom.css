@@ -8,3 +8,8 @@
 .el-switch__core {
     border-radius: 3px !important;
 }
+
+
+.theme--light{
+    background: #00000000 !important;
+}
