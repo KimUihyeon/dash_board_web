@@ -6,9 +6,6 @@
             class="todo-space">
             <TodoItem v-bind:item="item"></TodoItem>
         </div>
-        <div>
-            <input type="text" v-model="todoTitle" @keydown.enter="enterKeyPress_handle"/>
-        </div>
     </div>
 </template>
 
@@ -34,11 +31,5 @@ export default {
     components : {
         TodoItem,
     },
-    methods:{
-        enterKeyPress_handle(e){
-            this.$store.dis
-        }
-    }
-    
 }
 </script>

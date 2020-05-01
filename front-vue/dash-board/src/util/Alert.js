@@ -40,9 +40,8 @@ export const showConfirm = (
                 okCallback();
             }
 
-        }).catch(() => {
-
-
+        }).catch((e) => {
+            console.log(e);
             if(isNull(cancelCallback)){
                 showMessage(vueObject , 'info' , '취소 되었습니다.');
             }

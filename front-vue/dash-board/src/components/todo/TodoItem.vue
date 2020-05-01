@@ -1,13 +1,16 @@
 <template>
     <div>
-        <div @mouseover="hoverOver" @mouseout="hoverOut">
+        <div
+            @mouseover="mouse_handle('hover')" 
+            @mouseout="mouse_handle('out')">
+
             <v-card
                 class="mx-auto"
                 max-width="350"
                 :shaped="true"
                 :elevation="isHover ? 0 : 3"
-                outlined
-            >
+                outlined>
+
                 <v-list-item three-line>
                     <v-list-item-content>
                         <!-- <div class="overline mb-4 text-left">type</div> -->
@@ -23,7 +26,7 @@
                             </span>
                             <span
                                 v-bind:class="cloneItem.todoComplate ? 'complate-todo' : ''" 
-                                @click="toggleMemo">{{cloneItem.title}}</span>
+                                @click="click_handle('toggleMemo')">{{cloneItem.title}}</span>
                         </v-list-item-title>
 
                         <div class="text-left" v-show="this.isMemoOpen">
@@ -35,9 +38,9 @@
                     <v-card-actions
                         class="fade-effect-tartget"
                         v-bind:class="isHover ? 'fade-effect-active' : ''">
-                        <v-btn text>Button</v-btn>
-                        <button @click="deleteItem" class="el-icon-delete" ></button>
-                    </v-card-actions>       
+                        <button @click="click_handle('delete')" class="el-icon-delete" ></button>
+                    </v-card-actions>
+
                 </v-list-item>         
             </v-card>
         </div>
@@ -55,7 +58,6 @@ export default {
     data()  {
         return {
             cloneItem : {},
-            elevation : 0,
             isHover: false,
             isMemoOpen : false,
         }
@@ -67,27 +69,42 @@ export default {
         this.cloneItem = this.item;
     },
     methods:{
-        toggleMemo(){
-            this.isMemoOpen = !this.isMemoOpen;
+        click_handle(elementType){
+
+            if(elementType === 'delete'){
+                this.deleteTodoProcess();
+            }
+            else if (elementType === 'toggleMemo'){
+                this.isMemoOpen = !this.isMemoOpen;
+            }
         },
-        deleteItem(){
-            alert.showConfirm(this, null, '해당 Todo를 삭제하시겠습니까?', '할일 삭제', 
-            ()=>{
-                alert.showMessage(this, 'success', '성공');
-            },
-            ()=>{
-                alert.showMessage(this, 'info', '취소');
-            })
-        },
-        hoverOver(){
-            this.isHover = true;
-        },
-        hoverOut(){
-            this.isHover = false;  
+        mouse_handle(position){
+            if(position === 'hover'){
+                this.isHover = true;
+            }
+            else if(position === 'out'){
+                this.isHover = false; 
+            }
         },
         changed_handle(){
+            console.log( this.cloneItem );
             this.$store.dispatch('todoItemUpdate', { todoItem : this.cloneItem});
         },
+        deleteTodoProcess(){
+
+            let okCallback = () =>{
+                alert.showMessage(this, 'info', '123123123');
+                this.$store.dispatch('todoItemDelete', { todoItem : this.cloneItem});
+                alert.showMessage(this, 'success', '삭제되었습니다.');
+            }
+            let cancleCallback = () => {
+                alert.showMessage(this, 'info', '취소');
+            }
+            console.log('ttttt');
+
+            alert.showConfirm(this, null, '해당 Todo를 삭제하시겠습니까?', '할일 삭제', 
+                okCallback,  cancleCallback);
+        }
     }
     
 }
