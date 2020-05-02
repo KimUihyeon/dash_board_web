@@ -10,26 +10,21 @@
 
 
             <div class="folder-area">
-                    <div class="folder-list-area">
+                <div class="folder-list-area">
+                    <TodoFolderList :folders='getFolders1'/>
+                    <hr/>
+                    <TodoFolderList :folders='getFolders2'/>
+                </div>
 
-                        <TodoFolderList :folders='getFolders1'/>
-                        <hr/>
-                        <TodoFolderList :folders='getFolders2'/>
-                    </div>
-
-                    <div class="folder-add-area">
-                        <hr/>
-                        <TodoFolderAddInput></TodoFolderAddInput>
-                    </div>
+                <div class="folder-add-area">
+                    <hr/>
+                    <TodoFolderAddInput></TodoFolderAddInput>
+                </div>
             </div>
             <div class="todo-area">
                 <div>
                     <div class="todo-list-area">
-                        <div v-if="!isLoading">
-                            로딩중
-                        </div>
                         <TodoList 
-                            v-else
                             v-bind:items="getTodoList"/>
                     </div>
 

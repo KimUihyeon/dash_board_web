@@ -31,8 +31,8 @@
 </style>
 
 <script>
-
 const name = 'RadianBox'
+
 export default {
     name,
     props : {
