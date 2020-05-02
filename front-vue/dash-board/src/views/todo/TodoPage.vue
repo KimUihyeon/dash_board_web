@@ -1,42 +1,47 @@
 <template>
-    <div class="todo-warp">
-        <div class="todo-container">
 
-            <el-row>
-                <el-col :span="7">
-                    <TodoFolderList :folders='getFolders1'/>
-                    <hr/>
-                    
-                    <div> 
-                        <!-- 스크롤 최대 영역 -->
+    <div class="full-height">
+        <RadianBox
+            title="123"
+            width="50%"
+            height="100%"
+            maxWidth="500px"
+            >
+
+
+            <div class="folder-area">
+                    <div class="folder-list-area">
+
+                        <TodoFolderList :folders='getFolders1'/>
+                        <hr/>
                         <TodoFolderList :folders='getFolders2'/>
                     </div>
 
-                    <hr/>
-                    <TodoFolderAddInput></TodoFolderAddInput>
-                </el-col>
-                <el-col :span="1">
-                    <el-divider direction='vertical'></el-divider>
-                </el-col>
-                <el-col :span="16">
-                    <div class="todo-area">
-                        <div class="todo-list-area">
-                            <div v-if="!isLoading">
-                                로딩중
-                            </div>
-                            <TodoList 
-                                v-else
-                                v-bind:items="getTodoList"/>
+                    <div class="folder-add-area">
+                        <hr/>
+                        <TodoFolderAddInput></TodoFolderAddInput>
+                    </div>
+            </div>
+            <div class="todo-area">
+                <div>
+                    <div class="todo-list-area">
+                        <div v-if="!isLoading">
+                            로딩중
                         </div>
+                        <TodoList 
+                            v-else
+                            v-bind:items="getTodoList"/>
+                    </div>
+
+                    <div>
                         <TodoItemAddInput></TodoItemAddInput>
                     </div>
-                </el-col>
-            </el-row>
+                </div>
+            </div>
 
-
-        </div>
-
+        </RadianBox>
     </div>
+
 </template>
 
 <script>
@@ -44,13 +49,16 @@ import TodoList from "../../components/todo/TodoList";
 import TodoFolderAddInput from "../../components/todo/TodoFolderAddInput";
 import TodoFolderList from "../../components/todo/TodoFolderList";
 import TodoItemAddInput from "../../components/todo/TodoItemAddInput";
+import RadianBox from '../../components/common/RadianBox';
 import { mapGetters } from 'vuex';
 
 const name = 'TodoPage';
 const components = {
         TodoList,
         TodoFolderList,
-        TodoFolderAddInput }
+        TodoFolderAddInput,
+        TodoItemAddInput,
+        RadianBox }
 
 export default {
     name ,
@@ -88,39 +96,27 @@ export default {
 
 
 <style scoped>
-.todo-warp{
-    height: 100%;
-    width: 100%;
-    position: relative;
-}
-.todo-container{
-    padding: 15px;
-    height: calc(100% - 15px);
-    max-width: 650px;
-    width: 100%;
-    position: absolute;
-    right: 15px;
-    background: #f0f;
-    border-radius: 20px;
-    text-align: left;
-    overflow: hidden;
-}
-.devider{
-    height: calc(100% - 6px);
-    width: 1px;
-    margin: 3px 0px;
-    display: inline-block;
+.folder-list-area{
+    flex: 1;
+    overflow: scroll;
 }
 .folder-area{
-    width: calc(40% - 30px);
-    display: inline-block;
-    margin: 10px;
-}
-.todo-area { 
+    width: 35%;
     height: 100%;
+    padding-right: 2%;
+    float: left;
+    box-sizing: border-box;
+    border-right: 1px solid #f5f5f512;
+
+    display: flex;
+    flex-direction: column;
 }
-.todo-list-area{
-    height: calc(100% - 30px);
-    overflow: scroll;
+.todo-area{
+    overflow: auto;
+    width: 65%;
+    height: 100%;
+    padding-left: 2%;
+    float: left;
+    overflow: overlay;
 }
 </style>
