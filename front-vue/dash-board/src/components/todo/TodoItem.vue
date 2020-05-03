@@ -9,7 +9,7 @@
                     <div  class="todo-left">
                         <span class="chk-span" @click="changed_handle">
                             <i 
-                                v-if="cloneItem.todoComplate"
+                                v-if="cloneItem.todoComplete"
                                 class="el-icon-check todo-center"
                                 style="font-size:24px"></i>
                             
@@ -21,7 +21,7 @@
                         </span>
                         <span class="todo-title-box" @click="click_handle('toggleMemo')">
                             <span class="todo-center" 
-                            v-bind:class="cloneItem.todoComplate ? 'complate-todo' : ''" >{{cloneItem.title}}</span>
+                            v-bind:class="cloneItem.todoComplete ? 'complate-todo' : ''" >{{cloneItem.title}}</span>
                         </span>
                     </div>
                     <div class="todo-right">
@@ -120,7 +120,7 @@ export default {
             }
         },
         changed_handle(){
-            this.cloneItem.todoComplate = !this.cloneItem.todoComplate;
+            this.cloneItem.todoComplete = !this.cloneItem.todoComplete;
 
             let todoItem = this.cloneItem;
             this.$store.dispatch('todoItemUpdate', { todoItem });

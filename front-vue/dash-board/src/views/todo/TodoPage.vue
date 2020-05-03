@@ -123,7 +123,7 @@ export default {
                 title : param.keyWord,
                 memo : '',
                 date : date.now(),
-                todoComplate : false,
+                todoComplete : false,
             }
             this.$store.dispatch('todoItemUpdate', { todoItem });
             alert.showMessage(this, 'success', '추가되었습니다.' )

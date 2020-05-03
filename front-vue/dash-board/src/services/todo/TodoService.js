@@ -7,7 +7,7 @@ for(var i = 0 ; i< 10 ; i++ ){
         title : '제목 _'+i,
         memo : '메모 _____'+i,
         date : date.now,
-        todoComplate : false,
+        todoComplete : false,
     })
 }
 

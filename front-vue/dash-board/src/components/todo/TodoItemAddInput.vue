@@ -39,7 +39,7 @@ export default {
                 title : '',
                 memo : '',
                 date : date.now(),
-                todoComplate : false,
+                todoComplete : false,
             }
             this.todoItem.date = date.now();
             this.$store.dispatch('todoItemUpdate', { todoItem : this.todoItem });
@@ -51,7 +51,7 @@ export default {
                 title : '',
                 memo : '',
                 date : date.now(),
-                todoComplate : false,
+                todoComplete : false,
             }
         }
     }
