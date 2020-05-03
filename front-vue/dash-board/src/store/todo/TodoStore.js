@@ -27,7 +27,10 @@ const getters = {
 }
 
 const actions = {
-    todoListDownload : function(context){
+    todoListDownload : function(context , payload){
+        /**
+         * payload = { loginId , folder? }
+         */
         let todoList = todoService.getTodoList();
         console.log('다운로드');
         context.commit('setTodoList', { todoList });

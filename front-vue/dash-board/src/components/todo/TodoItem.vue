@@ -4,51 +4,84 @@
             @mouseover="mouse_handle('hover')" 
             @mouseout="mouse_handle('out')">
 
-            <v-card
-                class="mx-auto"
-                max-width="350"
-                :shaped="true"
-                :elevation="isHover ? 0 : 3"
-                outlined>
+            <div>
+                <div class="todo" v-bind:class="isHover ? 'todo-hover' : ''">
+                    <div  class="todo-left">
+                        <span class="chk-span" @click="changed_handle">
+                            <i 
+                                v-if="cloneItem.todoComplate"
+                                class="el-icon-check todo-center"
+                                style="font-size:24px"></i>
+                            
+                            <i 
+                                v-else
+                                class="el-icon-minus todo-center"
+                                style="font-size:24px"></i>
 
-                <v-list-item three-line>
-                    <v-list-item-content>
-                        <!-- <div class="overline mb-4 text-left">type</div> -->
-                        <v-list-item-title class="headline text-left">
-                            <span>
-                                <el-checkbox 
-                                    v-model="cloneItem.todoComplate" 
-                                    v-on:change="changed_handle"></el-checkbox>
-                                <!-- <input
-                                    type="checkbox" 
-                                    v-model="cloneItem.todoComplate" 
-                                    v-on:change="changed_handle"/> -->
-                            </span>
-                            <span
-                                v-bind:class="cloneItem.todoComplate ? 'complate-todo' : ''" 
-                                @click="click_handle('toggleMemo')">{{cloneItem.title}}</span>
-                        </v-list-item-title>
+                        </span>
+                        <span class="todo-title-box" @click="click_handle('toggleMemo')">
+                            <span class="todo-center" 
+                            v-bind:class="cloneItem.todoComplate ? 'complate-todo' : ''" >{{cloneItem.title}}</span>
+                        </span>
+                    </div>
+                    <div class="todo-right">
+                        <button @click="click_handle('delete')" class="el-icon-delete todo-center" ></button>
+                    </div>
 
-                        <div class="text-left" v-show="this.isMemoOpen">
-                            {{cloneItem.memo}}
-                        </div>
+                </div>
+            </div>
 
-                    </v-list-item-content>
-
-                    <v-card-actions
-                        class="fade-effect-tartget"
-                        v-bind:class="isHover ? 'fade-effect-active' : ''">
-                        <button @click="click_handle('delete')" class="el-icon-delete" ></button>
-                    </v-card-actions>
-
-                </v-list-item>         
-            </v-card>
         </div>
     </div>
 </template>
 
 <style scoped>
-
+.todo{
+    display:flex;
+    height: 60px;
+    background: rgba(255, 255, 255, 0.461);
+    transition: all 0.1s;
+}
+.todo-hover{
+    box-shadow: 5px 5px 10px #000;
+}
+.todo-left{
+    display: flex;    
+    height: 100%;
+    flex:1
+}
+.chk-span{
+    width: 30px;
+    height: 30px;
+    /* border: 1px solid; */
+    /* border-radius: 50%; */
+    margin: 15px;
+}
+.todo-title-box, .chk-span{
+    float: left;
+    display: inline-block;
+    position: relative;
+}
+.todo-title-box{
+    height: 100%;
+    width: 100%;
+    flex: 1;
+}
+.todo-center{
+    position: absolute;
+    width: 100%;
+    top: 50%;
+    left: 50%;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    transform: translateX(-50%) translateY(-50%);
+}
+.todo-right{
+    width: 20px;
+    height: 20px;
+    margin: 20px;
+    position: relative;
+}
 </style>
 
 <script>
@@ -87,13 +120,14 @@ export default {
             }
         },
         changed_handle(){
-            console.log( this.cloneItem );
-            this.$store.dispatch('todoItemUpdate', { todoItem : this.cloneItem});
+            this.cloneItem.todoComplate = !this.cloneItem.todoComplate;
+
+            let todoItem = this.cloneItem;
+            this.$store.dispatch('todoItemUpdate', { todoItem });
         },
         deleteTodoProcess(){
 
             let okCallback = () =>{
-                alert.showMessage(this, 'info', '123123123');
                 this.$store.dispatch('todoItemDelete', { todoItem : this.cloneItem});
                 alert.showMessage(this, 'success', '삭제되었습니다.');
             }

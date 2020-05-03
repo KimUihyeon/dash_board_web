@@ -1,13 +1,136 @@
 <template>
-    <span>더하기 더하기</span>
+    <div class="folder-add-container" :style="continerStyle">
+        <div class="folder-puls-button">
+            <i class='el-icon-plus icon' :style="iconStyle"></i>
+        </div>
+        <div class="folder-add-input">
+            <input type="txt" 
+                v-model="keyWord" 
+                :style='inputStyle'
+                @keydown.enter="(e)=>{
+                    inputEnterKeyPress_handle(e, { keyWord })
+                }" 
+                :placeholder="placeholder">
+        </div>
+    </div>
 </template>
 
+<style scoped>
+.folder-add-container{
+    position: relative;
+    display: flex;
+}
+.folder-puls-button{
+    display: inline-block;
+    width: 30px;
+    height: 30px;
+    text-align: center;
+    align-self: center;
+}
+.folder-add-input{
+    flex: 1;
+}
+.folder-add-input input {
+    width: 100%;
+    height: 100%;
+    display: block;
+}
+.icon{
+    vertical-align: middle;
+    position: relative;
+}
+input::placeholder {
+  color: white;
+}
+input:focus {
+    outline:none;
+}
+
+</style>
 
 <script>
+
+import { data } from "../../util";
+const name = 'AddButton';
+
 export default {
-    name : 'AddButton',
+    name,
     props : {
-        size : Number
+        placeholder : String ,
+        iconColor : String,
+        iconSize : String,
+        fontColor : String,
+        fontSize : String,
+        height : String,
+        width : String,
+        backgroundColor : String ,
+        marginTop : String,
+
+        inputEnterKeyPress_handle : Function,
+    },
+    data(){
+        return {
+            keyWord : '',
+            isEmpty : false,
+            continerStyle : '',
+            iconStyle : '',
+            inputStyle : '',
+        }
+    },
+    watch : {
+        keyWord(v){
+            this.isEmpty = data.isNull(v);
+        }
+    },
+    mounted(){
+        this.continerStyle = this.getContainerStyle();
+        this.iconStyle = this.getIconStyle();
+        this.inputStyle = this.getInputStyle();
+    },
+    methods: {
+        getContainerStyle (){
+            let style = '';
+            console.log(this.height);
+            if(!data.isNull(this.height)){
+                style += `height : ${this.height}; `;
+            }
+            if(!data.isNull(this.width)){
+                style += `width : ${this.width}; `;
+            }
+            if(!data.isNull(this.backgroundColor)){
+                style += `backgroundColor : ${this.backgroundColor}; `;
+            }
+            if(!data.isNull(this.marginTop)){
+                style += `margin-top : ${this.marginTop}; `
+            }
+            
+            return style;
+        },
+        getIconStyle(){
+            let style = '';
+            
+            if(!data.isNull(this.iconColor)){
+                style += `color : ${this.iconColor}; `;
+            }
+            if(!data.isNull(this.iconSize)){
+                style += `font-size : ${this.iconSize } ;`;
+            }
+            
+            return style;
+
+        },
+        getInputStyle(){
+            let style = '';
+            
+            if(!data.isNull(this.fontColor)){
+                style += `color : ${this.fontColor}; `;
+            }
+            if(!data.isNull(this.fontSize)){
+                style += `font-size : ${this.fontSize } ;`;
+            }
+
+            return style;
+        }
     }
 }
 </script>

@@ -14,8 +14,10 @@
 
 <script>
 import { alert , date } from "../../util";
+import AddButton from '../../components/common/AddButton';
 export default {
     name : 'TodoItemAddInput',
+    components : { AddButton },
     data(){
         return {
             todoItem : {},
@@ -32,6 +34,13 @@ export default {
             this.clearTodoItem();
         },
         addTodoItem(){
+            this.todoItem = {
+                id : -1,
+                title : '',
+                memo : '',
+                date : date.now(),
+                todoComplate : false,
+            }
             this.todoItem.date = date.now();
             this.$store.dispatch('todoItemUpdate', { todoItem : this.todoItem });
             alert.showMessage(this, 'success', '추가되었습니다.' )

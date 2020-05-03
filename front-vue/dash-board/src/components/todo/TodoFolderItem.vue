@@ -1,13 +1,22 @@
 <template>
-    <div>
-        <span>{{cloneFolder.icon}}</span>
-        <span>*</span>
-        <span>{{cloneFolder.title}}</span>
+    <div class="folder-item" >
+        <span class="cursor-pointer" @click="click_handle">
+            <span :style="'color : ' + cloneFolder.iconColor">
+                <i v-bind:class='cloneFolder.icon'></i>
+            </span>
+            <span :style="'color :' + cloneFolder.fontColor">
+                {{cloneFolder.title}}
+            </span>
+        </span>
     </div>
 </template>
 
 
 <style scoped>
+.folder-item{
+    padding: 4px;
+    font-size: 14px;
+}
 </style>
 
 <script>
@@ -26,6 +35,12 @@ export default {
     },
     mounted(){
         this.cloneFolder = this.folder;
+    },
+    methods: {
+        click_handle(){
+            let { pk } = this.cloneFolder;
+            this.$router.push({ path: 'todo', query: { folder : pk }});
+        }
     }
 }
 </script>

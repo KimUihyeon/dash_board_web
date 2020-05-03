@@ -18,19 +18,38 @@
 
                 <div class="folder-add-area">
                     <hr/>
-                    <TodoFolderAddInput></TodoFolderAddInput>
+                    <AddButton
+                        width="100%"
+                        height="100%"
+                        placeholder="디렉토리 추가"
+                        marginTop="5px"
+                        iconColor="#ACFFCF"
+                        fontSize="12px"
+                        iconSize="17px"
+                        :inputEnterKeyPress_handle="addTodoItem"
+                        />
                 </div>
             </div>
             <div class="todo-area">
-                <div>
-                    <div class="todo-list-area">
-                        <TodoList 
-                            v-bind:items="getTodoList"/>
-                    </div>
+                <div class="todo-list-area">
+                    <TodoList 
+                        v-bind:items="getTodoList"/>
+                </div>
 
-                    <div>
-                        <TodoItemAddInput></TodoItemAddInput>
-                    </div>
+                <hr/>
+                <div class="todo-add-area">
+                    <AddButton
+                        placeholder="새 할일 추가하기."
+                        width="100%"
+                        height="calc(100% - 1px)"
+                        backgroundColor="#ffffff61"
+                        marginTop="5px"
+                        iconColor="#ACFFCF"
+                        fontSize="12px"
+                        iconSize="17px"
+                        :inputEnterKeyPress_handle="addTodoItem"
+                    ></AddButton>
+                    <!-- <TodoItemAddInput></TodoItemAddInput> -->
                 </div>
             </div>
 
@@ -45,7 +64,9 @@ import TodoFolderAddInput from "../../components/todo/TodoFolderAddInput";
 import TodoFolderList from "../../components/todo/TodoFolderList";
 import TodoItemAddInput from "../../components/todo/TodoItemAddInput";
 import RadianBox from '../../components/common/RadianBox';
+import AddButton  from '../../components/common/AddButton';
 import { mapGetters } from 'vuex';
+import { data , date , alert } from '../../util'
 
 const name = 'TodoPage';
 const components = {
@@ -53,7 +74,8 @@ const components = {
         TodoFolderList,
         TodoFolderAddInput,
         TodoItemAddInput,
-        RadianBox }
+        RadianBox,
+        AddButton }
 
 export default {
     name ,
@@ -64,25 +86,62 @@ export default {
         }
     },
     mounted(){
+        this.todoListDownload()
+    },
+    beforeRouteUpdate(to, from, next){
+        console.log(to)
+        console.log(to.query.folder); 
+        // this.todoListDownload();
+    },
+    methods:{
+        getTest(){
+            console.log('test');
+        },
+        todoListDownload(){
             this.isLoading = false;
 
+            // let { folderId } = this.$router.query;
+
+            // let param = {
+            //     loginId : '',
+            //     folder : folderId
+            // };
+
+            // console.log(folderId);
+
             /** Todo List 다운로드 */
-            this.$store.dispatch('todoListDownload');
+            this.$store.dispatch('todoListDownload',{
+                loginId : '' ,
+            });
+
             this.isLoading = true;
+        },
+        addTodoItem(e, param){
+            console.log('몇번튐 ??')
+            let todoItem = {
+                id : -1,
+                title : param.keyWord,
+                memo : '',
+                date : date.now(),
+                todoComplate : false,
+            }
+            this.$store.dispatch('todoItemUpdate', { todoItem });
+            alert.showMessage(this, 'success', '추가되었습니다.' )
+        },
     },
     computed : {
         ...mapGetters(['getTodoList']),
         getFolders1(){
             return [
-                { id : 0 , title : '중요' , icon : '' , pk : 1 , canModify : false },
-                { id : 1 , title : '오늘 할일' , icon : '' , pk : 2, canModify : false  },
-                { id : 2 , title : '완료된 할일' , icon : '' , pk : 3 , canModify : false },
+                { id : 0 , title : '중요' , icon : 'el-icon-star-off' , pk : 1 , canModify : false , iconColor : 'yellow', fontColor : 'yellow'},
+                { id : 1 , title : '오늘 할일' , icon : 'el-icon-s-opportunity' , pk : 2, canModify : false  , iconColor : 'white', fontColor : 'white'},
+                { id : 2 , title : '완료된 할일' , icon : 'el-icon-s-release' , pk : 3 , canModify : false , iconColor : '#ffb8b8', fontColor : '#ffb8b8'},
             ];
         },
         getFolders2(){
             return [
-                { id : 3 , title : '기본 디렉토리' , icon : '' , pk : 4, canModify : false  },
-                { id : 4 , title : '디렉토리 1' , icon : '' , pk : 5 , canModify : true }
+                { id : 3 , title : '기본 디렉토리' , icon : 'el-icon-folder-delete' , pk : 4, canModify : false  , iconColor : 'white', fontColor : 'white'},
+                { id : 4 , title : '디렉토리 1' , icon : 'el-icon-folder' , pk : 5 , canModify : true , iconColor : 'white', fontColor : 'white'}
             ];
         }
     },
@@ -112,6 +171,25 @@ export default {
     height: 100%;
     padding-left: 2%;
     float: left;
-    overflow: overlay;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.todo-list-area{
+    flex: 1;
+    overflow: scroll;
+}
+.todo-add-area ,
+.folder-add-area{
+    height: 40px;
+}
+.todo-add-area{
+    height: 50px;
+}
+hr{
+    color: red;
+    background-color: red;
+    margin: 2px;
 }
 </style>

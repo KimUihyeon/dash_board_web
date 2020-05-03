@@ -23,7 +23,7 @@
     height: calc(100% - 15px);
     position: absolute;
     right: 15px;
-    background: #2121216e;
+    background: #21212185;
     border-radius: 20px;
     text-align: left;
     /* overflow: hidden; */

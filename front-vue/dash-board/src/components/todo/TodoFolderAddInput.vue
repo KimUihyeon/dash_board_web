@@ -12,19 +12,18 @@
 <style scoped>
 .folder-add-container{
     position: relative;
+    display: flex;
 }
 .folder-puls-button{
-    position: absolute;
-    top : 0;
-    left: 0;
+    display: inline;
 }
 .folder-add-input{
-    position: relative;
-    top : 0;
-    left: 0;
+    flex: 1;
+}
+.folder-add-input input {
     width: 100%;
     height: 100%;
-    text-align: left;
+    display: block;
 }
 </style>
 
@@ -38,6 +37,14 @@ const components =  { AddButton };
 export default {
     name,
     components, 
+    props : {
+        placeholder : String ,
+        butonColor : String,
+        fontColor : String,
+        height : String,
+        width : String,
+        backgroundColor : String ,
+    },
     data(){
         return {
             keyWord : '',
