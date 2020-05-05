@@ -1,30 +1,33 @@
 import { rest , date } from '../../util'
 
-let tempList = [];
-for(var i = 0 ; i< 10 ; i++ ){
-    tempList.push({
-        id : i,
-        title : '제목 _'+i,
-        memo : '메모 _____'+i,
-        date : date.now,
-        todoComplete : false,
-    })
-}
+const base_url = process.env.VUE_APP_API_BASE_URL + '/v1/todo';
+
+
+// let tempList = [];
+// for(var i = 0 ; i< 10 ; i++ ){
+//     tempList.push({
+//         id : i,
+//         title : '제목 _'+i,
+//         memo : '메모 _____'+i,
+//         date : date.now,
+//         todoComplete : false,
+//     })
+// }
 
 /**
  * 수정, 추가 로직
  * @param {*} userId 
  * @param {*} todoItem 
  */
-const todoItemUpdate = (userId , todoItem) => {
-    let datas = [...tempList];
+const todoItemUpdate = async (userId , todoItem) => {
+    let url = base_url + '/list';
 
-    tempList = datas.map(t=>{
-        if(t.id === todoItem.id){
-            return todoItem
-        }
-        return t;
-    })
+    let data = {
+        userId,
+        todoItem,
+    }
+    
+    let datas = await rest.get(url, data);
     return todoItem;
 }
 
@@ -38,24 +41,12 @@ const todoItemAdd = (userId, todoItem) => {
     return todoItem;
 }
 
-const todoItemDelete = (todoId) => {
-    let datas = [...tempList];
-
-    datas.filter(t=>{
-        if(t.id === todoId){
-            return false
-        }
-        else {
-            return true;
-        }
-    })
-
-    tempList = datas;
-    console.log('삭제된 데이터 ' ,tempList)
+const todoItemDelete = async (todoId) => {
+    await rest.delete_( base_url + `/${todoId}`);
 }
 
-const getTodoList = (userId) => {
-    return tempList;
+const getTodoList = async (userId) => {
+    return await rest.get( base_url + '/list' , { userId });
 }
 
 const getTodoItem = (todoId) => {

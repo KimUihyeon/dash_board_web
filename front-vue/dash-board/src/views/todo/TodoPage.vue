@@ -86,7 +86,7 @@ export default {
         }
     },
     mounted(){
-        this.todoListDownload()
+        this.todoListDownload();
     },
     beforeRouteUpdate(to, from, next){
         console.log(to)
@@ -111,7 +111,7 @@ export default {
 
             /** Todo List 다운로드 */
             this.$store.dispatch('todoListDownload',{
-                loginId : '' ,
+                loginId : 'dkrnl1318@naver.com' ,
             });
 
             this.isLoading = true;

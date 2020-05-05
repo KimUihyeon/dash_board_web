@@ -90,7 +90,6 @@ export default {
     methods: {
         getContainerStyle (){
             let style = '';
-            console.log(this.height);
             if(!data.isNull(this.height)){
                 style += `height : ${this.height}; `;
             }

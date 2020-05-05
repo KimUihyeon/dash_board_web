@@ -1,5 +1,5 @@
 import { convertByUnixDateTime, now } from './DateUtil'
-import { get } from './AxiosUtil'
+import { get , post , delete_ , patch} from './AxiosUtil'
 import { isNull, createCookie, getCookie, removeCookie } from './Data';
 import { showMessage , showConfirm } from './Alert';
 import moment from 'moment';
@@ -24,6 +24,9 @@ export const data = {
 // #rest ful
 export const rest = {
     get,
+    post,
+    patch,
+    delete_
 }
 
 export const alert = {

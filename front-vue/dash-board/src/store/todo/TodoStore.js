@@ -27,17 +27,17 @@ const getters = {
 }
 
 const actions = {
-    todoListDownload : function(context , payload){
+    todoListDownload : async function(context , payload){
         /**
          * payload = { loginId , folder? }
          */
-        let todoList = todoService.getTodoList();
+        let todoList = await todoService.getTodoList(payload.loginId);
         console.log('다운로드');
         context.commit('setTodoList', { todoList });
     },
-    todoItemDelete : function (context , payload){
+    todoItemDelete : async function (context , payload){
         let { todoItem } = payload;
-        todoService.todoItemDelete(todoItem.id);
+        await todoService.todoItemDelete(todoItem.id);
         context.commit('deleteTodoItem' , { todoItem });
     },
     todoItemUpdate : function (context , payload){
