@@ -1,7 +1,10 @@
 package com.sutdy.dashboard.domain.todo;
 
+import com.sutdy.dashboard.dto.TodoDto;
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,6 +18,8 @@ import java.time.LocalDateTime;
 @Table
 @Getter
 @Builder
+@NoArgsConstructor
+@AllArgsConstructor
 public class Todo {
 
     @Id
@@ -28,4 +33,18 @@ public class Todo {
     private LocalDateTime cDate;
 
     private boolean complete;
+
+
+    public void patch(TodoDto dto){
+
+        if(!dto.getMemo().equals(this.contents)){
+            this.contents = dto.getMemo();
+        }
+        if(!dto.getTitle().equals(this.title)){
+            this.contents = dto.getTitle();
+        }
+        if(dto.isTodoComplete() != this.complete){
+            this.complete = dto.isTodoComplete();
+        }
+    }
 }

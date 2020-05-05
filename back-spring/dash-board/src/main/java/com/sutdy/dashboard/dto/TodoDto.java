@@ -53,4 +53,15 @@ public class TodoDto extends AbsDtoConverter<Todo> {
         this.date = entity.getCDate();
         this.memo = entity.getContents();
     }
+
+    @Override
+    public String toString() {
+        return "TodoDto{" +
+                "id=" + id +
+                ", title='" + title + '\'' +
+                ", memo='" + memo + '\'' +
+                ", date=" + date +
+                ", todoComplete=" + todoComplete +
+                '}';
+    }
 }
