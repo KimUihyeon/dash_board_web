@@ -21,7 +21,7 @@ import java.util.stream.Collectors;
  */
 
 @Service
-public class TodoService extends BaseCrudService<Todo, TodoDto> {
+public class TodoService extends BaseCrudService<Todo, TodoDto , Long> {
 
     @Autowired
     public TodoService(TodoRepository todoRepository) {
@@ -55,23 +55,21 @@ public class TodoService extends BaseCrudService<Todo, TodoDto> {
     }
 
     @Override
-    @Transactional
-    public TodoDto update(long id, TodoDto dto) {
-        Todo todo =  this.entityFindById(id);
+    public TodoDto update(Long pk, TodoDto dto) {
+        Todo todo =  this.entityFindById(pk);
         todo.patch(dto);
         return dto;
     }
 
     @Override
     @Transactional
-    public TodoDto delete(long id) {
-        TodoDto entity = new TodoDto(this.entityFindById(id));
-        this.entityDelete(id);
+    public TodoDto delete(Long pk) {
+        TodoDto entity = new TodoDto(this.entityFindById(pk));
+        this.entityDelete(pk);
 
         return entity;
     }
 
-    @Deprecated
     @Override
     public Page<TodoDto> findAll(int page, int size) {
         throw new NotImplementedException();
@@ -81,18 +79,18 @@ public class TodoService extends BaseCrudService<Todo, TodoDto> {
     public List<TodoDto> findAll() {
         return this.jpaRepository.findAll()
                 .stream()
-                .map(t-> {return new TodoDto(t);})
+                .map(t-> new TodoDto(t))
                 .collect(Collectors.toList());
     }
 
     @Override
-    @Deprecated
     public List<TodoDto> findAllById(Iterable<Long> ids) {
-        throw new NotImplementedException();
+        return null;
     }
 
     @Override
-    public TodoDto findById(long id) {
-        return new TodoDto(entityFindById(id));
+    public TodoDto findById(Long pk) {
+        return new TodoDto(entityFindById(pk));
     }
+
 }

@@ -12,17 +12,17 @@ import java.util.List;
  * @author kuh
  * @since 2020.04.08
  */
-public interface IServiceBase<T> {
+public interface IServiceBase<T, ID> {
 
 
     @Transactional
     T save(T dto);
 
     @Transactional
-    T update(long id, T dto);
+    T update(ID pk, T dto);
 
     @Transactional
-    T delete(long id);
+    T delete(ID pk);
 
     Page<T> findAll(int page, int size);
 
@@ -30,7 +30,7 @@ public interface IServiceBase<T> {
 
     List<T> findAllById(Iterable<Long> ids);
 
-    T findById(long id);
+    T findById(ID pk);
 
 
 }

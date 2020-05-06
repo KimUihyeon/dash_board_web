@@ -1,14 +1,15 @@
-package com.sutdy.dashboard.service.common;
+package com.sutdy.dashboard.domain.common;
 
 import com.sutdy.dashboard.dto.common.AbsDtoConverter;
 import com.sutdy.dashboard.dto.common.IDtoConverter;
+import com.sutdy.dashboard.service.common.IServiceBase;
+import com.sutdy.dashboard.service.common.ServiceErrorBundle;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import javax.persistence.Id;
 import javax.transaction.Transactional;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
@@ -18,15 +19,13 @@ import java.util.stream.Collectors;
 
 /**
  * @author kuh
- * @since 2020.04.16
+ * @since 2020.05.06
  */
+public abstract class CustomJpaRepository<Entity, Dto extends AbsDtoConverter<Entity>>
+        extends ServiceErrorBundle implements JpaRepository<Entity , Long> {
 
 
-public abstract class BaseCrudService<Entity, Dto extends AbsDtoConverter<Entity>, ID>
-        extends ServiceErrorBundle implements IServiceBase<Dto , ID> {
-
-
-    protected JpaRepository<Entity, ID> jpaRepository;
+//    protected JpaRepository<Entity, Long> jpaRepository;
 
     private Class<Dto> dtoClass;
     private Class<Entity> entityClass;
@@ -42,14 +41,11 @@ public abstract class BaseCrudService<Entity, Dto extends AbsDtoConverter<Entity
         return null;
     }
 
-
-    public BaseCrudService(JpaRepository jpaRepository) {
-        this.jpaRepository = jpaRepository;
+    public CustomJpaRepository() {
 
         Type[] genericTypes = ((ParameterizedType) getClass()
                 .getGenericSuperclass())
                 .getActualTypeArguments();
-
 
         this.entityClass = (Class<Entity>) genericTypes[0];
         this.dtoClass = (Class<Dto>) genericTypes[1];
@@ -58,7 +54,7 @@ public abstract class BaseCrudService<Entity, Dto extends AbsDtoConverter<Entity
 
     protected Dto entitySave(Entity entity) {
         try {
-            return getDtoInstance(this.jpaRepository.save(entity));
+            return getDtoInstance(this.save(entity));
         } catch (Exception e5) {
             e5.printStackTrace();
         }
@@ -67,14 +63,14 @@ public abstract class BaseCrudService<Entity, Dto extends AbsDtoConverter<Entity
 
 
     @Transactional
-    protected Dto entityDelete(ID id) throws DataAccessException {
+    protected Dto entityDelete(long id) throws DataAccessException {
         Entity entity = null;
 
         try {
-            entity = this.jpaRepository.findById(id).orElseThrow(() ->
+            entity = this.findById(id).orElseThrow(() ->
                     new IllegalArgumentException(NOT_FIND_DATA));
 
-            this.jpaRepository.deleteById(id);
+            this.deleteById(id);
 
             return getDtoInstance(entity);
         } catch (Exception e) {
@@ -85,8 +81,8 @@ public abstract class BaseCrudService<Entity, Dto extends AbsDtoConverter<Entity
 
     }
 
-    protected List<Dto> entityFindAllById(Iterable<ID> ids){
-        return this.jpaRepository.findAllById(ids)
+    protected List<Dto> entityFindAllById(Iterable<Long> ids){
+        return this.findAllById(ids)
                 .stream()
                 .map(entity->getDtoInstance(entity))
                 .collect(Collectors.toList());
@@ -94,31 +90,29 @@ public abstract class BaseCrudService<Entity, Dto extends AbsDtoConverter<Entity
 
 
     protected Page<Dto> entityFindAll(int page, int size) {
-        return this.jpaRepository.findAll(PageRequest.of(page, size))
+        return this.findAll(PageRequest.of(page, size))
                 .map(en -> getDtoInstance(en));
     }
 
     protected List<Dto> entityFindAll() {
 
-        return this.jpaRepository.findAll().stream()
+        return this.findAll().stream()
                 .map(en -> getDtoInstance(en)).collect(Collectors.toList());
     }
 
     ;
 
-    protected Entity entityFindById(ID id) {
-        return this.jpaRepository.findById(id).orElseThrow(() ->
+    protected Entity entityFindById(long id) {
+        return this.findById(id).orElseThrow(() ->
                 new IllegalArgumentException(NOT_FIND_DATA));
     }
 
-    protected Dto entityFindByIdCastDto(ID id) {
+    protected Dto entityFindByIdCastDto(long id) {
         return getDtoInstance(entityFindById(id));
     }
 
-
-    @Transactional
-    protected Entity entityUpdate(ID id, IDtoConverter<Entity> dto) {
+    @Deprecated
+    protected Entity entityUpdate(long id, IDtoConverter<Entity> dto) {
         throw new NotImplementedException();
     }
-
 }
