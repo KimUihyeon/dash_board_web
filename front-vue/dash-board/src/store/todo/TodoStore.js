@@ -40,7 +40,7 @@ const actions = {
         await todoService.todoItemDelete(todoItem.id);
         context.commit('deleteTodoItem' , { todoItem });
     },
-    todoItemUpdate : function (context , payload){
+    todoItemUpdate : async function (context , payload){
         /**
          * 신규객체 아이디 -1 처리 디비에서 한번
          * 서버에 업데이트 된 객체 받아서 자바스크립트에 추가하는 로직에 한번 .. ! 처리할것 !
@@ -51,11 +51,11 @@ const actions = {
 
         if(todoItem.id === -1){  // 신규
             //TODO : 서버로직 만들고 삭제하기 !
-            let savedItem = todoService.todoItemAdd('', todoItem ); // 디비에 업데이트
+            let savedItem = await todoService.todoItemAdd('', todoItem ); // 디비에 업데이트
             context.commit('addTotoItem', { todoItem : savedItem }); // 디비 업데이트 이후에 객체 받아서 처리할것 ..!
         }
         else {  // 기존 업데이트
-            let savedItem = todoService.todoItemUpdate('', todoItem ); // 디비에 업데이트
+            let savedItem = await todoService.todoItemUpdate('', todoItem ); // 디비에 업데이트
             context.commit('updateTodoItem' , { todoItem : savedItem }); 
         }
     }

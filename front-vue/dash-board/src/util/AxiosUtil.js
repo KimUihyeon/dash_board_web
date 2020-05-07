@@ -26,17 +26,29 @@ export function get(url, dataObject ){
 
 
 export function post(url, data){
-    return Axios.post(url, data);
+    return Axios.post(url, data).then(res=>{
+        return res.data;
+    }).catch(e=>{
+        return e;
+    });
 }
 
 export function patch(url , dataObject){
-    return Axios.patch(url,dataObject)
+    return Axios.patch(url, dataObject).then(res=>{
+        return res.data;
+    }).catch(e=>{
+        return e;
+    });
 }
 
 
 export function delete_(url, dataObject){
     const apiurl = urlFactory(url, dataObject);
-    return Axios.delete(apiurl, dataObject);
+    return Axios.delete(apiurl, dataObject).then(res=>{
+        return res.data;
+    }).catch(e=>{
+        return e;
+    });
 }
 
 

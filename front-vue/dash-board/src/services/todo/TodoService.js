@@ -20,29 +20,28 @@ const base_url = process.env.VUE_APP_API_BASE_URL + '/v1/todo';
  * @param {*} todoItem 
  */
 const todoItemUpdate = async (userId , todoItem) => {
-    let url = base_url + '/list';
+    let url = base_url + `/item/${todoItem.id}`;
 
     let data = {
         userId,
-        todoItem,
+        ...todoItem,
     }
     
-    let datas = await rest.get(url, data);
-    return todoItem;
+    let datas = await rest.patch(url, data);
+    console.log(datas);
+    return datas;
 }
 
-const todoItemAdd = (userId, todoItem) => {
-    let datas = [...tempList];
-    
-    todoItem.id = Math.max(...datas.map(t=> t.id)) + 1;
-    datas.push(todoItem);
-    tempList = datas;
+const todoItemAdd = async (userId, todoItem) => {
+    console.log(todoItem)
+    console.log({ ...todoItem });
+    let resData = await rest.post(base_url + '/item', todoItem );
 
-    return todoItem;
+    return resData;
 }
 
 const todoItemDelete = async (todoId) => {
-    await rest.delete_( base_url + `/${todoId}`);
+    await rest.delete_( base_url + `/item/${todoId}`);
 }
 
 const getTodoList = async (userId) => {
