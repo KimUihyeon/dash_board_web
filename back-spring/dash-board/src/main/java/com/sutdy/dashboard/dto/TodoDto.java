@@ -6,8 +6,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 
 /**
  * @author kuh
@@ -26,9 +28,13 @@ public class TodoDto extends AbsDtoConverter<Todo> {
 
     private String memo;
 
-    private LocalDateTime date;
+    private String date;
 
     private boolean todoComplete;
+
+    private boolean toDay; // 오늘 할일
+
+    private boolean isImportant; // 중요
 
     public TodoDto(Todo entity) {
         this.createDto(entity);
@@ -36,12 +42,17 @@ public class TodoDto extends AbsDtoConverter<Todo> {
 
     @Override
     public Todo toEntity() {
+
+
+
         return Todo.builder()
                 .id(this.id)
-                .cDate(this.date)
+                .cDate(LocalDateTime.parse(this.date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
                 .complete(this.todoComplete)
                 .contents(this.memo)
                 .title(this.title)
+                .isImportant(this.isImportant)
+                .toDay(this.toDay)
                 .build();
     }
 
@@ -50,8 +61,10 @@ public class TodoDto extends AbsDtoConverter<Todo> {
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.todoComplete = entity.isComplete();
-        this.date = entity.getCDate();
+        this.date = entity.getCDate() == null ? null : entity.getCDate().toString();
         this.memo = entity.getContents();
+        this.isImportant = entity.isImportant();
+        this.toDay = entity.isToDay();
     }
 
     @Override

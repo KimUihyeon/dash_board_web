@@ -23,7 +23,7 @@ import java.time.LocalDateTime;
 public class Todo {
 
     @Id
-    @GeneratedValue( strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private Long id;
 
     private String title;
@@ -32,19 +32,32 @@ public class Todo {
 
     private LocalDateTime cDate;
 
-    private boolean complete;
+    private boolean complete; // 완료 유무
+
+    private boolean toDay; // 오늘 할일
+
+    private boolean isImportant; // 중요
 
 
-    public void patch(TodoDto dto){
+    public void patch(TodoDto dto) {
 
-        if(!dto.getMemo().equals(this.contents)){
+        if (dto.getMemo() != null && !dto.getMemo().equals(this.contents)) {
             this.contents = dto.getMemo();
         }
-        if(!dto.getTitle().equals(this.title)){
+        if (dto.getTitle() != null && !dto.getTitle().equals(this.title)) {
             this.contents = dto.getTitle();
         }
-        if(dto.isTodoComplete() != this.complete){
+        if (dto.isTodoComplete() != this.complete) {
             this.complete = dto.isTodoComplete();
         }
+        if (dto.isImportant() != this.isImportant) {
+            this.isImportant = dto.isImportant();
+        }
+        if (dto.isToDay() != this.toDay) {
+            this.toDay = dto.isToDay();
+        }
+
+
+
     }
 }

@@ -21,6 +21,6 @@ public class CORSConfig implements WebMvcConfigurer {
         String localVue = "http://localhost:3000";
         registry.addMapping("/**")
             .allowedOrigins(localVue)
-        .allowedMethods("GET", "POST","PUT", "DELETE");
+        .allowedMethods("GET", "POST","PUT", "DELETE" , "PATCH");
     }
 }

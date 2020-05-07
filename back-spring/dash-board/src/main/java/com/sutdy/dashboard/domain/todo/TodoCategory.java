@@ -2,11 +2,12 @@ package com.sutdy.dashboard.domain.todo;
 
 import com.sutdy.dashboard.dto.TodoCategoryDto;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.Table;
+import javax.persistence.*;
+import java.time.LocalDateTime;
 
 /**
  * @author kuh
@@ -15,12 +16,46 @@ import javax.persistence.Table;
 @Table
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor
 @AllArgsConstructor
 public class TodoCategory {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
 
-    public void patch(TodoCategoryDto dto){
+    private String title;
 
+    private String icon;
+
+    private boolean canModify;
+
+    private String iconColor;
+
+    private String fontColor;
+
+    private LocalDateTime cDate;
+
+    public void patch(TodoCategoryDto dto) {
+        if (!dto.getTitle().equals(this.title)) {
+            this.title = dto.getTitle();
+        }
+        if (!dto.getIcon().equals(this.icon)) {
+            this.icon = dto.getIcon();
+        }
+        if (!dto.getFontColor().equals(this.getFontColor())) {
+            this.fontColor = dto.getFontColor();
+        }
+        if (!dto.getIconColor().equals(this.iconColor)) {
+            this.iconColor = dto.getIconColor();
+        }
+        if (!dto.getCDate().equals(this.cDate)) {
+            this.cDate = dto.getCDate();
+        }
+        if (dto.isCanModify() != this.canModify) {
+            this.canModify = dto.isCanModify();
+        }
     }
+
 }

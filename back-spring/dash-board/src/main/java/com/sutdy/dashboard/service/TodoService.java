@@ -55,10 +55,11 @@ public class TodoService extends BaseCrudService<Todo, TodoDto , Long> {
     }
 
     @Override
+    @Transactional
     public TodoDto update(Long pk, TodoDto dto) {
         Todo todo =  this.entityFindById(pk);
         todo.patch(dto);
-        return dto;
+        return new TodoDto(todo);
     }
 
     @Override
