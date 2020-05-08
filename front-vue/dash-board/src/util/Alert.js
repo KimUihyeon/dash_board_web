@@ -1,7 +1,7 @@
 import { isNull } from "./Data";
 
 /**
- * Element Ui dependency Alert!
+ * Element Ui Alert popup !
  * 
  * @param {*} vueObject 
  * @param {*} type 
@@ -16,6 +16,7 @@ export const showMessage = ({ vueObject, type, message }) => {
 
 
 /**
+ * Element Ui Comfirm popup
  * 
  * @param {vueObject} vueObject ,
  * @param {String , null} type  ,

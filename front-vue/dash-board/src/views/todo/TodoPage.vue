@@ -13,7 +13,7 @@
                 <div class="folder-list-area">
                     <TodoFolderList :folders='getFolders1'/>
                     <hr/>
-                    <TodoFolderList :folders='getFolders2'/>
+                    <TodoFolderList :folders='getTodoCategories'/>
                 </div>
 
                 <div class="folder-add-area">
@@ -26,11 +26,14 @@
                         iconColor="#ACFFCF"
                         fontSize="12px"
                         iconSize="17px"
-                        :inputEnterKeyPress_handle="addTodoItem"
+                        :inputEnterKeyPress_handle="addTodoCategory"
                         />
                 </div>
             </div>
             <div class="todo-area">
+                <div>
+                    <h1>{{title}}</h1>
+                </div>
                 <div class="todo-list-area">
                     <TodoList 
                         v-bind:items="getTodoList"/>
@@ -83,31 +86,43 @@ export default {
     data() {
         return {
             isLoading : true,
+            title : '할일 리스트'
         }
     },
     mounted(){
-        this.todoListDownload();
+        this.todoListDownload(null);
+        this.$store.dispatch('todoCategoryDownload', {loginId : 'dkrnl1318@naver.com'});
+
+        this.title = this.getFolders1[0].title;
     },
     beforeRouteUpdate(to, from, next){
-        console.log(to)
-        console.log(to.query.folder); 
-        // this.todoListDownload();
+        const { type , id } = to.query;
+        console.log([...this.getTodoCategories , ...this.getFolders1]
+                        .filter(t=> t.id === id));
+    
+        this.title = [...this.getTodoCategories , ...this.getFolders1]
+                        .filter(t=> t.id === id)[0].title;
+
+
+        console.log(id);
+        this.todoListDownload(type , id);
     },
     methods:{
-        todoListDownload(){
+        todoListDownload(filter , id){
             this.isLoading = false;
-
-            // let { folderId } = this.$router.query;
 
             // let param = {
             //     loginId : '',
-            //     folder : folderId
+            //     filter : ''
             // };
 
-            // console.log(folderId);
+            console.log(filter);
 
             /** Todo List 다운로드 */
-            this.$store.dispatch('todoListDownload',{ loginId : 'dkrnl1318@naver.com' ,})
+            this.$store.dispatch('todoListDownload',{ 
+                loginId : 'dkrnl1318@naver.com',
+                filter,
+                id })
                 .then(data=>{
                     console.log(data);
                     this.isLoading = true;
@@ -121,35 +136,42 @@ export default {
             let todoItem = {
                 id : -1,
                 title : param.keyWord,
-                memo : '',
-                date : date.now(),
-                todoComplete : false,
             }
 
             this.$store.dispatch('todoItemUpdate', { todoItem })
                 .then((data)=>{
                     alert.showMessage({ vueObject : this, type : 'success', message : '추가 되엇습니다.' });
-                    })
+                })
                 .catch(error => {
                     alert.showMessage({ vueObject : this, type : 'error', message : error });
             });
         },
+        addTodoCategory(e, param) {
+            let todoCategory = {
+                id : -1,
+                title : param.keyWord
+            }
+
+            this.$store.dispatch('todoCategoryUpdate' , { 
+                    loginId : 'dkrnl1318@naver.com',
+                    todoCategory 
+                }).then(data=>{
+                    alert.showMessage({ vueObject : this, type : 'success', message : '추가 되엇습니다.' });
+                }).catch(err=>{
+                    alert.showMessage({ vueObject : this, type : 'error', message : err });
+            })
+
+        }
     },
     computed : {
-        ...mapGetters(['getTodoList']),
+        ...mapGetters(['getTodoList', 'getTodoCategories']),
         getFolders1(){
             return [
-                { id : 0 , title : '중요' , icon : 'el-icon-star-off' , pk : 1 , canModify : false , iconColor : 'yellow', fontColor : 'yellow'},
-                { id : 1 , title : '오늘 할일' , icon : 'el-icon-s-opportunity' , pk : 2, canModify : false  , iconColor : 'white', fontColor : 'white'},
-                { id : 2 , title : '완료된 할일' , icon : 'el-icon-s-release' , pk : 3 , canModify : false , iconColor : '#ffb8b8', fontColor : '#ffb8b8'},
+                { id : -3 , title : '중요' , icon : 'el-icon-star-off', canModify : false , iconColor : 'yellow', fontColor : 'yellow' , param : 'important'},
+                { id : -2 , title : '오늘 할일' , icon : 'el-icon-s-opportunity', canModify : false  , iconColor : 'white', fontColor : 'white', param : 'today'},
+                { id : -1 , title : '완료된 할일' , icon : 'el-icon-s-release' , canModify : false , iconColor : '#ffb8b8', fontColor : '#ffb8b8' , param : 'complate'},
             ];
         },
-        getFolders2(){
-            return [
-                { id : 3 , title : '기본 디렉토리' , icon : 'el-icon-folder-delete' , pk : 4, canModify : false  , iconColor : 'white', fontColor : 'white'},
-                { id : 4 , title : '디렉토리 1' , icon : 'el-icon-folder' , pk : 5 , canModify : true , iconColor : 'white', fontColor : 'white'}
-            ];
-        }
     },
 }
 </script>
@@ -197,5 +219,8 @@ hr{
     color: red;
     background-color: red;
     margin: 2px;
+}
+h1{
+    color: white;
 }
 </style>

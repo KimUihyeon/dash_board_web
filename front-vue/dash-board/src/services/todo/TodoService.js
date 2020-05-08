@@ -38,8 +38,8 @@ const todoItemDelete = (todoId) => {
     return rest.delete_( base_url + `/item/${todoId}`);
 }
 
-const getTodoList = (userId) => {
-    return rest.get( base_url + '/list' , { userId });
+const getTodoList = (userId , filter , categoryId) => {
+    return rest.get( base_url + '/list' , { userId , filter , categoryId });
 }
 
 const getTodoItem = (todoId) => {

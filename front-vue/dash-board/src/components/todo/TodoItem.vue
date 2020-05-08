@@ -123,7 +123,9 @@ export default {
             this.cloneItem.todoComplete = !this.cloneItem.todoComplete;
 
             let todoItem = this.cloneItem;
-            this.$store.dispatch('todoItemUpdate', { todoItem });
+            this.$store.dispatch('todoItemUpdate', { todoItem }).catch(err=>{
+                alert.showMessage({ vueObject : this , type : 'error' , message : err });
+            });
         },
         deleteTodoProcess(){
 

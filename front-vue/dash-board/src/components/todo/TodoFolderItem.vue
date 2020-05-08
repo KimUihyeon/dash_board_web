@@ -38,8 +38,8 @@ export default {
     },
     methods: {
         click_handle(){
-            let { pk } = this.cloneFolder;
-            this.$router.push({ path: 'todo', query: { folder : pk }});
+            let { param , id } = this.cloneFolder;
+            this.$router.push({ path: 'todo', query: { type : param , id : id }});
         }
     }
 }

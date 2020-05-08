@@ -1,5 +1,5 @@
 import Axios from "axios";
-
+import { isNull } from './Data'
 // export const get = (url)=>{
 //     return Axios.get(url).then(res=>{
 //         return res.data;
@@ -46,10 +46,12 @@ export function delete_(url, dataObject){
 
 
 function urlFactory(url, params){
-
+    
     let dataToUrl = `${url}?`;
     for(var prop in params){
-        dataToUrl += `${prop}=${params[prop]}`;
+        if(!isNull(params[prop])){
+            dataToUrl += `${prop}=${params[prop]}&`;
+        }
     }
     return dataToUrl;
 }

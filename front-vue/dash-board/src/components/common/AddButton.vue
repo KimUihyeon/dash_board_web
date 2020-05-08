@@ -8,7 +8,8 @@
                 v-model="keyWord" 
                 :style='inputStyle'
                 @keydown.enter="(e)=>{
-                    inputEnterKeyPress_handle(e, { keyWord })
+                    inputEnterKeyPress_handle(e, { keyWord });
+                    keyWord = '';
                 }" 
                 :placeholder="placeholder">
         </div>

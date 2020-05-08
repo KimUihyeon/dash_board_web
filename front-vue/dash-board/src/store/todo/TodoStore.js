@@ -22,21 +22,29 @@ const getters = {
     getTodoList : function(state){
         return state.todo.todoList;
     },
-    getSeltedTodoItem : function(state,){
+    getTodoCategories : function(state){
 
+        return state.todo.todoCategories.map(t=>{
+            return {
+                ...t,
+                param : 'category'
+            }
+        });
     }
 }
 
 const actions = {
     todoListDownload : function(context , payload){
         /**
-         * payload = { loginId , folder? }
+         * payload = { loginId , type? }
          */
 
-        let { loginId } = payload;
+        let { loginId , filter , id } = payload;
+
+        console.log(filter);
 
         return new Promise((resolve , reject) =>{
-            todoService.getTodoList(loginId)
+            todoService.getTodoList(loginId , filter , id)
                 .then(data=>{
                     alert.logger('todo List -> 다운로드');
                     context.commit('setTodoList', { todoList : data });
@@ -87,25 +95,6 @@ const actions = {
                 })
             }
         })
-        /**
-         * 신규객체 아이디 -1 처리 디비에서 한번
-         * 서버에 업데이트 된 객체 받아서 자바스크립트에 추가하는 로직에 한번 .. ! 처리할것 !
-         */
-        // let { todoItem } = payload;
-
-
-        // if(todoItem.id === -1){  // 신규
-        //     return todoService.todoItemAdd('', todoItem ).then((data)=>{
-        //         context.commit('addTotoItem', { todoItem : savedItem }); 
-        //     }).catch(e=>{
-        //         console.log('취소')
-        //         console.log(e);
-        //     }); 
-        // }
-        // else {  // 기존 업데이트
-        //     let savedItem = await todoService.todoItemUpdate('', todoItem ); // 디비에 업데이트
-        //     context.commit('updateTodoItem' , { todoItem : savedItem }); 
-        // }
     },
 
 
@@ -123,10 +112,48 @@ const actions = {
             });
         })
     },
+    todoCategoryUpdate : function (context , payload){
+        let { loginId , todoCategory } = payload;
 
+        return new Promise((resolve , reject)=>{
+
+            if(todoCategory.id === -1){ // 신규
+
+                todoCategoryService.addItem(loginId, todoCategory).then(data =>{
+                    context.commit('addTodoCategory', { todoCategory : data })
+                    resolve(data);
+                }).catch(err=>{
+                    reject(err);
+                })
+            }
+
+            else { // 수정
+                todoCategoryService.modifyItem(loginId, todoCategory).then(data =>{
+                    context.commit('updateTodoCategory', { todoCategory : data })
+                    resolve(data);
+                }).catch(err=>{
+                    reject(err);
+                })
+            }
+        });
+    },
+
+    todoCategoryRemove : function (context, payload) {
+        let { loginId , todoCategory } = payload;
+
+        return new Promise((resolve , reject)=>{
+            todoCategoryService.deleteItem( loginId , todoCategory.id ).then(data=>{
+                context.commit('removeTodoCategory',{ id : data.id});
+                resolve(data);
+            }).catch(err=>{
+                reject(err);
+            })
+        })
+    },
 }
 
 const mutation = {
+    /// todo Items
     setTodoList : function(state ,payload){
         state.todo.todoList = payload.todoList;
     },
@@ -160,6 +187,7 @@ const mutation = {
         });
     },
 
+    // Category
     setTodoCategories : function (state , payload) {
         state.todo.todoCategories = payload.todoCategories;
     },
@@ -169,6 +197,17 @@ const mutation = {
     },
     removeTodoCategory : function (state , payload) {
         state.todo.addTodoCategory = state.todo.addTodoCategory.filter(t=> t.id!==payload.id);
+    },
+    updateTodoCategory : function (state , payload) {
+        let todoCategories = [...state.todo.todoCategories];
+        state.todo.todoCategories = todoCategories.map(t=>{
+            if(t.id === payload.todoCategory.id){
+                return {
+                    ...payload.todoCategory 
+                }
+            }
+            return t;
+        })
     }
 }
 
