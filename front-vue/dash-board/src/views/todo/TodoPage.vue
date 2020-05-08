@@ -94,9 +94,6 @@ export default {
         // this.todoListDownload();
     },
     methods:{
-        getTest(){
-            console.log('test');
-        },
         todoListDownload(){
             this.isLoading = false;
 
@@ -110,14 +107,17 @@ export default {
             // console.log(folderId);
 
             /** Todo List 다운로드 */
-            this.$store.dispatch('todoListDownload',{
-                loginId : 'dkrnl1318@naver.com' ,
+            this.$store.dispatch('todoListDownload',{ loginId : 'dkrnl1318@naver.com' ,})
+                .then(data=>{
+                    console.log(data);
+                    this.isLoading = true;
+                })
+                .catch(err =>{
+                    this.isLoading = true;
             });
-
-            this.isLoading = true;
         },
         addTodoItem(e, param){
-            console.log('몇번튐 ??')
+
             let todoItem = {
                 id : -1,
                 title : param.keyWord,
@@ -125,8 +125,14 @@ export default {
                 date : date.now(),
                 todoComplete : false,
             }
-            this.$store.dispatch('todoItemUpdate', { todoItem });
-            alert.showMessage(this, 'success', '추가되었습니다.' )
+
+            this.$store.dispatch('todoItemUpdate', { todoItem })
+                .then((data)=>{
+                    alert.showMessage({ vueObject : this, type : 'success', message : '추가 되엇습니다.' });
+                    })
+                .catch(error => {
+                    alert.showMessage({ vueObject : this, type : 'error', message : error });
+            });
         },
     },
     computed : {

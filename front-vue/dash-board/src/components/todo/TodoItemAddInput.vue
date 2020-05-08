@@ -42,8 +42,14 @@ export default {
                 todoComplete : false,
             }
             this.todoItem.date = date.now();
-            this.$store.dispatch('todoItemUpdate', { todoItem : this.todoItem });
-            alert.showMessage(this, 'success', '추가되었습니다.' )
+
+            this.$store.dispatch('todoItemUpdate', { todoItem : this.todoItem })
+                .then(data =>{ 
+                    alert.showMessage({ vueObject : this, type : 'success', message : '추가 되었습니다.' });
+                })
+                .catch(error =>{
+                    alert.showMessage({ vueObject : this, type : 'error', message : error });
+            });
         },
         clearTodoItem(){
             this.todoItem = {

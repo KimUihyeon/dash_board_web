@@ -7,19 +7,36 @@ import { isNull } from "./Data";
  * @param {*} type 
  * @param {*} message 
  */
-export const showMessage = (vueObject, type, message) => {
-    let _this = vueObject;
-    _this.$message({
+export const showMessage = ({ vueObject, type, message }) => {
+    vueObject.$message({
         message,
         type
     });
 }
 
 
+/**
+ * 
+ * @param {vueObject} vueObject ,
+ * @param {String , null} type  ,
+ * @param {String , null} confirmMsg ,
+ * @param {String , null} title ,
+ * @param {String , null} okValue ,
+ * @param {String , null} cancleValue ,
+ * @param {function} okCallback ,
+ * @param {function} cancelCallback  
+ */
 export const showConfirm = (
-    vueObject , type, confirmMsg, title,
-    okCallback , cancelCallback, 
-    okValue, cancleValue) => {
+    {
+        vueObject ,
+        type  ,
+        confirmMsg ,
+        title ,
+        okValue ,
+        cancleValue ,
+        okCallback ,
+        cancelCallback  }) => 
+    {
         
 
     type = isNull(type) ? 'Warning' : type;
@@ -32,7 +49,6 @@ export const showConfirm = (
         cancelButtonText: cancleValue,
         type: type
         }).then(() => {
-
             if(isNull(okCallback)){
                 showMessage(vueObject , 'success' , '확인 되었습니다.');
             }
@@ -49,4 +65,12 @@ export const showConfirm = (
                 cancelCallback();
             }  
         });
+}
+
+
+export function logger(context){
+    let { VUE_APP_MODE } = process.env;
+    if(VUE_APP_MODE === 'DEV'){
+        console.log(context)
+    }
 }

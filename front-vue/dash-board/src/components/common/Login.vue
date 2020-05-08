@@ -89,7 +89,7 @@ export default {
             }
 
             if(!this.validation.pw || !this.validation.pw) {
-                alert.showMessage(this, 'error' , this.validation.msg );
+                alert.showMessage({ vueObject : this, type : 'error', message : this.validation.msg });
             }
             else {
                 this.$router.push('/main');

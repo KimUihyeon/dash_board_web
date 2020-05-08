@@ -127,17 +127,26 @@ export default {
         },
         deleteTodoProcess(){
 
-            let okCallback = () =>{
-                this.$store.dispatch('todoItemDelete', { todoItem : this.cloneItem});
-                alert.showMessage(this, 'success', '삭제되었습니다.');
+            let okCallback = () => {
+                this.$store.dispatch('todoItemDelete', { todoItem : this.cloneItem})
+                    .then(data=>{
+                        alert.showMessage({ vueObject : this, type : 'success', message : '삭제되었습니다' });
+                    })
+                    .catch(err=>{
+                        alert.showMessage({ vueObject : this, type : 'error', message : err });
+                });
             }
-            let cancleCallback = () => {
-                alert.showMessage(this, 'info', '취소');
-            }
-            console.log('ttttt');
 
-            alert.showConfirm(this, null, '해당 Todo를 삭제하시겠습니까?', '할일 삭제', 
-                okCallback,  cancleCallback);
+            let cancleCallback = () => {
+                alert.showMessage({ vueObject : this, type : 'info', message : '취소' });
+            }
+
+            alert.showConfirm({
+                vueObject: this,
+                confirmMsg : '해당 Todo를 삭제하시겠습니까?',
+                title : '할일 삭제',
+                okCallback : okCallback,
+                cancelCallback: cancleCallback });
         }
     }
     

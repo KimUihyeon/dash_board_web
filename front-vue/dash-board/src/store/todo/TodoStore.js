@@ -8,13 +8,14 @@
  *  mutation = { functionName(){} },
  */
 
-import { todoService } from "../../services";
+import { todoService, todoCategoryService } from "../../services";
+import { alert } from '../../util'
 
 
 const state = {
     todoList : [],
-    selectedTodoItem : {}
-
+    selectedTodoItem : {},
+    todoCategories : [],
 }
 
 const getters = {
@@ -27,38 +28,101 @@ const getters = {
 }
 
 const actions = {
-    todoListDownload : async function(context , payload){
+    todoListDownload : function(context , payload){
         /**
          * payload = { loginId , folder? }
          */
-        let todoList = await todoService.getTodoList(payload.loginId);
-        console.log('다운로드');
-        context.commit('setTodoList', { todoList });
+
+        let { loginId } = payload;
+
+        return new Promise((resolve , reject) =>{
+            todoService.getTodoList(loginId)
+                .then(data=>{
+                    alert.logger('todo List -> 다운로드');
+                    context.commit('setTodoList', { todoList : data });
+                    resolve(data);
+                })
+                .catch(error=>{
+                    reject(error);
+            });
+        })
     },
-    todoItemDelete : async function (context , payload){
+    todoItemDelete : function (context , payload){
         let { todoItem } = payload;
-        await todoService.todoItemDelete(todoItem.id);
-        context.commit('deleteTodoItem' , { todoItem });
+
+        return new Promise((resolve, reject)=>{
+            todoService.todoItemDelete(todoItem.id)
+                .then( data =>{
+                    context.commit('deleteTodoItem' , { todoItem : data });
+                    resolve(data);
+                })
+                .catch(error => {
+                    reject(error);
+            });
+
+        })
     },
-    todoItemUpdate : async function (context , payload){
+
+    todoItemUpdate : function (context , payload){
+
+        let { todoItem } = payload;
+
+        return new Promise((resolve , reject)=>{
+
+            if(todoItem.id === -1){
+                todoService.todoItemAdd('',todoItem).then(data=>{
+                    context.commit('addTotoItem', { todoItem : data }); 
+                    resolve(data);
+                })
+                .catch(error=>{
+                    reject(error);
+                });
+            }else {
+                todoService.todoItemUpdate('', todoItem ).then(data => {
+                    context.commit('updateTodoItem' , { todoItem : data }); 
+                    resolve(data);
+                })
+                .catch(error => {
+                    reject(error)
+                })
+            }
+        })
         /**
          * 신규객체 아이디 -1 처리 디비에서 한번
          * 서버에 업데이트 된 객체 받아서 자바스크립트에 추가하는 로직에 한번 .. ! 처리할것 !
          */
+        // let { todoItem } = payload;
 
-        let { todoItem } = payload;
+
+        // if(todoItem.id === -1){  // 신규
+        //     return todoService.todoItemAdd('', todoItem ).then((data)=>{
+        //         context.commit('addTotoItem', { todoItem : savedItem }); 
+        //     }).catch(e=>{
+        //         console.log('취소')
+        //         console.log(e);
+        //     }); 
+        // }
+        // else {  // 기존 업데이트
+        //     let savedItem = await todoService.todoItemUpdate('', todoItem ); // 디비에 업데이트
+        //     context.commit('updateTodoItem' , { todoItem : savedItem }); 
+        // }
+    },
 
 
-        if(todoItem.id === -1){  // 신규
-            //TODO : 서버로직 만들고 삭제하기 !
-            let savedItem = await todoService.todoItemAdd('', todoItem ); // 디비에 업데이트
-            context.commit('addTotoItem', { todoItem : savedItem }); // 디비 업데이트 이후에 객체 받아서 처리할것 ..!
-        }
-        else {  // 기존 업데이트
-            let savedItem = await todoService.todoItemUpdate('', todoItem ); // 디비에 업데이트
-            context.commit('updateTodoItem' , { todoItem : savedItem }); 
-        }
-    }
+    todoCategoryDownload : function (context , payload){
+        let { loginId } = payload;
+
+        return new Promise((resolve, reject)=>{
+            todoCategoryService.getDatas(loginId)
+                .then(data =>{
+                    context.commit('setTodoCategories' , { todoCategories : data }); 
+                    resolve(data);
+                })
+                .catch(err=>{
+                    reject(err);
+            });
+        })
+    },
 
 }
 
@@ -94,6 +158,17 @@ const mutation = {
             }
             return t;
         });
+    },
+
+    setTodoCategories : function (state , payload) {
+        state.todo.todoCategories = payload.todoCategories;
+    },
+    addTodoCategory : function (state , payload){
+        let { todoCategory } = payload;
+        state.todo.todoCategories.push(todoCategory);
+    },
+    removeTodoCategory : function (state , payload) {
+        state.todo.addTodoCategory = state.todo.addTodoCategory.filter(t=> t.id!==payload.id);
     }
 }
 
