@@ -48,7 +48,7 @@ public class TodoServiceTest {
     public void saveTest(){
         //given
         TodoDto dto = TodoDto.builder()
-                .date(LocalDateTime.now())
+                .date(LocalDateTime.now().toString())
                 .memo("memo test Logic")
                 .title("title test Logic")
                 .build();

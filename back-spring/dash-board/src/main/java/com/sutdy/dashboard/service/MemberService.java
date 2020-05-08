@@ -1,10 +1,13 @@
 package com.sutdy.dashboard.service;
 
 import com.sutdy.dashboard.domain.members.Member;
+import com.sutdy.dashboard.domain.members.MemberRepository;
 import com.sutdy.dashboard.dto.MemberDto;
 import com.sutdy.dashboard.service.common.BaseCrudService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Service;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.transaction.Transactional;
@@ -15,11 +18,12 @@ import java.util.List;
  * @author kuh
  * @since 2020.05.06
  */
+@Service
 public class MemberService extends BaseCrudService<Member, MemberDto, String> {
 
-
-    public MemberService(JpaRepository jpaRepository) {
-        super(jpaRepository);
+    @Autowired
+    public MemberService(MemberRepository memberRepository) {
+        super(memberRepository);
     }
 
     @Override

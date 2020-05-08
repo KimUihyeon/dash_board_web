@@ -1,5 +1,6 @@
 package com.sutdy.dashboard.controller;
 
+import com.sutdy.dashboard.domain.todo.TodoCategory;
 import com.sutdy.dashboard.dto.TodoCategoryDto;
 import com.sutdy.dashboard.dto.TodoDto;
 import com.sutdy.dashboard.service.TodoCategoryService;
@@ -46,7 +47,7 @@ public class TodoApiController {
 
 
     @PostMapping("/item")
-    public TodoDto insertTodoItem(@RequestBody TodoDto todoRequest){
+    public TodoDto insertTodoItem(@RequestBody TodoDto todoRequest) {
         TodoDto result = this.todoService.save(todoRequest);
         return result;
     }
@@ -66,8 +67,8 @@ public class TodoApiController {
 
     //////////// todoCategory
 
-    @GetMapping("/category/")
-    public List<TodoCategoryDto> getTodoCategories(String userId) {
+    @GetMapping("/categories/{userId}")
+    public List<TodoCategoryDto> getTodoCategories(@PathVariable String userId) {
         /**
          * Todo : userid = 이거 널처리 할것 .. ! 널들어오면 Access Exception
          *
@@ -75,19 +76,19 @@ public class TodoApiController {
         return this.todoCategoryService.findAll();
     }
 
-    @PatchMapping("/category")
-    public TodoCategoryDto patchTodoCategory(@RequestBody TodoCategoryDto categoryRequest) {
-        TodoCategoryDto categoryDto = null;
-
-        if (categoryRequest.getId() == null) { // Add
-            categoryDto = this.todoCategoryService.save(categoryRequest);
-        } else { // Update
-            categoryDto = this.todoCategoryService.update(categoryRequest.getId(), categoryRequest);
-        }
-
-        return categoryDto;
+    @DeleteMapping("/category/{id}")
+    public TodoCategoryDto deleteTodoCategory(@PathVariable Long id) {
+        return this.todoCategoryService.delete(id);
     }
 
-    ;
+    @PostMapping("/category")
+    public TodoCategoryDto inertTodoCategory(@RequestBody TodoCategoryDto todoCategoryDto) {
+        return this.todoCategoryService.save(todoCategoryDto);
+    }
 
+    @PatchMapping("/category/{id}")
+    public TodoCategoryDto patchTodoCategory(@PathVariable Long id,
+                                             @RequestBody TodoCategoryDto categoryRequest) {
+        return this.todoCategoryService.update(id, categoryRequest);
+    }
 }

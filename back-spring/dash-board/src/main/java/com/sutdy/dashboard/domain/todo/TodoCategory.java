@@ -51,7 +51,7 @@ public class TodoCategory {
             this.iconColor = dto.getIconColor();
         }
         if (!dto.getCDate().equals(this.cDate)) {
-            this.cDate = dto.getCDate();
+            this.cDate = LocalDateTime.parse(dto.getCDate());
         }
         if (dto.isCanModify() != this.canModify) {
             this.canModify = dto.isCanModify();

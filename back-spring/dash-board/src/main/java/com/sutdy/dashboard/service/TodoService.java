@@ -20,7 +20,7 @@ import java.util.stream.Collectors;
  * @since 2020.05.03
  */
 
-@Service
+@Service("todoService")
 public class TodoService extends BaseCrudService<Todo, TodoDto , Long> {
 
     @Autowired

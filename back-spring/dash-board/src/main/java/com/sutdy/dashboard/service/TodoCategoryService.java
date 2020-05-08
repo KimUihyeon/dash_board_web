@@ -4,12 +4,10 @@ import com.sutdy.dashboard.domain.todo.TodoCategory;
 import com.sutdy.dashboard.domain.todo.TodoCategoryRepository;
 import com.sutdy.dashboard.dto.TodoCategoryDto;
 import com.sutdy.dashboard.service.common.BaseCrudService;
-import jdk.nashorn.internal.objects.Global;
-import jdk.nashorn.internal.parser.JSONParser;
-import org.hibernate.sql.Update;
+import com.sutdy.dashboard.setting.util.AppConfig;
+import com.sutdy.dashboard.setting.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Service;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -22,6 +20,7 @@ import java.util.stream.Collectors;
  * @author kuh
  * @since 2020.05.06
  */
+
 @Service
 public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCategoryDto, Long> {
 
@@ -31,12 +30,13 @@ public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCateg
         tempData();
     }
 
-    public List<TodoCategoryDto> getDefualtCategory(){
+    public List<TodoCategoryDto> getDefaultTodoCategories(){
         List<TodoCategoryDto> defaultData = new ArrayList<>();
+
 
         defaultData.add(TodoCategoryDto.builder()
                 .canModify(false)
-                .cDate(LocalDateTime.now())
+                .cDate(Util.localDateTimeToString(LocalDateTime.now(), AppConfig.DATE_FORMAT))
                 .title("기본 디렉토리")
                 .icon("el-icon-folder-delete")
                 .iconColor("white")
@@ -47,7 +47,7 @@ public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCateg
     }
 
     private void tempData() {
-        List<TodoCategoryDto> list = getDefualtCategory();
+        List<TodoCategoryDto> list = getDefaultTodoCategories();
         list.forEach(t->{
             this.save(t);
         });

@@ -2,6 +2,8 @@ package com.sutdy.dashboard.dto;
 
 import com.sutdy.dashboard.domain.todo.Todo;
 import com.sutdy.dashboard.dto.common.AbsDtoConverter;
+import com.sutdy.dashboard.setting.util.AppConfig;
+import com.sutdy.dashboard.setting.util.Util;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -47,7 +49,7 @@ public class TodoDto extends AbsDtoConverter<Todo> {
 
         return Todo.builder()
                 .id(this.id)
-                .cDate(LocalDateTime.parse(this.date, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss")))
+                .cDate(Util.stringToLocalDateTime(this.date, AppConfig.DATE_FORMAT))
                 .complete(this.todoComplete)
                 .contents(this.memo)
                 .title(this.title)
@@ -61,7 +63,7 @@ public class TodoDto extends AbsDtoConverter<Todo> {
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.todoComplete = entity.isComplete();
-        this.date = entity.getCDate() == null ? null : entity.getCDate().toString();
+        this.date = entity.getCDate() == null ? null : Util.localDateTimeToString(entity.getCDate() , AppConfig.DATE_FORMAT);
         this.memo = entity.getContents();
         this.isImportant = entity.isImportant();
         this.toDay = entity.isToDay();
