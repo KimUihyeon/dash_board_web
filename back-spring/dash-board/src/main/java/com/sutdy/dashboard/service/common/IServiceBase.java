@@ -1,5 +1,6 @@
 package com.sutdy.dashboard.service.common;
 
+import com.sutdy.dashboard.setting.common.SearchParams;
 import org.springframework.data.domain.Page;
 
 import javax.transaction.Transactional;
@@ -29,6 +30,8 @@ public interface IServiceBase<T, ID> {
     List<T> findAll();
 
     List<T> findAllById(Iterable<Long> ids);
+
+    List<T> findAll(SearchParams params);
 
     T findById(ID pk);
 

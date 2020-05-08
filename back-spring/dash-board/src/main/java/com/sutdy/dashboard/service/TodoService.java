@@ -1,9 +1,11 @@
 package com.sutdy.dashboard.service;
 
 import com.sutdy.dashboard.domain.todo.Todo;
+import com.sutdy.dashboard.domain.todo.TodoCategory;
 import com.sutdy.dashboard.domain.todo.TodoRepository;
 import com.sutdy.dashboard.dto.TodoDto;
 import com.sutdy.dashboard.service.common.BaseCrudService;
+import com.sutdy.dashboard.setting.common.SearchParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -14,6 +16,7 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 /**
  * @author kuh
@@ -21,7 +24,7 @@ import java.util.stream.Collectors;
  */
 
 @Service("todoService")
-public class TodoService extends BaseCrudService<Todo, TodoDto , Long> {
+public class TodoService extends BaseCrudService<Todo, TodoDto, Long> {
 
     @Autowired
     public TodoService(TodoRepository todoRepository) {
@@ -30,11 +33,11 @@ public class TodoService extends BaseCrudService<Todo, TodoDto , Long> {
     }
 
 
-    public void tempData(){
+    public void tempData() {
 
         System.out.println("tempData 생성 --------------->");
 
-        for (int i =0 ;i< 10; i++) {
+        for (int i = 0; i < 10; i++) {
 
             LocalDateTime date = LocalDateTime.now();
             Todo todo = Todo.builder()
@@ -57,7 +60,7 @@ public class TodoService extends BaseCrudService<Todo, TodoDto , Long> {
     @Override
     @Transactional
     public TodoDto update(Long pk, TodoDto dto) {
-        Todo todo =  this.entityFindById(pk);
+        Todo todo = this.entityFindById(pk);
         todo.patch(dto);
         return new TodoDto(todo);
     }
@@ -80,13 +83,54 @@ public class TodoService extends BaseCrudService<Todo, TodoDto , Long> {
     public List<TodoDto> findAll() {
         return this.jpaRepository.findAll()
                 .stream()
-                .map(t-> new TodoDto(t))
+                .map(t -> new TodoDto(t))
                 .collect(Collectors.toList());
     }
 
     @Override
     public List<TodoDto> findAllById(Iterable<Long> ids) {
         return null;
+    }
+
+    @Override
+    public List<TodoDto> findAll(SearchParams params) {
+
+        if(params.getFilter() == null){
+            return this.findAll();
+        }
+
+        Stream<Todo> queryable = this.jpaRepository.findAll().stream();
+
+        switch (params.getFilter().toUpperCase()) {
+            case "TODAY": {
+                return queryable
+                        .filter(t -> t.isToDay())
+                        .map(a -> new TodoDto(a))
+                        .collect(Collectors.toList());
+            }
+            case "IMPORTANT": {
+                return queryable
+                        .filter(t -> t.isImportant())
+                        .map(a -> new TodoDto(a))
+                        .collect(Collectors.toList());
+            }
+            case "COMPLATE": {
+                return queryable
+                        .filter(t -> t.isComplete())
+                        .map(a -> new TodoDto(a))
+                        .collect(Collectors.toList());
+            }
+            case "CATEGORY": {
+                return queryable
+                        .map(a -> new TodoDto(a))
+                        .collect(Collectors.toList());
+            }
+            default:{
+                return queryable
+                        .map(a -> new TodoDto(a))
+                        .collect(Collectors.toList());
+            }
+        }
     }
 
     @Override

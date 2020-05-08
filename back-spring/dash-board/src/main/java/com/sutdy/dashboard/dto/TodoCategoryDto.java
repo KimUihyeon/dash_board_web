@@ -28,15 +28,16 @@ public class TodoCategoryDto extends AbsDtoConverter<TodoCategory> {
 
     private String title;
 
-    private String icon;
+    private String icon = "el-icon-folder";
 
     private boolean canModify;
 
-    private String iconColor;
+    private String iconColor = "white";
 
-    private String fontColor;
+    private String fontColor = "white";
 
     private String cDate;
+
 
     public TodoCategoryDto(TodoCategory entity){
         createDto(entity);

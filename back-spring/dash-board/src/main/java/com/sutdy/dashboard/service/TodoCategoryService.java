@@ -4,6 +4,7 @@ import com.sutdy.dashboard.domain.todo.TodoCategory;
 import com.sutdy.dashboard.domain.todo.TodoCategoryRepository;
 import com.sutdy.dashboard.dto.TodoCategoryDto;
 import com.sutdy.dashboard.service.common.BaseCrudService;
+import com.sutdy.dashboard.setting.common.SearchParams;
 import com.sutdy.dashboard.setting.util.AppConfig;
 import com.sutdy.dashboard.setting.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -87,6 +88,11 @@ public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCateg
     @Override
     public List<TodoCategoryDto> findAllById(Iterable<Long> ids) {
         throw new NotImplementedException();
+    }
+
+    @Override
+    public List<TodoCategoryDto> findAll(SearchParams params) {
+        return null;
     }
 
     @Override

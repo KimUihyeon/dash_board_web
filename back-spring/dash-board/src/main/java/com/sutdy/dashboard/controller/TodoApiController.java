@@ -5,10 +5,14 @@ import com.sutdy.dashboard.dto.TodoCategoryDto;
 import com.sutdy.dashboard.dto.TodoDto;
 import com.sutdy.dashboard.service.TodoCategoryService;
 import com.sutdy.dashboard.service.TodoService;
+import com.sutdy.dashboard.setting.common.SearchParams;
+import com.sutdy.dashboard.setting.util.AppConfig;
+import com.sutdy.dashboard.setting.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -30,14 +34,17 @@ public class TodoApiController {
     //////////// todoList
 
     @GetMapping("/list")
-    public List<TodoDto> getTodoList(String userId, Long categoryId) {
+    public List<TodoDto> getTodoList(String userId, String filter , Long categoryId) {
         /**
          * Todo : userid = 이거 널처리 할것 .. ! 널들어오면 Access Exception
          *
          */
-
 //        return todoService.findAll(userId, categoryId);
-        return todoService.findAll();
+
+        SearchParams params = new SearchParams();
+        params.setFilter(filter);
+        params.setId(categoryId);
+        return todoService.findAll(params);
     }
 
     @DeleteMapping("/item/{id}")
@@ -48,6 +55,7 @@ public class TodoApiController {
 
     @PostMapping("/item")
     public TodoDto insertTodoItem(@RequestBody TodoDto todoRequest) {
+        todoRequest.setDate(Util.localDateTimeToString(LocalDateTime.now() , AppConfig.DATE_FORMAT));
         TodoDto result = this.todoService.save(todoRequest);
         return result;
     }
@@ -83,6 +91,7 @@ public class TodoApiController {
 
     @PostMapping("/category")
     public TodoCategoryDto inertTodoCategory(@RequestBody TodoCategoryDto todoCategoryDto) {
+        todoCategoryDto.setCDate(Util.localDateTimeToString(LocalDateTime.now() , AppConfig.DATE_FORMAT));
         return this.todoCategoryService.save(todoCategoryDto);
     }
 

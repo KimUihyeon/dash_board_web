@@ -4,6 +4,7 @@ import com.sutdy.dashboard.domain.members.Member;
 import com.sutdy.dashboard.domain.members.MemberRepository;
 import com.sutdy.dashboard.dto.MemberDto;
 import com.sutdy.dashboard.service.common.BaseCrudService;
+import com.sutdy.dashboard.setting.common.SearchParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -57,6 +58,11 @@ public class MemberService extends BaseCrudService<Member, MemberDto, String> {
     @Override
     public List<MemberDto> findAllById(Iterable<Long> ids) {
         throw new NotImplementedException();
+    }
+
+    @Override
+    public List<MemberDto> findAll(SearchParams params) {
+        return null;
     }
 
     @Override
