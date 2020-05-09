@@ -4,6 +4,7 @@ import com.sutdy.dashboard.domain.members.Member;
 import com.sutdy.dashboard.domain.members.MemberRepository;
 import com.sutdy.dashboard.dto.MemberDto;
 import com.sutdy.dashboard.service.common.BaseCrudService;
+import com.sutdy.dashboard.service.interfacies.IAuthenticationService;
 import com.sutdy.dashboard.setting.common.SearchParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -20,7 +21,7 @@ import java.util.List;
  * @since 2020.05.06
  */
 @Service
-public class MemberService extends BaseCrudService<Member, MemberDto, String> {
+public class MemberService extends BaseCrudService<Member, MemberDto, String>{
 
     @Autowired
     public MemberService(MemberRepository memberRepository) {
@@ -68,5 +69,13 @@ public class MemberService extends BaseCrudService<Member, MemberDto, String> {
     @Override
     public MemberDto findById(String pk) {
         return this.entityFindByIdCastDto(pk);
+    }
+
+    public MemberDto authentication(String jwt) {
+        return null;
+    }
+
+    public MemberDto authentication(MemberDto member) {
+        return null;
     }
 }
