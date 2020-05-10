@@ -47,10 +47,13 @@
 
 <script>
 import { data , alert } from "../../util";
+import Axios from 'axios';
+import { loginService } from "../../services";
 
 let cookieKey = {
     loginId : process.env.VUE_APP_COOKIE_NAME_LOGIN,
-    isHistory :  process.env.VUE_APP_COOKIE_NAME_LOGIN_HISOTRY
+    isHistory :  process.env.VUE_APP_COOKIE_NAME_LOGIN_HISOTRY,
+    token :  process.env.VUE_APP_COOKIE_NAME_TOKEN
 }
 console.log(cookieKey);
 export default {
@@ -92,10 +95,24 @@ export default {
                 alert.showMessage({ vueObject : this, type : 'error', message : this.validation.msg });
             }
             else {
-                this.$router.push('/main');
+                
+                loginService.login(this.id, this.pw).then(res =>{
+                    console.log(res);
+                    let { authType , id , name , token } = res;
 
-                data.createCookie(cookieKey.isHistory,true,365);
-                data.createCookie(cookieKey.loginId,this.id,365);
+                    if(authType === 'Auth'){
+                        this.$router.push({ path : '/main '});
+                        data.createCookie(cookieKey.isHistory, true ,365);
+                        data.createCookie(cookieKey.loginId, id, 365);
+                        data.createCookie(cookieKey.token, token, 365 );
+                    }
+                    else if(authType === 'NoAuth'){
+                        alert.showMessage({ 
+                                vueObject : this ,
+                                type : 'error' , 
+                                message : '비밀번호 혹은 아이디를 확인해주세요.' });
+                    }
+                })
             }
         },
         logout(){

@@ -18,8 +18,8 @@ import java.util.Map;
  */
 public class JWT {
 
-    private final static String KEY = "rladmlgusWkdWkdaos";
-    private final static String ISS = "dash-board.com";
+    public final static String KEY = "rladmlgusWkdWkdaos";
+    public final static String ISS = "dash-board.com";
 
     public static String create(String userId, String userName, int lifeDate) {
 
@@ -66,7 +66,7 @@ public class JWT {
             Long tokenExp = Long.parseLong(payload.get("exp"));
             String tokenIss = payload.get("iss");
 
-            if (tokenExp < currentTimeStep) {
+            if (tokenExp > currentTimeStep) {
                 if (ISS.equals(tokenIss)) {
                     return AuthEnum.Auth;
                 } else {

@@ -1,4 +1,4 @@
-import { rest , date } from '../../util'
+import { rest , date , data } from '../../util'
 
 const base_url = process.env.VUE_APP_API_BASE_URL + '/v1/todo';
 
@@ -39,7 +39,11 @@ const todoItemDelete = (todoId) => {
 }
 
 const getTodoList = (userId , filter , categoryId) => {
-    return rest.get( base_url + '/list' , { userId , filter , categoryId });
+    let param = { userId , filter , categoryId };
+    console.log('token ->' , data.getCookie(process.env.VUE_APP_COOKIE_NAME_TOKEN));
+
+    let config = { headers : { Authorization : 'Bearer ' + data.getCookie(process.env.VUE_APP_COOKIE_NAME_TOKEN)}}
+    return rest.get( base_url + '/list' , param, config);
 }
 
 const getTodoItem = (todoId) => {

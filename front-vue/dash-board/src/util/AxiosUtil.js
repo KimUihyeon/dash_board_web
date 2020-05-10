@@ -8,23 +8,24 @@ import { isNull } from './Data'
 //     })
 // }
 
+
 /**
  * 
  * @param {*} url        = rest ful Url
  * @param {*} dataObject = Nullable
  */
-export function get(url, dataObject ){
+export function get(url, dataObject , config ){
 
     const apiurl = urlFactory(url, dataObject);
     /** */
-    return Axios.get(apiurl).then(res=>{
+    return Axios.get(apiurl , config ).then(res=>{
         return res.data;
     });
 }
 
 
-export function post(url, data){
-    return Axios.post(url, data).then(res=>{
+export function post(url, data , config){
+    return Axios.post(url, data , config).then(res=>{
         return res.data;
     });
 }

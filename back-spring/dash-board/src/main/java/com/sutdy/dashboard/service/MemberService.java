@@ -9,23 +9,37 @@ import com.sutdy.dashboard.setting.common.SearchParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.expression.AccessException;
 import org.springframework.stereotype.Service;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.transaction.Transactional;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * TODO : 로그인관련 서비스로 로직 세로만들기 !
+ *
  * @author kuh
  * @since 2020.05.06
  */
 @Service
-public class MemberService extends BaseCrudService<Member, MemberDto, String>{
+public class MemberService extends BaseCrudService<Member, MemberDto, String> {
 
     @Autowired
     public MemberService(MemberRepository memberRepository) {
         super(memberRepository);
+        tempDate();
+    }
+
+
+    public void tempDate() {
+
+        this.save(MemberDto.builder()
+                .id("test@naver.com")
+                .name("김의현")
+                .pw("12312321")
+                .build());
     }
 
     @Override
@@ -71,11 +85,17 @@ public class MemberService extends BaseCrudService<Member, MemberDto, String>{
         return this.entityFindByIdCastDto(pk);
     }
 
-    public MemberDto authentication(String jwt) {
-        return null;
+
+    public MemberDto findByMemberDto(MemberDto dto) {
+
+        Member member = this.jpaRepository
+                .findById(dto.getId()).orElse(null);
+
+        if (member != null) {
+            return new MemberDto(member);
+        } else {
+            return null;
+        }
     }
 
-    public MemberDto authentication(MemberDto member) {
-        return null;
-    }
 }
