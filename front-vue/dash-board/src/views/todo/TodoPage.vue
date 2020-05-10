@@ -180,7 +180,7 @@ export default {
 <style scoped>
 .folder-list-area{
     flex: 1;
-    overflow: scroll;
+    overflow: auto;
 }
 .folder-area{
     width: 35%;
@@ -206,7 +206,7 @@ export default {
 
 .todo-list-area{
     flex: 1;
-    overflow: scroll;
+    overflow: auto;
 }
 .todo-add-area ,
 .folder-add-area{

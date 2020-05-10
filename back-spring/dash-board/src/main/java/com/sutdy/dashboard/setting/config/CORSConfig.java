@@ -1,6 +1,7 @@
 package com.sutdy.dashboard.setting.config;
 
 import org.springframework.context.annotation.Configuration;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -20,6 +21,8 @@ public class CORSConfig implements WebMvcConfigurer {
     public void addCorsMappings(CorsRegistry registry){
         String localVue = "http://localhost:3000";
         registry.addMapping("/**")
+                .allowedHeaders("Authorization" , "authorization")
+                .allowedHeaders()
             .allowedOrigins(localVue)
         .allowedMethods("GET", "POST","PUT", "DELETE" , "PATCH");
     }

@@ -14,7 +14,7 @@ export const createCookie = (name, value , day ) =>{
 
     var date = new Date();
     date.setTime(date.getTime() + day*24*60*60*1000);
-
+    
     var willCookie = `${name}=${value}; expires=${date.toUTCString()}`;
 
     document.cookie = willCookie;
@@ -22,7 +22,6 @@ export const createCookie = (name, value , day ) =>{
 
 export const getCookie = (name) =>{
     var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
-    console.log(document.cookie)
     return value? value[2] : null;;
 }
 

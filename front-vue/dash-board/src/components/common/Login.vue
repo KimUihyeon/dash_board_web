@@ -11,6 +11,13 @@
                 <div class="user-name" v-show="isLoginCookie" >Kim Uihyeon</div>
                 <!-- <el-input placeholder="Please input" v-model="pw"></el-input> -->
                 <div class="inputBox" v-show="!isLoginCookie">
+                    <el-input 
+                        type="text" 
+                        size="small"
+                        @keydown.enter.native='keyPress_handle' 
+                        placeholder="ID" 
+                        v-model="id"></el-input>
+<!-- 
                     <input 
                         class="user-password user-login-input" 
                         type="text" 
@@ -18,9 +25,17 @@
                         @keydown.enter='keyPress_handle' 
                         placeholder="ID" 
                         v-model="id" 
-                    />
+                    /> -->
                 </div>
                 <div class="inputBox" >
+                    
+                    <el-input 
+                        type="password" 
+                        @keydown.enter.native='keyPress_handle'
+                        placeholder="pw" 
+                        v-model="pw"
+                        size="small"></el-input>
+<!-- 
                     <input 
                         class="user-password user-login-input"
                         v-bind:class="validation.pw ? '' : 'not-valide' "
@@ -28,7 +43,7 @@
                         @keydown.enter='keyPress_handle'
                         placeholder="pw" 
                         v-model="pw" 
-                    />
+                    /> -->
                 </div>
                 <div v-show="isLoginCookie">
                     <span class="login_help" @click="logout">logout</span>

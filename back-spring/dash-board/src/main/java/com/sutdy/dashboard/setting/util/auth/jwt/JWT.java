@@ -2,11 +2,19 @@ package com.sutdy.dashboard.setting.util.auth.jwt;
 
 import com.sutdy.dashboard.domain.members.Member;
 import com.sutdy.dashboard.dto.MemberDto;
+import com.sutdy.dashboard.service.MemberService;
+import com.sutdy.dashboard.setting.util.AppConfig;
 import com.sutdy.dashboard.setting.util.auth.AuthEnum;
+import com.sutdy.dashboard.setting.util.auth.AuthResponse;
 import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
+import org.springframework.beans.factory.annotation.Autowired;
 
+import java.security.Timestamp;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -17,6 +25,9 @@ import java.util.Map;
  * @since 2020.05.10
  */
 public class JWT {
+
+    @Autowired
+    private MemberService memberService;
 
     public final static String KEY = "rladmlgusWkdWkdaos";
     public final static String ISS = "dash-board.com";
@@ -40,7 +51,7 @@ public class JWT {
                 .compact();
     }
 
-    public static Long calculatorLifeTime(int lifeDate){
+    private static Long calculatorLifeTime(int lifeDate){
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         cal.add(Calendar.DATE, lifeDate);
@@ -54,30 +65,48 @@ public class JWT {
     }
 
 
-    public static AuthEnum authJwt(String jwt) {
+    public static AuthResponse authJwt(String jwt) {
         Long currentTimeStep = new Date().getTime();
 
         try {
-            Jwt claims = Jwts.parser().setSigningKey(KEY)
+            Jwt claims = Jwts.parser()
+                    .setSigningKey(KEY)
                     .parse(jwt);
+
             Map<String, String> payload = (Map<String, String>) claims.getBody(); // claim
-            claims.getHeader(); // header
 
             Long tokenExp = Long.parseLong(payload.get("exp"));
-            String tokenIss = payload.get("iss");
+
+            AuthResponse response = AuthResponse.builder()
+                    .token(jwt)
+                    .IIS(ISS)
+                    .id(payload.get("userId"))
+                    .name(payload.get("userName"))
+                    .authEndDate(
+                            new SimpleDateFormat(AppConfig.DATE_FORMAT)
+                            .format(
+                                    new Date(tokenExp)
+                            )
+                    )
+                    .build();
 
             if (tokenExp > currentTimeStep) {
-                if (ISS.equals(tokenIss)) {
-                    return AuthEnum.Auth;
+                if (ISS.equals(payload.get("iss")) ) {
+                    response.setAuthType(AuthEnum.Auth);
+                    return response;
                 } else {
-                    return AuthEnum.WrongEncounter;
+                    response.setAuthType(AuthEnum.WrongEncounter);
+                    return response;
                 }
             } else {
-                return AuthEnum.TimeOut;
+                response.setAuthType(AuthEnum.TimeOut);
+                return response;
             }
 
         } catch (Exception e) {
-            return AuthEnum.WrongEncounter;
+            return AuthResponse.builder()
+                    .authType(AuthEnum.WrongEncounter)
+                    .build();
         }
     }
 }

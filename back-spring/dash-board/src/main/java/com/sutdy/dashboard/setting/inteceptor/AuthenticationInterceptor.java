@@ -4,6 +4,7 @@ import com.sutdy.dashboard.dto.MemberDto;
 import com.sutdy.dashboard.service.MemberService;
 import com.sutdy.dashboard.service.interfacies.IAuthenticationService;
 import com.sutdy.dashboard.setting.util.auth.AuthEnum;
+import com.sutdy.dashboard.setting.util.auth.AuthResponse;
 import com.sutdy.dashboard.setting.util.auth.jwt.JWT;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -32,23 +33,44 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
         Enumeration datas = request.getHeaderNames();
 
-        while (datas.hasMoreElements()){
+        while (datas.hasMoreElements()) {
             String key = datas.nextElement().toString();
             String value = request.getHeader(key);
             logger.info("key : " + key + "\t||\tvalue: " + value);
         }
 
-        String data = request.getHeader(HttpHeaders.AUTHORIZATION);
-        String jwt = request.getHeader("authorization");
-//        if(jwt == null){
-//            String jwtStr = jwt.toString();
-//            System.out.println(jwtStr);
-//            AuthEnum authEnum = JWT.authJwt(jwtStr);
-//        }
+        String jwt = request.getHeader(HttpHeaders.AUTHORIZATION);
+        String jwt2 = request.getHeader("authorization");
+        try {
+            AuthResponse jwtState = JWT.authJwt(jwt);
 
-//        MemberDto dto = memberService.authentication("");
-//        request.setAttribute("member", dto);
-//        response.sendError(401);
+            switch (jwtState.getAuthType()) {
+                case Auth: {
+                    try {
+                        MemberDto findMember = memberService.findById(jwtState.getId());
+
+                        if (findMember != null) {
+                            return true;
+                        } else {
+                            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                            return false;
+                        }
+                    } catch (Exception e) {
+                        response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                        return false;
+                    }
+                }
+                case WrongEncounter:
+                case NoAuth:
+                case TimeOut: {
+                    response.sendError(HttpServletResponse.SC_FORBIDDEN);
+                    return false;
+                }
+            }
+        } catch (Exception e) {
+            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+        }
+
         return super.preHandle(request, response, handler);
     }
 }

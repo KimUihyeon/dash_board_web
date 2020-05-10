@@ -39,7 +39,7 @@ public class LoginController {
             authResponse = AuthResponse.builder()
                     .id(findMember.getId())
                     .name(findMember.getName())
-                    .authType(JWT.authJwt(jwt))
+                    .authType(AuthEnum.Auth)
                     .IIS(JWT.ISS)
                     .token(jwt)
                     .build();

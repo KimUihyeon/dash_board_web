@@ -7,16 +7,17 @@
             <div>
                 <div class="todo" v-bind:class="isHover ? 'todo-hover' : ''">
                     <div  class="todo-left">
+                                            
                         <span class="chk-span" @click="changed_handle">
                             <i 
-                                v-if="cloneItem.todoComplete"
+                                v-show="cloneItem.todoComplete"
                                 class="el-icon-check todo-center"
                                 style="font-size:24px"></i>
-                            
                             <i 
-                                v-else
+                                v-show="cloneItem.todoComplete === false"
                                 class="el-icon-minus todo-center"
                                 style="font-size:24px"></i>
+                            
 
                         </span>
                         <span class="todo-title-box" @click="click_handle('toggleMemo')">
