@@ -22,12 +22,10 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
-        //MemberDto dto = memberService.authentication("");
 
-        //request.setAttribute("member", dto);
-
-        response.sendError(401);
-        return false;
-//        return super.preHandle(request, response, handler);
+//        MemberDto dto = memberService.authentication("");
+//        request.setAttribute("member", dto);
+//        response.sendError(401);
+        return super.preHandle(request, response, handler);
     }
 }
