@@ -1,9 +1,7 @@
 package com.sutdy.dashboard.setting.util.auth.jwt;
 
-import com.sutdy.dashboard.domain.members.Member;
-import com.sutdy.dashboard.dto.MemberDto;
 import com.sutdy.dashboard.service.MemberService;
-import com.sutdy.dashboard.setting.util.AppConfig;
+import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.auth.AuthEnum;
 import com.sutdy.dashboard.setting.util.auth.AuthResponse;
 import io.jsonwebtoken.Jwt;
@@ -11,10 +9,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 
-import java.security.Timestamp;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.time.format.DateTimeFormatter;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -83,7 +78,7 @@ public class JWT {
                     .id(payload.get("userId"))
                     .name(payload.get("userName"))
                     .authEndDate(
-                            new SimpleDateFormat(AppConfig.DATE_FORMAT)
+                            new SimpleDateFormat(ApplicationStringConfig.DATE_FORMAT)
                             .format(
                                     new Date(tokenExp)
                             )

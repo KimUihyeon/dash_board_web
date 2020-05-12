@@ -41,8 +41,6 @@ const actions = {
 
         let { loginId , filter , id } = payload;
 
-        console.log(filter);
-
         return new Promise((resolve , reject) =>{
             todoService.getTodoList(loginId , filter , id)
                 .then(data=>{
@@ -55,6 +53,7 @@ const actions = {
             });
         })
     },
+    
     todoItemDelete : function (context , payload){
         let { todoItem } = payload;
 
@@ -72,13 +71,13 @@ const actions = {
     },
 
     todoItemUpdate : function (context , payload){
-
-        let { todoItem } = payload;
+        let { todoItem , categoryId } = payload;
 
         return new Promise((resolve , reject)=>{
-
+            
             if(todoItem.id === -1){
-                todoService.todoItemAdd('',todoItem).then(data=>{
+                // TODO : 해더에 JWT 던져서 만들어 컨트롤러에 주는식으로 변경 ..!
+                todoService.todoItemAdd('dkrnl1318@naver.com', todoItem , categoryId).then(data=>{
                     context.commit('addTotoItem', { todoItem : data }); 
                     resolve(data);
                 })
@@ -86,6 +85,7 @@ const actions = {
                     reject(error);
                 });
             }else {
+                // TODO : 해더에 JWT 던져서 만들어 컨트롤러에 주는식으로 변경 ..!
                 todoService.todoItemUpdate('', todoItem ).then(data => {
                     context.commit('updateTodoItem' , { todoItem : data }); 
                     resolve(data);
@@ -186,7 +186,7 @@ const mutation = {
             return t;
         });
     },
-
+    
     // Category
     setTodoCategories : function (state , payload) {
         state.todo.todoCategories = payload.todoCategories;

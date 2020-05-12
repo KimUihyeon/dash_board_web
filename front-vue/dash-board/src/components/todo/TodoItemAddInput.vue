@@ -33,8 +33,10 @@ export default {
             this.addTodoItem();
         },
         addTodoItem(){
+            let categoryId = this.$store.state.todo.selectedCategory;
+            console.log(categoryId);
 
-            this.$store.dispatch('todoItemUpdate', { id : -1, title : this.title })
+            this.$store.dispatch('todoItemUpdate', { id : -1, title : this.title , categoryId})
                 .then(data =>{ 
                     alert.showMessage({ vueObject : this, type : 'success', message : '추가 되었습니다.' });
                     this.title = '';

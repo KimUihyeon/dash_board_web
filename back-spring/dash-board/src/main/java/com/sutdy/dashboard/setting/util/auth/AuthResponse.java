@@ -1,13 +1,10 @@
 package com.sutdy.dashboard.setting.util.auth;
 
-import com.sutdy.dashboard.dto.MemberDto;
-import com.sutdy.dashboard.setting.util.AppConfig;
+import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
-import lombok.NoArgsConstructor;
 
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -35,7 +32,7 @@ public class AuthResponse {
     private String IIS;
 
     public AuthResponse(){
-        this.authDate = new SimpleDateFormat(AppConfig.DATE_FORMAT).format(new Date());
+        this.authDate = new SimpleDateFormat(ApplicationStringConfig.DATE_FORMAT).format(new Date());
     }
 
 }

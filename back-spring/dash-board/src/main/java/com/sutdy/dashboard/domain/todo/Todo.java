@@ -1,10 +1,7 @@
 package com.sutdy.dashboard.domain.todo;
 
 import com.sutdy.dashboard.dto.TodoDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -37,6 +34,11 @@ public class Todo {
     private boolean toDay; // 오늘 할일
 
     private boolean isImportant; // 중요
+
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "categoryId")
+    private TodoCategory todoCategory;
 
 
     public void patch(TodoDto dto) {

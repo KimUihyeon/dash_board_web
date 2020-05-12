@@ -2,16 +2,12 @@ package com.sutdy.dashboard.dto;
 
 import com.sutdy.dashboard.domain.todo.Todo;
 import com.sutdy.dashboard.dto.common.AbsDtoConverter;
-import com.sutdy.dashboard.setting.util.AppConfig;
+import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.Util;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.springframework.format.annotation.DateTimeFormat;
-
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 
 /**
  * @author kuh
@@ -38,6 +34,11 @@ public class TodoDto extends AbsDtoConverter<Todo> {
 
     private boolean isImportant; // 중요
 
+
+    private Long categoryId;
+
+    private String categoryName;
+
     public TodoDto(Todo entity) {
         this.createDto(entity);
     }
@@ -45,11 +46,9 @@ public class TodoDto extends AbsDtoConverter<Todo> {
     @Override
     public Todo toEntity() {
 
-
-
         return Todo.builder()
                 .id(this.id)
-                .cDate(Util.stringToLocalDateTime(this.date, AppConfig.DATE_FORMAT))
+                .cDate(Util.stringToLocalDateTime(this.date, ApplicationStringConfig.DATE_FORMAT))
                 .complete(this.todoComplete)
                 .contents(this.memo)
                 .title(this.title)
@@ -63,10 +62,12 @@ public class TodoDto extends AbsDtoConverter<Todo> {
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.todoComplete = entity.isComplete();
-        this.date = entity.getCDate() == null ? null : Util.localDateTimeToString(entity.getCDate() , AppConfig.DATE_FORMAT);
+        this.date = entity.getCDate() == null ? null : Util.localDateTimeToString(entity.getCDate() , ApplicationStringConfig.DATE_FORMAT);
         this.memo = entity.getContents();
         this.isImportant = entity.isImportant();
         this.toDay = entity.isToDay();
+        this.categoryName = entity.getTodoCategory() == null ? null : entity.getTodoCategory().getTitle();
+        this.categoryId = entity.getTodoCategory() == null ? null : entity.getTodoCategory().getId();
     }
 
     @Override

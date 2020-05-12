@@ -86,7 +86,8 @@ export default {
     data() {
         return {
             isLoading : true,
-            title : '할일 리스트'
+            title : '할일 리스트',
+            selectedCategory : '',
         }
     },
     mounted(){
@@ -97,6 +98,8 @@ export default {
     },
     beforeRouteUpdate(to, from, next){
         const { type , id } = to.query;
+        this.selectedCategory = id;
+
         console.log([...this.getTodoCategories , ...this.getFolders1]
                         .filter(t=> t.id === id));
     
@@ -138,7 +141,7 @@ export default {
                 title : param.keyWord,
             }
 
-            this.$store.dispatch('todoItemUpdate', { todoItem })
+            this.$store.dispatch('todoItemUpdate', { todoItem , categoryId : this.selectedCategory })
                 .then((data)=>{
                     alert.showMessage({ vueObject : this, type : 'success', message : '추가 되엇습니다.' });
                 })
