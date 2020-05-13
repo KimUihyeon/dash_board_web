@@ -13,18 +13,19 @@ import { alert } from '../../util'
 
 
 const state = {
-    todoList : [],
+    todo_list : [],
     selectedTodoItem : {},
-    todoCategories : [],
+    todo_categories : [],
 }
+
 
 const getters = {
     getTodoList : function(state){
-        return state.todo.todoList;
+        return state.todo.todo_list;
     },
     getTodoCategories : function(state){
 
-        return state.todo.todoCategories.map(t=>{
+        return state.todo.todo_categories.map(t=>{
             return {
                 ...t,
                 param : 'category'
@@ -33,19 +34,21 @@ const getters = {
     }
 }
 
-const actions = {
-    todoListDownload : function(context , payload){
-        /**
-         * payload = { loginId , type? }
-         */
 
+const actions = {
+    /**
+     * 
+     * @param {*} context 
+     * @param {*} payload  = { loginId , type? }
+     */
+    fetch_todo_list : function(context , payload){
         let { loginId , filter , id } = payload;
 
         return new Promise((resolve , reject) =>{
             todoService.getTodoList(loginId , filter , id)
                 .then(data=>{
                     alert.logger('todo List -> 다운로드');
-                    context.commit('setTodoList', { todoList : data });
+                    context.commit('SET_TODO_LIST', { todoList : data });
                     resolve(data);
                 })
                 .catch(error=>{
@@ -53,14 +56,19 @@ const actions = {
             });
         })
     },
-    
-    todoItemDelete : function (context , payload){
+
+    /**
+     * 
+     * @param {*} context 
+     * @param {*} payload  = { loginId, todoItem }
+     */
+    remove_todo : function (context , payload){
         let { todoItem } = payload;
 
         return new Promise((resolve, reject)=>{
             todoService.todoItemDelete(todoItem.id)
                 .then( data =>{
-                    context.commit('deleteTodoItem' , { todoItem : data });
+                    context.commit('REMOVE_TODO' , { todoItem : data });
                     resolve(data);
                 })
                 .catch(error => {
@@ -69,8 +77,7 @@ const actions = {
 
         })
     },
-
-    todoItemUpdate : function (context , payload){
+    patch_todo : function (context , payload){
         let { todoItem , categoryId } = payload;
 
         return new Promise((resolve , reject)=>{
@@ -78,7 +85,7 @@ const actions = {
             if(todoItem.id === -1){
                 // TODO : 해더에 JWT 던져서 만들어 컨트롤러에 주는식으로 변경 ..!
                 todoService.todoItemAdd('dkrnl1318@naver.com', todoItem , categoryId).then(data=>{
-                    context.commit('addTotoItem', { todoItem : data }); 
+                    context.commit('ADD_TODO', { todoItem : data }); 
                     resolve(data);
                 })
                 .catch(error=>{
@@ -87,7 +94,7 @@ const actions = {
             }else {
                 // TODO : 해더에 JWT 던져서 만들어 컨트롤러에 주는식으로 변경 ..!
                 todoService.todoItemUpdate('', todoItem ).then(data => {
-                    context.commit('updateTodoItem' , { todoItem : data }); 
+                    context.commit('PATCH_TODO' , { todoItem : data }); 
                     resolve(data);
                 })
                 .catch(error => {
@@ -97,14 +104,13 @@ const actions = {
         })
     },
 
-
-    todoCategoryDownload : function (context , payload){
+    fetch_todo_categories: function (context , payload){
         let { loginId } = payload;
 
         return new Promise((resolve, reject)=>{
             todoCategoryService.getDatas(loginId)
                 .then(data =>{
-                    context.commit('setTodoCategories' , { todoCategories : data }); 
+                    context.commit('SET_TODO_CATEGORIES' , { todoCategories : data }); 
                     resolve(data);
                 })
                 .catch(err=>{
@@ -112,7 +118,8 @@ const actions = {
             });
         })
     },
-    todoCategoryUpdate : function (context , payload){
+
+    patch_todo_category : function (context , payload){
         let { loginId , todoCategory } = payload;
 
         return new Promise((resolve , reject)=>{
@@ -120,7 +127,7 @@ const actions = {
             if(todoCategory.id === -1){ // 신규
 
                 todoCategoryService.addItem(loginId, todoCategory).then(data =>{
-                    context.commit('addTodoCategory', { todoCategory : data })
+                    context.commit('ADD_TODO_CATEGORY', { todoCategory : data })
                     resolve(data);
                 }).catch(err=>{
                     reject(err);
@@ -129,7 +136,7 @@ const actions = {
 
             else { // 수정
                 todoCategoryService.modifyItem(loginId, todoCategory).then(data =>{
-                    context.commit('updateTodoCategory', { todoCategory : data })
+                    context.commit('PATCH_TODO_CATEGORY', { todoCategory : data })
                     resolve(data);
                 }).catch(err=>{
                     reject(err);
@@ -138,12 +145,12 @@ const actions = {
         });
     },
 
-    todoCategoryRemove : function (context, payload) {
+    remove_todo_category : function (context, payload) {
         let { loginId , todoCategory } = payload;
 
         return new Promise((resolve , reject)=>{
             todoCategoryService.deleteItem( loginId , todoCategory.id ).then(data=>{
-                context.commit('removeTodoCategory',{ id : data.id});
+                context.commit('REMOVE_TODO_CATEGORY',{ id : data.id});
                 resolve(data);
             }).catch(err=>{
                 reject(err);
@@ -154,33 +161,26 @@ const actions = {
 
 const mutation = {
     /// todo Items
-    setTodoList : function(state ,payload){
-        state.todo.todoList = payload.todoList;
+    /// todo Items
+    /// todo Items
+    SET_TODO_LIST : function(state ,payload){
+        state.todo.todo_list = payload.todoList;
     },
-    deleteTodoItem : function (state, payload){
-
-        let todoList = [ ... state.todo.todoList];
-
-        state.todo.todoList = todoList.filter(t=>{
-            if(t.id === payload.todoItem.id){
-                return false;
-            }
-            else {
-                return true;
-            }
-        });
-    },
-    addTotoItem : function(state , payload){
+    REMOVE_TODO : function (state, payload){
         let { todoItem } = payload;
-        state.todo.todoList.push(todoItem);
+        state.todo.todo_list = state.todo.todo_list
+                                .filter(t=> t.id !== todoItem.id);
     },
-    updateTodoItem : function(state , payload){
-
-        let todoList = [ ... state.todo.todoList];
-        state.todo.todoList = todoList.map(t=> {
-            if( t.id === payload.todoItem.id ){
+    ADD_TODO : function(state , payload){
+        let { todoItem } = payload;
+        state.todo.todo_list.push(todoItem);
+    },
+    PATCH_TODO : function(state , payload){
+        let { todoItem } = payload;
+        state.todo.todo_list = state.todo.todo_list.map(t=> {
+            if( t.id === todoItem.id ){
                 return {
-                    ...payload.todoItem,
+                    ...todoItem,
                 }
             }
             return t;
@@ -188,22 +188,26 @@ const mutation = {
     },
     
     // Category
-    setTodoCategories : function (state , payload) {
-        state.todo.todoCategories = payload.todoCategories;
+    // Category
+    // Category
+    SET_TODO_CATEGORIES : function (state , payload) {
+        state.todo.todo_categories = payload.todoCategories;
     },
-    addTodoCategory : function (state , payload){
+    ADD_TODO_CATEGORY : function (state , payload){
         let { todoCategory } = payload;
-        state.todo.todoCategories.push(todoCategory);
+        state.todo.todo_categories.push(todoCategory);
     },
-    removeTodoCategory : function (state , payload) {
-        state.todo.addTodoCategory = state.todo.addTodoCategory.filter(t=> t.id!==payload.id);
+    REMOVE_TODO_CATEGORY: function (state , payload) {
+        let { id } = payload;
+        state.todo.todo_categories = state.todo.todo_categories
+                                        .filter(t=> t.id!== id);
     },
-    updateTodoCategory : function (state , payload) {
-        let todoCategories = [...state.todo.todoCategories];
-        state.todo.todoCategories = todoCategories.map(t=>{
-            if(t.id === payload.todoCategory.id){
+    PATCH_TODO_CATEGORY : function (state , payload) {
+        let { todoCategory } = payload;
+        state.todo.todo_categories = state.todo.todo_categories.map(t=>{
+            if(t.id === todoCategory.id){
                 return {
-                    ...payload.todoCategory 
+                    ...todoCategory
                 }
             }
             return t;

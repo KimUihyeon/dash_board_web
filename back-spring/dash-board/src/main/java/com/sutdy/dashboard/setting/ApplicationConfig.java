@@ -1,6 +1,5 @@
 package com.sutdy.dashboard.setting;
 
-import com.sun.tools.internal.ws.wsdl.document.http.HTTPOperation;
 import com.sutdy.dashboard.setting.inteceptor.AuthenticationInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

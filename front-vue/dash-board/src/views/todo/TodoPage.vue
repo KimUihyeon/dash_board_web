@@ -32,7 +32,7 @@
             </div>
             <div class="todo-area">
                 <div>
-                    <h1>{{title}}</h1>
+                    <h1>{{selectedCategory.title}}</h1>
                 </div>
                 <div class="todo-list-area">
                     <TodoList 
@@ -86,28 +86,21 @@ export default {
     data() {
         return {
             isLoading : true,
-            title : '할일 리스트',
-            selectedCategory : '',
+            selectedCategory : { title : ''},
         }
     },
     mounted(){
         this.todoListDownload(null);
-        this.$store.dispatch('todoCategoryDownload', {loginId : 'dkrnl1318@naver.com'});
+        this.$store.dispatch('fetch_todo_categories', {loginId : 'dkrnl1318@naver.com'});
 
         this.title = this.getFolders1[0].title;
     },
     beforeRouteUpdate(to, from, next){
         const { type , id } = to.query;
-        this.selectedCategory = id;
+        this.selectedCategory = [...this.getTodoCategories ,
+                                 ...this.getFolders1]
+                        .filter(t=> t.id === id)[0];
 
-        console.log([...this.getTodoCategories , ...this.getFolders1]
-                        .filter(t=> t.id === id));
-    
-        this.title = [...this.getTodoCategories , ...this.getFolders1]
-                        .filter(t=> t.id === id)[0].title;
-
-
-        console.log(id);
         this.todoListDownload(type , id);
     },
     methods:{
@@ -119,19 +112,17 @@ export default {
             //     filter : ''
             // };
 
-            console.log(filter);
-
             /** Todo List 다운로드 */
-            this.$store.dispatch('todoListDownload',{ 
-                loginId : 'dkrnl1318@naver.com',
-                filter,
-                id })
-                .then(data=>{
-                    console.log(data);
+            let param = {  
+                loginId : 'dkrnl1318@naver.com', filter, id 
+            };
+
+            this.$store.dispatch('fetch_todo_list', param)
+                .then( data => {
+                    // console.log(data);
                     this.isLoading = true;
                 })
-                .catch(err =>{
-                    this.isLoading = true;
+                .catch(err =>{ this.isLoading = true; 
             });
         },
         addTodoItem(e, param){
@@ -141,7 +132,7 @@ export default {
                 title : param.keyWord,
             }
 
-            this.$store.dispatch('todoItemUpdate', { todoItem , categoryId : this.selectedCategory })
+            this.$store.dispatch('patch_todo', { todoItem , categoryId : this.selectedCategory })
                 .then((data)=>{
                     alert.showMessage({ vueObject : this, type : 'success', message : '추가 되엇습니다.' });
                 })
@@ -155,7 +146,7 @@ export default {
                 title : param.keyWord
             }
 
-            this.$store.dispatch('todoCategoryUpdate' , { 
+            this.$store.dispatch('patch_todo_category' , { 
                     loginId : 'dkrnl1318@naver.com',
                     todoCategory 
                 }).then(data=>{
@@ -163,7 +154,12 @@ export default {
                 }).catch(err=>{
                     alert.showMessage({ vueObject : this, type : 'error', message : err });
             })
-
+        },
+        cussessAlert(data){
+            alert.showMessage({ vueObject : this, type : 'success', message : '추가 되엇습니다.' });
+        },
+        errorAlert(error){
+            alert.showMessage({ vueObject : this, type : 'success', message : '추가 되엇습니다.' });
         }
     },
     computed : {

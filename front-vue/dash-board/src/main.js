@@ -15,7 +15,7 @@ import vuetify from './plugins/vuetify';
 dotenv.config()
 
 Vue.config.productionTip = false
-
+Vue.config.devtools = true
 
 Vue.use(ElementUI);
 
