@@ -1,5 +1,6 @@
 package com.sutdy.dashboard.controller;
 
+import com.sun.deploy.net.HttpResponse;
 import com.sutdy.dashboard.domain.todo.TodoCategory;
 import com.sutdy.dashboard.dto.TodoCategoryDto;
 import com.sutdy.dashboard.dto.TodoDto;
@@ -9,8 +10,11 @@ import com.sutdy.dashboard.setting.common.SearchParams;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.Util;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -33,13 +37,17 @@ public class TodoApiController {
     //////////// todoList
 
     @GetMapping("/list")
-    public List<TodoDto> getTodoList(String userId, String filter , Long categoryId) {
+    public List<TodoDto> getTodoList(String userId, String filter, Long categoryId,
+                                     HttpServletResponse response, PagedResourcesAssembler assembler) throws IOException {
         /**
          * Todo : userid = 이거 널처리 할것 .. ! 널들어오면 Access Exception
          *
          */
 //        return todoService.findAll(userId, categoryId);
-
+        if (userId.isEmpty()) {
+            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+        }
+        
         SearchParams params = new SearchParams();
         params.setFilter(filter);
         params.setId(categoryId);
@@ -54,7 +62,7 @@ public class TodoApiController {
 
     @PostMapping("/item")
     public TodoDto insertTodoItem(@RequestBody TodoDto todoRequest) {
-        todoRequest.setDate(Util.localDateTimeToString(LocalDateTime.now() , ApplicationStringConfig.DATE_FORMAT));
+        todoRequest.setDate(Util.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT));
         TodoDto result = this.todoService.save(todoRequest);
         return result;
     }
@@ -90,7 +98,7 @@ public class TodoApiController {
 
     @PostMapping("/category")
     public TodoCategoryDto inertTodoCategory(@RequestBody TodoCategoryDto todoCategoryDto) {
-        todoCategoryDto.setCDate(Util.localDateTimeToString(LocalDateTime.now() , ApplicationStringConfig.DATE_FORMAT));
+        todoCategoryDto.setCDate(Util.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT));
         return this.todoCategoryService.save(todoCategoryDto);
     }
 
