@@ -1,6 +1,7 @@
 package com.sutdy.dashboard.common;
 
 import com.sutdy.dashboard.setting.util.auth.AuthEnum;
+import com.sutdy.dashboard.setting.util.auth.AuthResponse;
 import com.sutdy.dashboard.setting.util.auth.jwt.JWT;
 import io.jsonwebtoken.Jwt;
 import org.junit.Assert;
@@ -47,10 +48,10 @@ public class JWTTest {
 
         // when
 
-        AuthEnum result = JWT.authJwt(jwt);
+        AuthResponse result = JWT.authJwt(jwt);
 
         // then
-        Assert.assertTrue(result == AuthEnum.Auth);
+        Assert.assertTrue(result.getAuthType() == AuthEnum.Auth);
     }
 
 }

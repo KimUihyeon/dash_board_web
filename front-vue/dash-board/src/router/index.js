@@ -6,16 +6,16 @@ import TestPage from '../views/TestPage.vue'
 import TodoPage from '../views/todo/TodoPage.vue'
 import { data, rest, error } from '../util';
 
-const base_url = process.env.VUE_APP_API_BASE_URL + '/v1/common';
-
 
 const authCheck = () => (to, from, next) => {
   let userId = data.getCookie(process.env.VUE_APP_COOKIE_NAME_LOGIN);
 
+  let authApi = process.env.VUE_APP_API_BASE_URL + '/v1/auth';
+
   if (!data.isNull(userId)) {
     let token = data.getCookie(process.env.VUE_APP_COOKIE_NAME_TOKEN);
 
-    rest.post(base_url + '/auth', { token }).then(({authType}) => {
+    rest.post( authApi , { token }).then(({authType}) => {
       if (authType === 'Auth') { // 인증완료
         return next();
       }
@@ -81,9 +81,9 @@ const routes = [
 ]
 
 const router = new VueRouter({
-  mode: 'history',
-  base: process.env.BASE_URL,
-  routes
+    mode: 'history',
+    base: process.env.BASE_URL,
+    routes
 })
 
 export default router

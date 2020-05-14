@@ -34,12 +34,16 @@
                 </div>
 
                 <div v-show="!isLoginCookie">
-                    <span class="login_help">signup</span>
+                    <span class="login_help" @click="showSignupModal">signup</span>
                     <span class="login_help"> | </span>
                     <span class="login_help">find ID</span>
                 </div>
             </div>
         </div>
+        <Signup
+            :submitHandle="()=>{}"
+            :showModal='showModal'
+        />
     </div>
 </template>
 
@@ -47,11 +51,17 @@
 <script>
 import { data , alert } from "../../util";
 import Axios from 'axios';
-import { loginService } from "../../services";
+import Signup from './Signup';
+import { accountService } from "../../services";
 
+const name = 'Login';
+const components = {
+    Signup,
+}
 
 export default {
-    name : 'Login',
+    name,
+    components,
     data(){
         return {
             pw : '',
@@ -62,7 +72,8 @@ export default {
                 pw : false,
                 id : false,
                 msg : ''
-            }
+            },
+            showModal : false,
         }
     },
     mounted(){
@@ -118,7 +129,15 @@ export default {
             this.$store.dispatch('app_logout').then(d=>{
                 this.init();
             })
-        }
+        },
+        showSignupModal (){
+            this.showModal = false;
+             setTimeout(()=>{
+                this.showModal = true
+            }, 1); 
+        },
+        signupModal(){
+        },
     },
     watch : {
         pw(val, olbVal){

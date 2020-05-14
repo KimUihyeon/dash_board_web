@@ -1,5 +1,5 @@
 
-import { loginService } from '../../services'
+import { accountService } from '../../services'
 import { data } from '../../util'
 
 const __COOKIE_PROPS_NAME_LOGIN_ID = process.env.VUE_APP_COOKIE_NAME_LOGIN;
@@ -30,7 +30,7 @@ const getters = {
 const actions = {
     app_login : function (context , {id ,pw}){
         return new Promise((resolve, reject)=>{
-            loginService.login(id, pw).then(res =>{
+            accountService.login(id, pw).then(res =>{
                 let { authType , id , token } = res
 
                 if(authType === 'Auth'){
