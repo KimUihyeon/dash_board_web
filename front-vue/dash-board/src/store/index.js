@@ -47,7 +47,7 @@ stores.forEach(store=>{
 })
 
 
-console.log(actions);
+// console.log(actions);
 
 
 if( process.env.NODE_ENV.indexOf('dev') !== -1 ){

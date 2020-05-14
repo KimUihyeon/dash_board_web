@@ -124,14 +124,14 @@ export default {
             this.cloneItem.todoComplete = !this.cloneItem.todoComplete;
 
             let todoItem = this.cloneItem;
-            this.$store.dispatch('todoItemUpdate', { todoItem }).catch(err=>{
+            this.$store.dispatch('patch_todo', { todoItem }).catch(err=>{
                 alert.showMessage({ vueObject : this , type : 'error' , message : err });
             });
         },
         deleteTodoProcess(){
 
             let okCallback = () => {
-                this.$store.dispatch('todoItemDelete', { todoItem : this.cloneItem})
+                this.$store.dispatch('remove_todo', { todoItem : this.cloneItem})
                     .then(data=>{
                         alert.showMessage({ vueObject : this, type : 'success', message : '삭제되었습니다' });
                     })

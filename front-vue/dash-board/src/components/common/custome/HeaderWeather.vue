@@ -28,6 +28,7 @@ let weatherIcon = {
     heavyRain : 'el-icon-heavy-rain',
     lightning : 'el-icon-lightning',
 }
+
 export default {
     name : 'HeaderWeather',
     data(){
@@ -54,7 +55,7 @@ export default {
         setCurrentWeather(){
             weatherService.getCurrentWeather(this.getLocation().cityId)
                 .then(data=>{
-                    console.log(data)
+                    // console.log(data)
                     this.temp = data.temp;
                 });
         },
@@ -63,7 +64,7 @@ export default {
                 .then(data=>{
                     this.maxTemp = 25.5;
                     this.minTemp = 15.7;
-                    console.log(data)
+                    // console.log(data)
                 });
         },
         seletedDetail(){

@@ -9,7 +9,7 @@
                     ></span>
                 </span>
                 <div class="user-name" v-show="isLoginCookie" >Kim Uihyeon</div>
-                <!-- <el-input placeholder="Please input" v-model="pw"></el-input> -->
+                
                 <div class="inputBox" v-show="!isLoginCookie">
                     <el-input 
                         type="text" 
@@ -17,15 +17,7 @@
                         @keydown.enter.native='keyPress_handle' 
                         placeholder="ID" 
                         v-model="id"></el-input>
-<!-- 
-                    <input 
-                        class="user-password user-login-input" 
-                        type="text" 
-                        v-bind:class="validation.id ? '' : 'not-valide' "
-                        @keydown.enter='keyPress_handle' 
-                        placeholder="ID" 
-                        v-model="id" 
-                    /> -->
+
                 </div>
                 <div class="inputBox" >
                     
@@ -35,15 +27,7 @@
                         placeholder="pw" 
                         v-model="pw"
                         size="small"></el-input>
-<!-- 
-                    <input 
-                        class="user-password user-login-input"
-                        v-bind:class="validation.pw ? '' : 'not-valide' "
-                        type="password" 
-                        @keydown.enter='keyPress_handle'
-                        placeholder="pw" 
-                        v-model="pw" 
-                    /> -->
+
                 </div>
                 <div v-show="isLoginCookie">
                     <span class="login_help" @click="logout">logout</span>
@@ -65,12 +49,7 @@ import { data , alert } from "../../util";
 import Axios from 'axios';
 import { loginService } from "../../services";
 
-let cookieKey = {
-    loginId : process.env.VUE_APP_COOKIE_NAME_LOGIN,
-    isHistory :  process.env.VUE_APP_COOKIE_NAME_LOGIN_HISOTRY,
-    token :  process.env.VUE_APP_COOKIE_NAME_TOKEN
-}
-console.log(cookieKey);
+
 export default {
     name : 'Login',
     data(){
@@ -88,14 +67,15 @@ export default {
     },
     mounted(){
         this.init();
+        console.log(this.$router)
     },
     methods : {
         init () {
 
-            let cookie = data.getCookie(cookieKey.isHistory);
-            this.id = data.getCookie(cookieKey.loginId);
+            let cookie = data.getCookie(process.env.VUE_APP_COOKIE_NAME_LOGIN_HISOTRY);
+            this.id = data.getCookie(process.env.VUE_APP_COOKIE_NAME_LOGIN);
             this.pw = '';
-            this.isLoginCookie = !data.isNull(cookie) ? Boolean(cookie) : false;
+            this.isLoginCookie = ! data.isNull(cookie) ? Boolean(cookie) : false;
         },
         keyPress_handle : function (e){
 
@@ -110,16 +90,14 @@ export default {
                 alert.showMessage({ vueObject : this, type : 'error', message : this.validation.msg });
             }
             else {
-                
-                loginService.login(this.id, this.pw).then(res =>{
-                    console.log(res);
-                    let { authType , id , name , token } = res;
 
+                this.$store.dispatch('app_login',{ id : this.id , pw : this.pw})
+                .then( res =>{
+                    let { authType} = res;
                     if(authType === 'Auth'){
-                        this.$router.push({ path : '/main '});
-                        data.createCookie(cookieKey.isHistory, true ,365);
-                        data.createCookie(cookieKey.loginId, id, 365);
-                        data.createCookie(cookieKey.token, token, 365 );
+                        setTimeout(()=>{
+                            this.$router.push({ path : '/todo'})
+                        },50)
                     }
                     else if(authType === 'NoAuth'){
                         alert.showMessage({ 
@@ -128,13 +106,18 @@ export default {
                                 message : '비밀번호 혹은 아이디를 확인해주세요.' });
                     }
                 })
+                .catch( err => {
+                    alert.showMessage({ 
+                            vueObject : this ,
+                            type : 'error' , 
+                            message : err });
+                })
             }
         },
         logout(){
-            data.removeCookie(cookieKey.isHistory);
-            data.removeCookie(cookieKey.loginId);
-
-            this.init();
+            this.$store.dispatch('app_logout').then(d=>{
+                this.init();
+            })
         }
     },
     watch : {

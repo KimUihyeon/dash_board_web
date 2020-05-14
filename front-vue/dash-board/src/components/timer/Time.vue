@@ -17,7 +17,7 @@ import { mapGetters } from 'vuex'
 export default {
     name : 'Time',
     mounted() {
-        this.$store.dispatch('synchronizDateTimeThead');
+        this.$store.dispatch('thread_timer');
     },
     computed : {
         ...mapGetters({

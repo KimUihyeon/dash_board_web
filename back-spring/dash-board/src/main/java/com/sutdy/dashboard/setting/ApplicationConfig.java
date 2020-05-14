@@ -1,6 +1,5 @@
 package com.sutdy.dashboard.setting;
 
-import com.sun.tools.internal.ws.wsdl.document.http.HTTPOperation;
 import com.sutdy.dashboard.setting.inteceptor.AuthenticationInterceptor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -11,8 +10,6 @@ import org.springframework.http.HttpMethod;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-
-import java.util.PrimitiveIterator;
 
 /**
  * @author kuh

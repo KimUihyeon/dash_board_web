@@ -2,6 +2,14 @@ import { rest , date , data } from '../../util'
 
 const base_url = process.env.VUE_APP_API_BASE_URL + '/v1/todo';
 
+
+/**
+ * 임시 Login
+ */
+const getCurrentLoginID = () =>{
+    return data.getCookie(process.env.VUE_APP_COOKIE_NAME_LOGIN);
+}
+
 const getHttpHeader =  () =>{
     return { headers : { Authorization : 'Bearer ' + data.getCookie(process.env.VUE_APP_COOKIE_NAME_TOKEN)}}
 };
@@ -11,20 +19,20 @@ const getHttpHeader =  () =>{
  * @param {*} userId 
  * @param {*} todoItem 
  */
-const todoItemUpdate = (userId , todoItem , categoryId) => {
+const todoItemUpdate = ( todoItem , categoryId) => {
     let url = base_url + `/item/${todoItem.id}`;
     return rest.patch(url, {
         ...todoItem,
         ...categoryId,
-        userId
+        userId : getCurrentLoginID()
     });
 }
 
-const todoItemAdd = (userId, todoItem ,categoryId) => {
-    return rest.post(base_url + '/item', {
+const todoItemAdd = ( todoItem ,categoryId) => {
+    return rest.post( base_url + '/item', {
         ...todoItem,
         categoryId,
-        userId
+        userId : getCurrentLoginID()
     });
 }
 
@@ -32,10 +40,10 @@ const todoItemDelete = (todoId) => {
     return rest.delete_( base_url + `/item/${todoId}`);
 }
 
-const getTodoList = (userId , filter , categoryId) => {
+const getTodoList = ( filter , categoryId) => {
     let config = getHttpHeader();
     return rest.get( base_url + '/list', { 
-        userId , 
+        userId : getCurrentLoginID() ,
         filter , 
         categoryId 
     }, config);

@@ -24,6 +24,8 @@ public class JWT {
     @Autowired
     private MemberService memberService;
 
+
+    private final static String TOKENT_PREFIX = "bearer";
     public final static String KEY = "rladmlgusWkdWkdaos";
     public final static String ISS = "dash-board.com";
 
@@ -39,7 +41,7 @@ public class JWT {
         claim.put("userId", userId);
         claim.put("useName", userName);
 
-        return Jwts.builder()
+        return TOKENT_PREFIX + " " + Jwts.builder()
                 .setHeader(header)
                 .setClaims(claim)
                 .signWith(SignatureAlgorithm.HS256, KEY)
@@ -64,6 +66,7 @@ public class JWT {
         Long currentTimeStep = new Date().getTime();
 
         try {
+            jwt= jwt.replaceAll(TOKENT_PREFIX+" ","");
             Jwt claims = Jwts.parser()
                     .setSigningKey(KEY)
                     .parse(jwt);

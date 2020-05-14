@@ -2,11 +2,12 @@ import { convertByUnixDateTime, now } from './DateUtil'
 import { get , post , delete_ , patch} from './AxiosUtil'
 import { isNull, createCookie, getCookie, removeCookie } from './Data';
 import { showMessage , showConfirm , logger} from './Alert';
+import { authencationError, nullExceptionError , httpUrlNotSurpport, findError } from './Error'
 import moment from 'moment';
 
 // #dateTime
 const convertByUnixDate = (dateTime) => {
-    return convertByUnixDateTime( dateTime);
+    return convertByUnixDateTime(dateTime);
 }
 
 export const date = {
@@ -34,3 +35,14 @@ export const alert = {
     showConfirm,
     logger
 }
+
+export const error = {
+    findError,
+
+    nullExceptionError,
+    authencationError,
+    httpUrlNotSurpport,
+
+
+};
+

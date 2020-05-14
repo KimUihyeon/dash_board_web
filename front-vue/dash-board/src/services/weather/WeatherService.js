@@ -18,7 +18,7 @@ const getCurrentWeather= (cityId) => {
                +`id=${cityId}&`
                +`appid=${_API_KEY}&`
                +`lang=kr&`
-               +`units=metric`;
+               +`units=metric&`;
 
     return rest.get(url).then(res=>{
         let { coord , main , name , weather , wind } = res;
@@ -51,8 +51,8 @@ const oneCallWeather = (lat, lon) =>{
     let url = `https://api.openweathermap.org/data/2.5/onecall?`
              +`lat=${lat}&`
              +`lon=${lon}&`
-             +`appid=${_API_KEY}&`
              +`units=metric&`
+             +`appid=${_API_KEY}&`
              +`lang=kr`;
 
     return rest.get(url);
@@ -77,7 +77,6 @@ const getCityForcast = (cityId) => {
         .then(data=>{
             return data.list
         }).then(items=>{
-            console.log(items);
 
             let results = [];
             items.forEach((item)=>{
@@ -118,8 +117,8 @@ const getWeatherDetailByLocation = async (location) =>{
         return res;
     });
 
-    console.log(current);
-    console.log(day5);
+    // console.log(current);
+    // console.log(day5);
 }
 
 export const weatherService = {
@@ -131,7 +130,7 @@ export const weatherService = {
 
 const getCity = () =>{
     let datas = citys.filter(t=>t.country==="KR");
-    console.log(datas);
-    console.log(JSON.stringify(datas));
+    // console.log(datas);
+    // console.log(JSON.stringify(datas));
     
 }

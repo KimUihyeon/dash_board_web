@@ -7,6 +7,7 @@
             <input type="txt" 
                 v-model="keyWord" 
                 :style='inputStyle'
+                :readonly="isReadOnly"
                 @keydown.enter="(e)=>{
                     inputEnterKeyPress_handle(e, { keyWord });
                     keyWord = '';
@@ -66,6 +67,7 @@ export default {
         width : String,
         backgroundColor : String ,
         marginTop : String,
+        isReadOnly : Boolean,
 
         inputEnterKeyPress_handle : Function,
     },
