@@ -47,7 +47,7 @@ public class TodoApiController {
         if (userId.isEmpty()) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
         }
-        
+
         SearchParams params = new SearchParams();
         params.setFilter(filter);
         params.setId(categoryId);
