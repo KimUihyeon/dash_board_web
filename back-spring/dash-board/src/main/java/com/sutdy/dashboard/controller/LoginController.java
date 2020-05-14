@@ -3,11 +3,16 @@ package com.sutdy.dashboard.controller;
 import com.sutdy.dashboard.dto.MemberDto;
 import com.sutdy.dashboard.service.MemberService;
 import com.sutdy.dashboard.setting.util.auth.AuthEnum;
+import com.sutdy.dashboard.setting.util.auth.AuthRequest;
 import com.sutdy.dashboard.setting.util.auth.AuthResponse;
 import com.sutdy.dashboard.setting.util.auth.jwt.JWT;
 import io.jsonwebtoken.Jwt;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
+
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author kuh
@@ -45,6 +50,13 @@ public class LoginController {
                     .build();
         }
         return authResponse;
+    }
+    
+    @PostMapping("/auth")
+    public AuthResponse auth(@RequestBody AuthRequest authRequest){
+        // // TODO: 2020-05-14 : 나중에 해더 로직으로 변경할것 ..!
+        AuthResponse response = JWT.authJwt(authRequest.getToken());
+        return response;
     }
 
     @PostMapping("/logout")

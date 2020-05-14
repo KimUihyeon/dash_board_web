@@ -7,11 +7,10 @@
             height="100%"
             maxWidth="500px"
             >
-
-
+            
             <div class="folder-area">
                 <div class="folder-list-area">
-                    <TodoFolderList :folders='getFolders1'/>
+                    <TodoFolderList :folders='getDefaultTodoCategories'/>
                     <hr/>
                     <TodoFolderList :folders='getTodoCategories'/>
                 </div>
@@ -42,6 +41,7 @@
                 <hr/>
                 <div class="todo-add-area">
                     <AddButton
+                        v-if='selectedCategory.id > 0'
                         placeholder="새 할일 추가하기."
                         width="100%"
                         height="calc(100% - 1px)"
@@ -86,19 +86,21 @@ export default {
     data() {
         return {
             isLoading : true,
-            selectedCategory : { title : ''},
+            selectedCategory : { 
+                title : '' 
+            } ,
         }
     },
     mounted(){
         this.todoListDownload(null);
-        this.$store.dispatch('fetch_todo_categories', {loginId : 'dkrnl1318@naver.com'});
-
-        this.title = this.getFolders1[0].title;
+        this.$store.dispatch('fetch_todo_categories');
     },
     beforeRouteUpdate(to, from, next){
         const { type , id } = to.query;
+    
+        console.log(to.query);
         this.selectedCategory = [...this.getTodoCategories ,
-                                 ...this.getFolders1]
+                                 ...this.getDefaultTodoCategories]
                         .filter(t=> t.id === id)[0];
 
         this.todoListDownload(type , id);
@@ -106,18 +108,11 @@ export default {
     methods:{
         todoListDownload(filter , id){
             this.isLoading = false;
-
-            // let param = {
-            //     loginId : '',
-            //     filter : ''
-            // };
-
-            /** Todo List 다운로드 */
-            let param = {  
-                loginId : 'dkrnl1318@naver.com', filter, id 
-            };
-
-            this.$store.dispatch('fetch_todo_list', param)
+            this.$store.dispatch('fetch_todo_list', { 
+                    loginId : 'dkrnl1318@naver.com',
+                    filter, 
+                    id
+                })
                 .then( data => {
                     // console.log(data);
                     this.isLoading = true;
@@ -125,52 +120,49 @@ export default {
                 .catch(err =>{ this.isLoading = true; 
             });
         },
+
         addTodoItem(e, param){
-
-            let todoItem = {
-                id : -1,
-                title : param.keyWord,
+            if(this.selectedCategory.id < 0){
+                return ;
             }
-
-            this.$store.dispatch('patch_todo', { todoItem , categoryId : this.selectedCategory })
-                .then((data)=>{
-                    alert.showMessage({ vueObject : this, type : 'success', message : '추가 되엇습니다.' });
+            this.$store.dispatch('patch_todo', { 
+                    todoItem : {
+                        id : -1,
+                        title : param.keyWord,
+                    }, 
+                    categoryId : this.selectedCategory.id 
                 })
-                .catch(error => {
-                    alert.showMessage({ vueObject : this, type : 'error', message : error });
+                .then(data=> {this.cussessAlert(data);})
+                .catch(err=>{this.errorAlert(err); });
+        },
+
+        addTodoCategory(e, param) {
+            this.$store.dispatch('patch_todo_category' , { 
+                    todoCategory : {
+                        id : -1,
+                        title : param.keyWord
+                    }})
+                .then(data=> {this.cussessAlert(data);})
+                .catch(err=>{this.errorAlert(err);});
+        },
+
+        cussessAlert(data){
+            alert.showMessage({ 
+                vueObject : this, 
+                type : 'success', 
+                message : '추가 되엇습니다.' 
             });
         },
-        addTodoCategory(e, param) {
-            let todoCategory = {
-                id : -1,
-                title : param.keyWord
-            }
-
-            this.$store.dispatch('patch_todo_category' , { 
-                    loginId : 'dkrnl1318@naver.com',
-                    todoCategory 
-                }).then(data=>{
-                    alert.showMessage({ vueObject : this, type : 'success', message : '추가 되엇습니다.' });
-                }).catch(err=>{
-                    alert.showMessage({ vueObject : this, type : 'error', message : err });
-            })
-        },
-        cussessAlert(data){
-            alert.showMessage({ vueObject : this, type : 'success', message : '추가 되엇습니다.' });
-        },
-        errorAlert(error){
-            alert.showMessage({ vueObject : this, type : 'success', message : '추가 되엇습니다.' });
+        errorAlert(err){
+            alert.showMessage({ 
+                vueObject : this,
+                type : 'error', 
+                message : err 
+            });
         }
     },
     computed : {
-        ...mapGetters(['getTodoList', 'getTodoCategories']),
-        getFolders1(){
-            return [
-                { id : -3 , title : '중요' , icon : 'el-icon-star-off', canModify : false , iconColor : 'yellow', fontColor : 'yellow' , param : 'important'},
-                { id : -2 , title : '오늘 할일' , icon : 'el-icon-s-opportunity', canModify : false  , iconColor : 'white', fontColor : 'white', param : 'today'},
-                { id : -1 , title : '완료된 할일' , icon : 'el-icon-s-release' , canModify : false , iconColor : '#ffb8b8', fontColor : '#ffb8b8' , param : 'complate'},
-            ];
-        },
+        ...mapGetters(['getTodoList', 'getTodoCategories' , 'getDefaultTodoCategories']),
     },
 }
 </script>

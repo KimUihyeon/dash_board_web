@@ -10,6 +10,7 @@
 
 import { todoService, todoCategoryService } from "../../services";
 import { alert } from '../../util'
+import Axios from "axios";
 
 
 const state = {
@@ -31,6 +32,13 @@ const getters = {
                 param : 'category'
             }
         });
+    },
+    getDefaultTodoCategories : function(state){
+        return [
+            { id : -3 , title : '중요' , icon : 'el-icon-star-off', canModify : false , iconColor : 'yellow', fontColor : 'yellow' , param : 'important'},
+            { id : -2 , title : '오늘 할일' , icon : 'el-icon-s-opportunity', canModify : false  , iconColor : 'white', fontColor : 'white', param : 'today'},
+            { id : -1 , title : '완료된 할일' , icon : 'el-icon-s-release' , canModify : false , iconColor : '#ffb8b8', fontColor : '#ffb8b8' , param : 'complate'}
+        ]
     }
 }
 
@@ -42,10 +50,10 @@ const actions = {
      * @param {*} payload  = { loginId , type? }
      */
     fetch_todo_list : function(context , payload){
-        let { loginId , filter , id } = payload;
+        let { filter , id } = payload;
 
         return new Promise((resolve , reject) =>{
-            todoService.getTodoList(loginId , filter , id)
+            todoService.getTodoList( filter , id)
                 .then(data=>{
                     alert.logger('todo List -> 다운로드');
                     context.commit('SET_TODO_LIST', { todoList : data });
@@ -84,7 +92,8 @@ const actions = {
             
             if(todoItem.id === -1){
                 // TODO : 해더에 JWT 던져서 만들어 컨트롤러에 주는식으로 변경 ..!
-                todoService.todoItemAdd('dkrnl1318@naver.com', todoItem , categoryId).then(data=>{
+
+                todoService.todoItemAdd( todoItem , categoryId).then(data=>{
                     context.commit('ADD_TODO', { todoItem : data }); 
                     resolve(data);
                 })
@@ -93,7 +102,7 @@ const actions = {
                 });
             }else {
                 // TODO : 해더에 JWT 던져서 만들어 컨트롤러에 주는식으로 변경 ..!
-                todoService.todoItemUpdate('', todoItem ).then(data => {
+                todoService.todoItemUpdate(todoItem ).then(data => {
                     context.commit('PATCH_TODO' , { todoItem : data }); 
                     resolve(data);
                 })
@@ -105,10 +114,10 @@ const actions = {
     },
 
     fetch_todo_categories: function (context , payload){
-        let { loginId } = payload;
+        // let { loginId } = payload;
 
         return new Promise((resolve, reject)=>{
-            todoCategoryService.getDatas(loginId)
+            todoCategoryService.getDatas()
                 .then(data =>{
                     context.commit('SET_TODO_CATEGORIES' , { todoCategories : data }); 
                     resolve(data);
@@ -120,13 +129,13 @@ const actions = {
     },
 
     patch_todo_category : function (context , payload){
-        let { loginId , todoCategory } = payload;
+        let { todoCategory } = payload;
 
         return new Promise((resolve , reject)=>{
 
             if(todoCategory.id === -1){ // 신규
 
-                todoCategoryService.addItem(loginId, todoCategory).then(data =>{
+                todoCategoryService.addItem( todoCategory).then(data =>{
                     context.commit('ADD_TODO_CATEGORY', { todoCategory : data })
                     resolve(data);
                 }).catch(err=>{
@@ -135,7 +144,7 @@ const actions = {
             }
 
             else { // 수정
-                todoCategoryService.modifyItem(loginId, todoCategory).then(data =>{
+                todoCategoryService.modifyItem( todoCategory).then(data =>{
                     context.commit('PATCH_TODO_CATEGORY', { todoCategory : data })
                     resolve(data);
                 }).catch(err=>{
@@ -146,10 +155,10 @@ const actions = {
     },
 
     remove_todo_category : function (context, payload) {
-        let { loginId , todoCategory } = payload;
+        let { todoCategory } = payload;
 
         return new Promise((resolve , reject)=>{
-            todoCategoryService.deleteItem( loginId , todoCategory.id ).then(data=>{
+            todoCategoryService.deleteItem( todoCategory.id ).then(data=>{
                 context.commit('REMOVE_TODO_CATEGORY',{ id : data.id});
                 resolve(data);
             }).catch(err=>{
