@@ -39,7 +39,7 @@ public class LoginController {
 //                    .build();
 //        }
 //        else {
-//            String jwt = JWT.create(findMember.getId(), findMember.getName(),3);
+//            String jwt = JWT.createToken(findMember.getId(), findMember.getName(),3);
 //
 //            authResponse = AuthResponse.builder()
 //                    .id(findMember.getId())
@@ -55,7 +55,7 @@ public class LoginController {
 //    @PostMapping("/auth")
 //    public AuthResponse auth(@RequestBody AuthRequest authRequest){
 //        // // TODO: 2020-05-14 : 나중에 해더 로직으로 변경할것 ..!
-//        AuthResponse response = JWT.authJwt(authRequest.getToken());
+//        AuthResponse response = JWT.auth(authRequest.getToken());
 //        return response;
 //    }
 //

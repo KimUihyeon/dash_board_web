@@ -1,12 +1,17 @@
-export const isNull = (object) => {
+const isNull = (object) => {
     if(object === null || object === undefined || object === '' || ( object != null && typeof object == "object" && !Object.keys(object).length )) {    
         return true;
     }
     return false;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////// {{Cookie}} //////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
 
-export const createCookie = (name, value , day ) =>{
+const createCookie = (name, value , day ) =>{
 
     if(isNull(day)){
         day = 365 * 1;
@@ -20,11 +25,52 @@ export const createCookie = (name, value , day ) =>{
     document.cookie = willCookie;
 }
 
-export const getCookie = (name) =>{
+const getCookie = (name) =>{
     var value = document.cookie.match('(^|;) ?' + name + '=([^;]*)(;|$)');
     return value? value[2] : null;;
 }
 
-export const removeCookie = (name) =>{
+const removeCookie = (name) =>{
     document.cookie = name + '=; expires=Thu, 01 Jan 1999 00:00:10 GMT;';
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////// {{Validation}} //////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+///////////////////////////////////////////////////////////////////////////////////////////
+
+const validationResult = {
+    valide : Boolean,
+    msg : String,
+}
+
+const validation = (text, type, range) =>{
+
+    if(!isNull(text) && (text.length > range[0] && text.length < range[1] )){
+        if(type === 'email') {
+            /** 이메일 정규식 필요 */
+            return false;
+        }else if(type === null || type === 'text') {
+            return true;
+        }
+        else{
+            return true;
+        }
+    }
+    else {
+        return false;
+    }
+}
+
+
+export const data = {
+    isNull,
+    validation,
+    cookie : {
+        createCookie,
+        getCookie,
+        removeCookie
+    }
 }

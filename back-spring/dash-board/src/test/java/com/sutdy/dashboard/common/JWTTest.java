@@ -1,17 +1,15 @@
 package com.sutdy.dashboard.common;
 
+import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.auth.AuthEnum;
 import com.sutdy.dashboard.setting.util.auth.AuthResponse;
 import com.sutdy.dashboard.setting.util.auth.jwt.JWT;
-import io.jsonwebtoken.Jwt;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.util.Calendar;
-import java.util.Date;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  * @author kuh
@@ -23,12 +21,17 @@ import java.util.Date;
 public class JWTTest {
 
     @Test
+    public void webUrlTest(){
+        System.out.println(ApplicationStringConfig.WEB_URL);
+    }
+
+    @Test
     public void createJWT() {
 
         String id = "test@naver.com";
         String name = "김의현";
 
-        String jwt = JWT.create(id, name, 3);
+        String jwt = JWT.createToken(id, name, 3);
         System.out.println(jwt);
 
 
@@ -44,11 +47,11 @@ public class JWTTest {
         String name = "김의현";
 
 
-        String jwt = JWT.create(id, name, 3);
+        String jwt = JWT.createToken(id, name, 3);
 
         // when
 
-        AuthResponse result = JWT.authJwt(jwt);
+        AuthResponse result = JWT.auth(jwt);
 
         // then
         Assert.assertTrue(result.getAuthType() == AuthEnum.Auth);

@@ -82,9 +82,9 @@ export default {
     },
     methods : {
         init () {
-
-            let cookie = data.getCookie(process.env.VUE_APP_COOKIE_NAME_LOGIN_HISOTRY);
-            this.id = data.getCookie(process.env.VUE_APP_COOKIE_NAME_LOGIN);
+            
+            let cookie = data.cookie.getCookie(process.env.VUE_APP_COOKIE_NAME_LOGIN_HISOTRY);
+            this.id = data.cookie.getCookie(process.env.VUE_APP_COOKIE_NAME_LOGIN);
             this.pw = '';
             this.isLoginCookie = ! data.isNull(cookie) ? Boolean(cookie) : false;
         },

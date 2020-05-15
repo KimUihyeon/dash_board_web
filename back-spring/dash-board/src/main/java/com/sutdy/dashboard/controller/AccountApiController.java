@@ -2,8 +2,10 @@ package com.sutdy.dashboard.controller;
 
 import com.sutdy.dashboard.dto.MemberDto;
 import com.sutdy.dashboard.service.MemberService;
+import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.auth.AuthEnum;
 import com.sutdy.dashboard.setting.util.auth.AuthResponse;
+import com.sutdy.dashboard.setting.util.auth.AuthResponseFactory;
 import com.sutdy.dashboard.setting.util.auth.jwt.JWT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -32,29 +34,15 @@ public class AccountApiController {
      */
     @PostMapping("/login")
     public AuthResponse login(@RequestBody MemberDto member){
-
         MemberDto findMember = this.memberService.findByMemberDto(member);
 
-        AuthResponse authResponse = null;
-        if(findMember == null){
+        try{
+            String jwt = JWT.createToken(findMember.getId(), findMember.getName(),3);
+            return JWT.auth(jwt);
+        }catch (NullPointerException e){
 
-            authResponse = AuthResponse.builder()
-                    .authType(AuthEnum.NoAuth)
-                    .IIS(JWT.ISS)
-                    .build();
+            return AuthResponseFactory.create(AuthEnum.NoAuth);
         }
-        else {
-            String jwt = JWT.create(findMember.getId(), findMember.getName(),3);
-
-            authResponse = AuthResponse.builder()
-                    .id(findMember.getId())
-                    .name(findMember.getName())
-                    .authType(AuthEnum.Auth)
-                    .IIS(JWT.ISS)
-                    .token(jwt)
-                    .build();
-        }
-        return authResponse;
     }
 
     /**
