@@ -4,6 +4,7 @@ import com.sutdy.dashboard.service.MemberService;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.auth.AuthEnum;
 import com.sutdy.dashboard.setting.util.auth.AuthResponse;
+import com.sutdy.dashboard.setting.util.auth.AuthResponseFactory;
 import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
@@ -21,75 +22,55 @@ import java.util.Map;
  */
 public class JWT {
 
-    @Autowired
-    private MemberService memberService;
-
-
     private final static String TOKENT_PREFIX = "bearer";
-    public final static String KEY = "rladmlgusWkdWkdaos";
-    public final static String ISS = "dash-board.com";
 
-    public static String create(String userId, String userName, int lifeDate) {
+    public static String createToken(String userId, String userName, int lifeDate) {
 
         Map<String, Object> header = new HashMap<>();
         header.put("type", "jwt");
         header.put("alg", "HS256");
 
         Map<String, Object> claim = new HashMap<>();
-        claim.put("iss", ISS);
-        claim.put("exp", String.valueOf(calculatorLifeTime(lifeDate)));
+        claim.put("iss", ApplicationStringConfig.WEB_URL);
+        claim.put("exp", String.valueOf(calcTokenLifeTime(lifeDate)));
         claim.put("userId", userId);
         claim.put("useName", userName);
 
         return TOKENT_PREFIX + " " + Jwts.builder()
                 .setHeader(header)
                 .setClaims(claim)
-                .signWith(SignatureAlgorithm.HS256, KEY)
+                .signWith(SignatureAlgorithm.HS256, ApplicationStringConfig.JWT_ENCRYPTION_KEY)
                 .compact();
     }
 
-    private static Long calculatorLifeTime(int lifeDate){
+    private static Long calcTokenLifeTime(int lifeDate){
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         cal.add(Calendar.DATE, lifeDate);
         Date date = cal.getTime();
-
         return date .getTime();
     }
 
-    public static Boolean validation(String jwt) {
-        return false;
-    }
 
-
-    public static AuthResponse authJwt(String jwt) {
+    public static AuthResponse auth(String jwt) {
         Long currentTimeStep = new Date().getTime();
 
         try {
             jwt= jwt.replaceAll(TOKENT_PREFIX+" ","");
             Jwt claims = Jwts.parser()
-                    .setSigningKey(KEY)
+                    .setSigningKey(ApplicationStringConfig.JWT_ENCRYPTION_KEY)
                     .parse(jwt);
 
             Map<String, String> payload = (Map<String, String>) claims.getBody(); // claim
 
             Long tokenExp = Long.parseLong(payload.get("exp"));
 
-            AuthResponse response = AuthResponse.builder()
-                    .token(jwt)
-                    .IIS(ISS)
-                    .id(payload.get("userId"))
-                    .name(payload.get("userName"))
-                    .authEndDate(
-                            new SimpleDateFormat(ApplicationStringConfig.DATE_FORMAT)
-                            .format(
-                                    new Date(tokenExp)
-                            )
-                    )
-                    .build();
+            AuthResponse response = AuthResponseFactory.create(
+                    payload.get("userId") , payload.get("userName"),
+                    null, jwt, tokenExp );
 
             if (tokenExp > currentTimeStep) {
-                if (ISS.equals(payload.get("iss")) ) {
+                if (ApplicationStringConfig.WEB_URL.equals(payload.get("iss")) ) {
                     response.setAuthType(AuthEnum.Auth);
                     return response;
                 } else {
@@ -102,9 +83,7 @@ public class JWT {
             }
 
         } catch (Exception e) {
-            return AuthResponse.builder()
-                    .authType(AuthEnum.WrongEncounter)
-                    .build();
+            return AuthResponseFactory.create(AuthEnum.WrongEncounter);
         }
     }
 }

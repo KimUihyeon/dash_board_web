@@ -47,7 +47,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 //        String jwt2 = request.getHeader("authorization");
 //        try {
 //
-//            AuthResponse jwtState = JWT.authJwt(jwt);
+//            AuthResponse jwtState = JWT.auth(jwt);
 //
 //            switch (jwtState.getAuthType()) {
 //                case Auth: {

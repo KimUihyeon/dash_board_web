@@ -9,6 +9,7 @@
       <!-- <RouterItem to="/home" icon="el-icon-finished" name="홈" /> -->
       <RouterItem to="/todo" icon="el-icon-finished" name="할일" />
       <RouterItem to="/Logout" icon="el-icon-finished" name="Logout" @click="logOut" />
+      
       <!-- 
       <RouterItem to="/calendor" icon="el-icon-date" name="일정" /> 
       <RouterItem to="/search" icon="el-icon-finished" name="검색" /> 

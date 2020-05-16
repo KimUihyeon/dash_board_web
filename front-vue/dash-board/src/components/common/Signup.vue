@@ -1,13 +1,43 @@
 <template>
-    <el-dialog title="Shipping address" :visible.sync="show" :close="()=>{showModal()}">
+    <el-dialog title="Shipping address" :visible.sync="show" :close="()=>{showModal()}" :close-on-click-modal="false">
         <div>
             {{validation.msg}}
         </div>
         <div>
-            <input type="text" v-model="id" ref="id" @keypress.enter="idEnterKeyHandle"/>
+            <el-input 
+                type="text" 
+                @keydown.enter.native="enterKeyHandle('id')"
+                placeholder="id" 
+                ref="id"
+                v-model="id"
+                size="small"></el-input>
         </div>
         <div>
-            <input type="text" v-model="pw" ref="pw" @keypress.enter="pwEnterKeyHandle">
+            <el-input 
+                type="password" 
+                @keydown.enter.native="enterKeyHandle('pw')"
+                placeholder="pw" 
+                ref="pw"
+                v-model="pw"
+                size="small"></el-input>
+        </div>
+        <div>
+            <el-input 
+                type="password" 
+                @keydown.enter.native="enterKeyHandle('pwConfirm')"
+                placeholder="PassWord 확인" 
+                ref="pwConfirm"
+                v-model="pwConfirm"
+                size="small"></el-input>
+        </div>
+        <div>
+            <el-input 
+                type="password" 
+                @keydown.enter.native="enterKeyHandle('name')"
+                placeholder="name" 
+                ref="name"
+                v-model="name"
+                size="small"></el-input>
         </div>
     </el-dialog>
 </template>
@@ -29,10 +59,12 @@ export default {
         return {
             id : '',
             pw : '',
-            validation : {
+            pwConfirm : '',
+            name : '',
+            valide : {
                 id : false,
                 pw : false,
-                msg : '',
+                name : false,
             },
             show : false,
             isIdConfirm : false,
@@ -42,42 +74,39 @@ export default {
         init(){
             this.id = '';
             this.pw = '';
-            this.validation = {
-                id : false,
-                pw : false,
-                msg : '',
-            };
             this.isIdConfirm = false;
         },
-        idEnterKeyHandle(){
-            if(this.validation.id){
+        enterKeyHandle(elType){
+            if(elType === 'id'){
                 this.focusing(this.$refs.pw);
+            }else if(elType === 'pw'){
+                this.focusing(this.$refs.pwConfirm);
+            }else if(elType === 'pwConfirm'){
+                this.focusing(this.$refs.name);
+            }else if(elType === 'name'){
+                if(this.validation()){
+
+                };
             }
-            else {
-                this.alert('error', this.validation.msg)
-            }
+        },
+        idEnterKeyHandle(){
         },
         pwEnterKeyHandle(){
-            if(this.validation.id && this.validation.pw){
+            this.focusing(this.$refs.name);
+            if(this.validation()){
                 this.submit();
             }
-            else {
-                if(this.validation.id === false ){
-                    this.focusing(this.$refs.id);
-                }
-                else if (this.validation.pw === false){
-                    this.focusing(this.$refs.pw);
-                }
-                this.alert('error', this.validation.msg)
-            }
         },
-        focusing(element){
-            element.focus();
+        nameEnterKeyHandle(){
+
         },
         submit(){
             accountService.signup(this.id, this.pw).then(res =>{
                 console.log(res);
             });
+        },
+        focusing(element){
+            element.focus();
         },
         alert( type , message){
             alert.showMessage({
@@ -85,30 +114,33 @@ export default {
                 type,
                 message  
             });
+        },
+        validation(){
+            console.log(data.validation(this.id , 'text', [5,20]))
+            console.log(this.id.length);
+            if(!data.validation(this.id , 'text', [5,20])) {
+                this.alert('error', '아이디는 6자이상 20자 미만입니다.')
+                return false;
+            }
+            if(!data.validation(this.pw, 'text', [5,14])){
+                this.alert('error', '패스워드는 6자이상 14자 미만입니다.')
+                return false;
+            }
+            if(this.pw !== this.pwConfirm){
+                this.alert('error', '패스워드 확인이 일치하지 않습니다.')
+                return false;
+            }
+            if(!data.validation(this.name, 'text', [1,10])){
+                this.alert('error', '이름은 2자이상 10자 미만입니다.')
+                return false;
+            }
+            return true;
         }
     },
     watch : {
         showModal(v){
             this.show = v;
             this.init();
-        },
-        id(v){
-            if(data.isNull(v) && v.length < 8){
-                this.validation.id = false;
-                this.validation.msg = 'id는 8글자 이상 이어야 합니다.'
-            }
-            else {
-                this.validation.id = true
-            }
-        },
-        pw(v){
-            if(data.isNull(v) && v.length < 8){
-                this.validation.pw = false;
-                this.validation.msg = '패스워드는 8 이상 이어야 합니다.'
-            }
-            else {
-                this.validation.pw = true;
-            }
         }
     }
 }
