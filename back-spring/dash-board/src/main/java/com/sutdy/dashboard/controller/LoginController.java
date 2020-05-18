@@ -1,18 +1,6 @@
 package com.sutdy.dashboard.controller;
 
-import com.sutdy.dashboard.dto.MemberDto;
-import com.sutdy.dashboard.service.MemberService;
-import com.sutdy.dashboard.setting.util.auth.AuthEnum;
-import com.sutdy.dashboard.setting.util.auth.AuthRequest;
-import com.sutdy.dashboard.setting.util.auth.AuthResponse;
-import com.sutdy.dashboard.setting.util.auth.jwt.JWT;
-import io.jsonwebtoken.Jwt;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
-
-import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 
 /**
  * @author kuh
@@ -26,9 +14,9 @@ public class LoginController {
 //    private MemberService memberService;
 //
 //    @PostMapping("/login")
-//    public AuthResponse login(@RequestBody MemberDto member){
+//    public AuthResponse login(@RequestBody AccountDto member){
 //
-//        MemberDto findMember = this.memberService.findByMemberDto(member);
+//        AccountDto findMember = this.memberService.findByMemberDto(member);
 //
 //        AuthResponse authResponse = null;
 //        if(findMember == null){
@@ -60,9 +48,9 @@ public class LoginController {
 //    }
 //
 //    @PostMapping("/logout")
-//    public MemberDto logout(){
+//    public AccountDto logout(){
 //
-//        return new MemberDto();
+//        return new AccountDto();
 //    }
 
 }

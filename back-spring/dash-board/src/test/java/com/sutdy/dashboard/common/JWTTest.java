@@ -28,7 +28,7 @@ public class JWTTest {
     @Test
     public void createJWT() {
 
-        String id = "test@naver.com";
+        String id = "admin@naver.com";
         String name = "김의현";
 
         String jwt = JWT.createToken(id, name, 3);
@@ -43,7 +43,7 @@ public class JWTTest {
     public void authJWT() {
 
         // given
-        String id = "test@naver.com";
+        String id = "admin@naver.com";
         String name = "김의현";
 
 

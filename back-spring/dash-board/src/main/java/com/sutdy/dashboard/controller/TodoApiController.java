@@ -92,7 +92,7 @@ public class TodoApiController {
     }
 
     @DeleteMapping("/category/{id}")
-    public TodoCategoryDto deleteTodoCategory(@PathVariable Long id) {
+    public TodoCategoryDto deleteTodoCategory(@PathVariable Long id, String userId) {
         return this.todoCategoryService.delete(id);
     }
 

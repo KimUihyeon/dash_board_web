@@ -1,6 +1,6 @@
 package com.sutdy.dashboard.service.interfacies;
 
-import com.sutdy.dashboard.dto.MemberDto;
+import com.sutdy.dashboard.dto.AccountDto;
 
 /**
  * @author kuh
@@ -8,7 +8,7 @@ import com.sutdy.dashboard.dto.MemberDto;
  */
 public interface IAuthenticationService {
 
-    MemberDto authentication(String jwt);
+    AccountDto authentication(String jwt);
 
-    MemberDto authentication(MemberDto member);
+    AccountDto authentication(AccountDto member);
 }

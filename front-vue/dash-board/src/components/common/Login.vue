@@ -126,7 +126,7 @@ export default {
             }
         },
         logout(){
-            this.$store.dispatch('app_logout').then(d=>{
+            this.$store.dispatch('app_logout').then(()=>{
                 this.init();
             })
         },

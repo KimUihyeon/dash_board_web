@@ -1,7 +1,9 @@
 package com.sutdy.dashboard.service;
 
+import com.sutdy.dashboard.domain.todo.Todo;
 import com.sutdy.dashboard.domain.todo.TodoCategory;
 import com.sutdy.dashboard.domain.todo.TodoCategoryRepository;
+import com.sutdy.dashboard.domain.todo.TodoRepository;
 import com.sutdy.dashboard.dto.TodoCategoryDto;
 import com.sutdy.dashboard.service.common.BaseCrudService;
 import com.sutdy.dashboard.setting.common.SearchParams;
@@ -12,8 +14,11 @@ import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
+import javax.transaction.Transactional;
+import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -26,12 +31,15 @@ import java.util.stream.Collectors;
 public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCategoryDto, Long> {
 
     @Autowired
+    private TodoRepository todoRepository;
+
+    @Autowired
     public TodoCategoryService(TodoCategoryRepository todoCategoryRepository) {
         super(todoCategoryRepository);
         tempData();
     }
 
-    public List<TodoCategoryDto> getDefaultTodoCategories(){
+    public List<TodoCategoryDto> getDefaultTodoCategories() {
         List<TodoCategoryDto> defaultData = new ArrayList<>();
 
 
@@ -49,7 +57,7 @@ public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCateg
 
     private void tempData() {
         List<TodoCategoryDto> list = getDefaultTodoCategories();
-        list.forEach(t->{
+        list.forEach(t -> {
             this.save(t);
         });
     }
@@ -68,7 +76,21 @@ public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCateg
     }
 
     @Override
+    @Transactional
     public TodoCategoryDto delete(Long pk) {
+
+        List<Todo> dd = todoRepository.findAll()
+                .stream()
+                .filter(t -> {
+                    if (t.getTodoCategory() != null && t.getTodoCategory().getId() == pk) {
+                        return true;
+                    }
+                    return false;
+                })
+                .collect(Collectors.toList());
+
+        todoRepository.deleteInBatch(dd);
+
         return this.entityDelete(pk);
     }
 
@@ -81,7 +103,7 @@ public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCateg
     public List<TodoCategoryDto> findAll() {
         return this.jpaRepository.findAll()
                 .stream()
-                .map(t->new TodoCategoryDto(t))
+                .map(t -> new TodoCategoryDto(t))
                 .collect(Collectors.toList());
     }
 

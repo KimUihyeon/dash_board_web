@@ -1,6 +1,5 @@
 package com.sutdy.dashboard.setting.util.auth.jwt;
 
-import com.sutdy.dashboard.service.MemberService;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.auth.AuthEnum;
 import com.sutdy.dashboard.setting.util.auth.AuthResponse;
@@ -8,9 +7,7 @@ import com.sutdy.dashboard.setting.util.auth.AuthResponseFactory;
 import io.jsonwebtoken.Jwt;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
-import org.springframework.beans.factory.annotation.Autowired;
 
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;

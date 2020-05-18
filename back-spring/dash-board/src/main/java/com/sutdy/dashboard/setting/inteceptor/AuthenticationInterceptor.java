@@ -1,22 +1,14 @@
 package com.sutdy.dashboard.setting.inteceptor;
 
-import com.sutdy.dashboard.dto.MemberDto;
-import com.sutdy.dashboard.service.MemberService;
-import com.sutdy.dashboard.service.interfacies.IAuthenticationService;
-import com.sutdy.dashboard.setting.util.auth.AuthEnum;
-import com.sutdy.dashboard.setting.util.auth.AuthResponse;
-import com.sutdy.dashboard.setting.util.auth.jwt.JWT;
+import com.sutdy.dashboard.service.AccountService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
-import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Enumeration;
 
 /**
  * @author kuh
@@ -25,7 +17,7 @@ import java.util.Enumeration;
 @Component
 public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
     @Autowired
-    private MemberService memberService;
+    private AccountService accountService;
 
     Logger logger = LoggerFactory.getLogger(AuthenticationInterceptor.class);
 
@@ -52,7 +44,7 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 //            switch (jwtState.getAuthType()) {
 //                case Auth: {
 //                    try {
-//                        MemberDto findMember = memberService.findById(jwtState.getId());
+//                        AccountDto findMember = memberService.findById(jwtState.getId());
 //
 //                        if (findMember != null) {
 //                            return true;

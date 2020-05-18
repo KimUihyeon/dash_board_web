@@ -1,7 +1,7 @@
 package com.sutdy.dashboard.controller;
 
-import com.sutdy.dashboard.dto.MemberDto;
-import com.sutdy.dashboard.service.MemberService;
+import com.sutdy.dashboard.dto.AccountDto;
+import com.sutdy.dashboard.service.AccountService;
 import com.sutdy.dashboard.setting.util.auth.AuthRequest;
 import com.sutdy.dashboard.setting.util.auth.AuthResponse;
 import com.sutdy.dashboard.setting.util.auth.jwt.JWT;
@@ -23,7 +23,7 @@ import org.springframework.web.bind.annotation.RestController;
 public class AuthApiController {
 
     @Autowired
-    private MemberService memberService;
+    private AccountService accountService;
 
 
     @PostMapping()
@@ -36,9 +36,9 @@ public class AuthApiController {
 
 
     @PostMapping("/logout")
-    public MemberDto logout(){
+    public AccountDto logout(){
 
-        return new MemberDto();
+        return new AccountDto();
     }
 
 }

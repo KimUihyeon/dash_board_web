@@ -34,9 +34,9 @@ const actions = {
                 let { authType , id , token } = res
 
                 if(authType === 'Auth'){
-                    data.createCookie(__COOKIE_PROPS_NAME_LOGIN_HISTORY, true ,365);
-                    data.createCookie(__COOKIE_PROPS_NAME_LOGIN_ID, id, 365);
-                    data.createCookie(__COOKIE_PROPS_NAME_TOKEN, token, 365 ); 
+                    data.cookie.createCookie(__COOKIE_PROPS_NAME_LOGIN_HISTORY, true ,365);
+                    data.cookie.createCookie(__COOKIE_PROPS_NAME_LOGIN_ID, id, 365);
+                    data.cookie.createCookie(__COOKIE_PROPS_NAME_TOKEN, token, 365 ); 
                 }
 
                 resolve(res);
@@ -48,9 +48,9 @@ const actions = {
     app_logout : function (){
         return new Promise((resolve , reject)=>{
             try{
-                data.removeCookie(__COOKIE_PROPS_NAME_LOGIN_HISTORY);
-                data.removeCookie(__COOKIE_PROPS_NAME_LOGIN_ID);
-                data.removeCookie(__COOKIE_PROPS_NAME_TOKEN);
+                data.cookie.removeCookie(__COOKIE_PROPS_NAME_LOGIN_HISTORY);
+                data.cookie.removeCookie(__COOKIE_PROPS_NAME_LOGIN_ID);
+                data.cookie.removeCookie(__COOKIE_PROPS_NAME_TOKEN);
                 resolve();
             }
             catch(e){
