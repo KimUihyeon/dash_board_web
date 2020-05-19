@@ -1,15 +1,7 @@
 import { rest , date , data  } from '../../util'
+import { getBaseUrl , getCurrentLoginID , httpAuhorizationHeaderConfig } from '../common/ServiceHelper'
 
-const base_url = process.env.VUE_APP_API_BASE_URL + '/v1/todo';
-
-const getCurrentLoginID = () =>{
-    return data.cookie.getCookie(process.env.VUE_APP_COOKIE_NAME_LOGIN);
-}
-
-const getHttpHeader =  () =>{
-    return { headers : { Authorization : 'Bearer ' + data.cookie.getCookie(process.env.VUE_APP_COOKIE_NAME_TOKEN)}}
-};
-
+const base_url = getBaseUrl() + '/v1/todo';
 
 const getDatas = () =>{
     const userId = getCurrentLoginID();

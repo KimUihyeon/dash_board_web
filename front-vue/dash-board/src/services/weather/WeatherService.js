@@ -1,6 +1,6 @@
 import Axios from "axios";
 import { rest , date } from '../../util'
-import { WeatherModel , WeatherDetail ,WeatherOneDay }  from './WeatherResponseModel'
+import { WeatherModel , WeatherDetail , WeatherOneDay }  from './WeatherResponseModel'
 import moment from "moment";
 
 

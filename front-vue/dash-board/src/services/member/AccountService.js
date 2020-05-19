@@ -1,6 +1,7 @@
 import { rest } from "../../util";
+import { serviceHelper } from "../common/ServiceHelper";
 
-const base_url = process.env.VUE_APP_API_BASE_URL + '/v1/account';
+const base_url = serviceHelper.getBaseUrl() + '/v1/account';
 
 
 const login = (id, pw) =>{

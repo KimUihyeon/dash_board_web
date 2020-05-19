@@ -74,7 +74,7 @@ const actions = {
         let { todoItem } = payload;
 
         return new Promise((resolve, reject)=>{
-            todoService.todoItemDelete(todoItem.id)
+            todoService.deleteTodoItme(todoItem.id)
                 .then( data =>{
                     context.commit('REMOVE_TODO' , { todoItem : data });
                     resolve(data);
@@ -93,7 +93,7 @@ const actions = {
             if(todoItem.id === -1){
                 // TODO : 해더에 JWT 던져서 만들어 컨트롤러에 주는식으로 변경 ..!
 
-                todoService.todoItemAdd( todoItem , categoryId).then(data=>{
+                todoService.addTodoItem( todoItem , categoryId).then(data=>{
                     context.commit('ADD_TODO', { todoItem : data }); 
                     resolve(data);
                 })
@@ -102,7 +102,7 @@ const actions = {
                 });
             }else {
                 // TODO : 해더에 JWT 던져서 만들어 컨트롤러에 주는식으로 변경 ..!
-                todoService.todoItemUpdate(todoItem ).then(data => {
+                todoService.updateTodoItem(todoItem ).then(data => {
                     context.commit('PATCH_TODO' , { todoItem : data }); 
                     resolve(data);
                 })
