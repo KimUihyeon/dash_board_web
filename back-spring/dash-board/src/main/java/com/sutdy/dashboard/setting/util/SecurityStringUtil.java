@@ -53,7 +53,7 @@ public class SecurityStringUtil {
      * @param str 암호화 할 문자열
      * @param key 암호화 키
      * @return MD5 암호화된 문자열
-     * @throws NoSuchAlgorithmException
+     * @throws Exception
      */
     public static String encryptAES256(String str, String key) throws Exception {
 
@@ -88,6 +88,13 @@ public class SecurityStringUtil {
     }
 
 
+    /**
+     * 양방향 복호화 알고리즘 (AES256)
+     * @param str 암호화 할 문자열
+     * @param key 암호화 키
+     * @return MD5 암호화된 문자열
+     * @throws Exception
+     */
     public static String decryptAES256(String str, String key) throws Exception {
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
 
@@ -112,6 +119,12 @@ public class SecurityStringUtil {
         return new String(decryptedTextBytes);
     }
 
+
+    /**
+     * 문자열을 16진수 코드로 변환
+     * @param data 문자열 바이트 Array
+     * @return
+     */
     private static String byteToHexString(byte[] data) {
         StringBuilder sb = new StringBuilder();
         for(byte b : data) {

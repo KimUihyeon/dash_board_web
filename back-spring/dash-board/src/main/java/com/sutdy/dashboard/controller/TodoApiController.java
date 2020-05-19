@@ -49,7 +49,11 @@ public class TodoApiController {
         SearchParams params = new SearchParams();
         params.setFilter(filter);
         params.setId(categoryId);
-        return todoService.findAll(params);
+        params.getFilterDetail().put("userId", userId);
+
+        List<TodoDto> todoList = todoService.findAll(params);
+
+        return todoList;
     }
 
     @DeleteMapping("/item/{id}")

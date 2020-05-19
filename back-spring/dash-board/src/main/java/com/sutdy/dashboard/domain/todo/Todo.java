@@ -47,12 +47,6 @@ public class Todo {
     @JoinColumn(name = "categoryId")
     private TodoCategory todoCategory;
 
-    @Setter
-    @ManyToOne
-    @JoinColumn(name = "accountId")
-    private Account account;
-
-
     public void patch(TodoDto dto) {
 
         String dateFormat = ApplicationStringConfig.DATE_FORMAT;

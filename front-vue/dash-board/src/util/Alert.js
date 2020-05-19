@@ -70,9 +70,9 @@ const elConfirm = (
 
 
 function logger(context , functionName){
-    let { VUE_APP_MODE } = process.env;
+    let VUE_APP_MODE = process.env.VUE_APP_MODE;
     if(VUE_APP_MODE === 'DEV'){
-        console.log(`${functionname} ---> `, context);
+        console.log(` ${functionName} => `, context);
     }
 }
 

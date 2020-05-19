@@ -114,7 +114,7 @@ export default {
                     id
                 })
                 .then( data => {
-                    // console.log(data);
+                     console.log(data);
                     this.isLoading = true;
                 })
                 .catch(err =>{ this.isLoading = true; 

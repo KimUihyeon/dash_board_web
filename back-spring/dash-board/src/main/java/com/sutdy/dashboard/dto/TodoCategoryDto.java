@@ -34,6 +34,8 @@ public class TodoCategoryDto extends AbsDtoConverter<TodoCategory> {
 
     private String cDate;
 
+    private String accountId;
+
 
     public TodoCategoryDto(TodoCategory entity){
         createDto(entity);
@@ -62,5 +64,6 @@ public class TodoCategoryDto extends AbsDtoConverter<TodoCategory> {
         this.icon = entity.getIcon();
         this.iconColor = entity.getIconColor();
         this.fontColor = entity.getFontColor();
+        this.accountId = entity.getAccount() == null ? null : entity.getAccount().getId();
     }
 }

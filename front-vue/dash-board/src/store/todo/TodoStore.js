@@ -55,7 +55,7 @@ const actions = {
         return new Promise((resolve , reject) =>{
             todoService.getTodoList( filter , id)
                 .then(data=>{
-                    alert.logger('todo List -> 다운로드');
+                    alert.logger('todo List download', 'fetch_todo_list');
                     context.commit('SET_TODO_LIST', { todoList : data });
                     resolve(data);
                 })
@@ -173,6 +173,7 @@ const mutation = {
     /// todo Items
     /// todo Items
     SET_TODO_LIST : function(state ,payload){
+        console.log(payload);
         state.todo.todo_list = payload.todoList;
     },
     REMOVE_TODO : function (state, payload){

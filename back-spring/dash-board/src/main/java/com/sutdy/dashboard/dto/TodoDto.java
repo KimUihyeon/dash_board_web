@@ -9,6 +9,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.time.LocalDateTime;
+
 /**
  * @author kuh
  * @since 2020.05.03
@@ -50,16 +52,20 @@ public class TodoDto extends AbsDtoConverter<Todo> {
     public Todo toEntity() {
         String dateFormat = ApplicationStringConfig.DATE_FORMAT;
 
+        LocalDateTime cDate = this.date == null ? null : DateUtil.stringToLocalDateTime(this.date, dateFormat);
+        LocalDateTime sDate = this.sDate == null ? null : DateUtil.stringToLocalDateTime(this.sDate, dateFormat);
+        LocalDateTime eDate = this.eDate == null ? null : DateUtil.stringToLocalDateTime(this.eDate, dateFormat);
+
         return Todo.builder()
                 .id(this.id)
-                .cDate(DateUtil.stringToLocalDateTime(this.date, dateFormat))
+                .cDate(cDate)
                 .complete(this.todoComplete)
                 .contents(this.memo)
                 .title(this.title)
                 .isImportant(this.isImportant)
                 .toDay(this.toDay)
-                .sDate(DateUtil.stringToLocalDateTime(this.sDate, dateFormat))
-                .eDate(DateUtil.stringToLocalDateTime(this.eDate, dateFormat))
+                .sDate(sDate)
+                .eDate(eDate)
                 .build();
     }
 

@@ -2,6 +2,9 @@ package com.sutdy.dashboard.setting.common;
 
 import lombok.Data;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * @author kuh
  * @since 2020.05.08
@@ -19,6 +22,12 @@ public class SearchParams {
      */
     private Long id;
 
+
+    /**
+     * 필터데이터
+     */
+    private Map<String, Object> filterDetail;
+
     /**
      * 현재 페이지
      * default = -1
@@ -29,4 +38,9 @@ public class SearchParams {
      *
      */
     private int size = 20;
+
+
+    public SearchParams(){
+        this.filterDetail = new HashMap<String, Object>();
+    }
 }

@@ -1,10 +1,8 @@
 package com.sutdy.dashboard.domain.todo;
 
+import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.dto.TodoCategoryDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -36,6 +34,11 @@ public class TodoCategory {
     private String fontColor;
 
     private LocalDateTime cDate;
+
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "accountId")
+    private Account account;
 
 
     public void patch(TodoCategoryDto dto) {
