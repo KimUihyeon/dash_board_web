@@ -3,7 +3,7 @@ package com.sutdy.dashboard.dto;
 import com.sutdy.dashboard.domain.todo.TodoCategory;
 import com.sutdy.dashboard.dto.common.AbsDtoConverter;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
-import com.sutdy.dashboard.setting.util.Util;
+import com.sutdy.dashboard.setting.util.DateUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -47,7 +47,7 @@ public class TodoCategoryDto extends AbsDtoConverter<TodoCategory> {
                 .title(this.title)
                 .icon(this.icon)
                 .canModify(this.canModify)
-                .cDate(Util.stringToLocalDateTime(this.cDate, ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.stringToLocalDateTime(this.cDate, ApplicationStringConfig.DATE_FORMAT))
                 .iconColor(this.iconColor)
                 .fontColor(this.fontColor)
                 .build();
@@ -58,7 +58,7 @@ public class TodoCategoryDto extends AbsDtoConverter<TodoCategory> {
         this.id = entity.getId();
         this.title = entity.getTitle();
         this.canModify = entity.isCanModify();
-        this.cDate = entity.getCDate() == null ? null : Util.localDateTimeToString(entity.getCDate() , ApplicationStringConfig.DATE_FORMAT);
+        this.cDate = entity.getCDate() == null ? null : DateUtil.localDateTimeToString(entity.getCDate() , ApplicationStringConfig.DATE_FORMAT);
         this.icon = entity.getIcon();
         this.iconColor = entity.getIconColor();
         this.fontColor = entity.getFontColor();

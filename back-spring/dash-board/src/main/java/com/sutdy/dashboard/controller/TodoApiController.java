@@ -1,14 +1,12 @@
 package com.sutdy.dashboard.controller;
 
-import com.sun.deploy.net.HttpResponse;
-import com.sutdy.dashboard.domain.todo.TodoCategory;
 import com.sutdy.dashboard.dto.TodoCategoryDto;
 import com.sutdy.dashboard.dto.TodoDto;
 import com.sutdy.dashboard.service.TodoCategoryService;
 import com.sutdy.dashboard.service.TodoService;
 import com.sutdy.dashboard.setting.common.SearchParams;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
-import com.sutdy.dashboard.setting.util.Util;
+import com.sutdy.dashboard.setting.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.web.bind.annotation.*;
@@ -62,7 +60,7 @@ public class TodoApiController {
 
     @PostMapping("/item")
     public TodoDto insertTodoItem(@RequestBody TodoDto todoRequest) {
-        todoRequest.setDate(Util.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT));
+        todoRequest.setDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT));
         TodoDto result = this.todoService.save(todoRequest);
         return result;
     }
@@ -98,7 +96,7 @@ public class TodoApiController {
 
     @PostMapping("/category")
     public TodoCategoryDto inertTodoCategory(@RequestBody TodoCategoryDto todoCategoryDto) {
-        todoCategoryDto.setCDate(Util.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT));
+        todoCategoryDto.setCDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT));
         return this.todoCategoryService.save(todoCategoryDto);
     }
 

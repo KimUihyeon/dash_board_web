@@ -1,8 +1,8 @@
 import { data } from "../../util";
 
 const __COOKIE_POPS = { 
-    LOGIN_ID = process.env.VUE_APP_COOKIE_NAME_LOGIN,
-    TOKEN = process.env.VUE_APP_COOKIE_NAME_TOKEN,
+    LOGIN_ID : process.env.VUE_APP_COOKIE_NAME_LOGIN,
+    TOKEN : process.env.VUE_APP_COOKIE_NAME_TOKEN,
 } 
 
 export const getBaseUrl = () => {

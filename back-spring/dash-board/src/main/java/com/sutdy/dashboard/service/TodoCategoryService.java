@@ -8,17 +8,15 @@ import com.sutdy.dashboard.dto.TodoCategoryDto;
 import com.sutdy.dashboard.service.common.BaseCrudService;
 import com.sutdy.dashboard.setting.common.SearchParams;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
-import com.sutdy.dashboard.setting.util.Util;
+import com.sutdy.dashboard.setting.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.transaction.Transactional;
-import java.lang.reflect.Array;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -45,7 +43,7 @@ public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCateg
 
         defaultData.add(TodoCategoryDto.builder()
                 .canModify(false)
-                .cDate(Util.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
                 .title("기본 디렉토리")
                 .icon("el-icon-folder-delete")
                 .iconColor("white")

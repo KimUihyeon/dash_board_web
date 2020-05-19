@@ -1,6 +1,9 @@
 package com.sutdy.dashboard.domain.todo;
 
+import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.dto.TodoDto;
+import com.sutdy.dashboard.setting.ApplicationStringConfig;
+import com.sutdy.dashboard.setting.util.DateUtil;
 import lombok.*;
 
 import javax.persistence.*;
@@ -35,13 +38,24 @@ public class Todo {
 
     private boolean isImportant; // 중요
 
+    private LocalDateTime sDate;
+
+    private LocalDateTime eDate;
+
     @Setter
     @ManyToOne
     @JoinColumn(name = "categoryId")
     private TodoCategory todoCategory;
 
+    @Setter
+    @ManyToOne
+    @JoinColumn(name = "accountId")
+    private Account account;
+
 
     public void patch(TodoDto dto) {
+
+        String dateFormat = ApplicationStringConfig.DATE_FORMAT;
 
         if (dto.getMemo() != null && !dto.getMemo().equals(this.contents)) {
             this.contents = dto.getMemo();
@@ -58,6 +72,19 @@ public class Todo {
         if (dto.isToDay() != this.toDay) {
             this.toDay = dto.isToDay();
         }
+
+        if(dto.getDate() != null && !DateUtil.dateTimeCompare(dto.getDate(), this.cDate , dateFormat)){
+            this.cDate = DateUtil.stringToLocalDateTime(dto.getDate(), dateFormat);
+        }
+
+        if(dto.getEDate() != null && !DateUtil.dateTimeCompare(dto.getEDate(), this.eDate , dateFormat)){
+            this.eDate = DateUtil.stringToLocalDateTime(dto.getEDate(), dateFormat);
+        }
+
+        if(dto.getSDate() != null && !DateUtil.dateTimeCompare(dto.getSDate(), this.sDate , dateFormat)){
+            this.sDate = DateUtil.stringToLocalDateTime(dto.getSDate(), dateFormat);
+        }
+
 
 
 

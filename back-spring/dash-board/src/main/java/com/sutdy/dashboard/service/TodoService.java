@@ -1,5 +1,7 @@
 package com.sutdy.dashboard.service;
 
+import com.sutdy.dashboard.domain.members.Account;
+import com.sutdy.dashboard.domain.members.AccountRepository;
 import com.sutdy.dashboard.domain.todo.Todo;
 import com.sutdy.dashboard.domain.todo.TodoCategory;
 import com.sutdy.dashboard.domain.todo.TodoCategoryRepository;
@@ -9,7 +11,7 @@ import com.sutdy.dashboard.dto.TodoDto;
 import com.sutdy.dashboard.service.common.BaseCrudService;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.common.SearchParams;
-import com.sutdy.dashboard.setting.util.Util;
+import com.sutdy.dashboard.setting.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
@@ -17,7 +19,6 @@ import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -30,8 +31,11 @@ import java.util.stream.Stream;
 @Service("todoService")
 public class TodoService extends BaseCrudService<Todo, TodoDto, Long> {
 
-
+    @Autowired
     private TodoCategoryRepository todoCategoryRepository;
+
+    @Autowired
+    private AccountRepository accountRepository;
 
     @Autowired
     public TodoService(TodoRepository todoRepository, TodoCategoryRepository todoCategoryRepository) {
@@ -48,13 +52,19 @@ public class TodoService extends BaseCrudService<Todo, TodoDto, Long> {
 
         TodoCategoryDto categoryDto = TodoCategoryDto.builder()
                 .canModify(false)
-                .cDate(Util.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
                 .title("테스트 디렉토리 2")
                 .icon("el-icon-folder-delete")
                 .iconColor("white")
                 .fontColor("white")
                 .build();
         TodoCategory saveCategory = this.todoCategoryRepository.save(categoryDto.toEntity());
+
+//
+//        Account account = Account.builder()
+//                .id("test@naver.com")
+//                .pw("123123123")
+//                .
 
         for (int i = 0; i < 10; i++) {
             TodoCategory relationCategory = null;

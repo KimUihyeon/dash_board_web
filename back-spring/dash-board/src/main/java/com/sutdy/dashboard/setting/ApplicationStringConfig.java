@@ -12,4 +12,5 @@ public class ApplicationStringConfig {
     public final static String DATE_FORMAT = "yyyy-MM-dd HH:mm:ss";
     public final static String JWT_ENCRYPTION_KEY = "rladmlgusWkdWkdaos";
     public final static String WEB_URL = ServletUriComponentsBuilder.fromCurrentContextPath().build().toString() +".com";
+    public final static String STRING_ENCRYPTION_KEY = "Rndkdkdkdkdk";
 }

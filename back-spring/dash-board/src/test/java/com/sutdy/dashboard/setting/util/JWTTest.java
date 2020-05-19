@@ -1,4 +1,4 @@
-package com.sutdy.dashboard.common;
+package com.sutdy.dashboard.setting.util;
 
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.auth.AuthEnum;
@@ -9,7 +9,6 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 /**
  * @author kuh
