@@ -125,7 +125,7 @@ export default {
 
             let todoItem = this.cloneItem;
             this.$store.dispatch('patch_todo', { todoItem }).catch(err=>{
-                alert.showMessage({ vueObject : this , type : 'error' , message : err });
+                alert.elMessageBox({ vueObject : this , type : 'error' , message : err });
             });
         },
         deleteTodoProcess(){
@@ -133,19 +133,20 @@ export default {
             let okCallback = () => {
                 this.$store.dispatch('remove_todo', { todoItem : this.cloneItem})
                     .then(data=>{
-                        alert.showMessage({ vueObject : this, type : 'success', message : '삭제되었습니다' });
+                        alert.elMessageBox({ vueObject : this, type : 'success', message : '삭제되었습니다' });
                     })
                     .catch(err=>{
-                        alert.showMessage({ vueObject : this, type : 'error', message : err });
+                        alert.elMessageBox({ vueObject : this, type : 'error', message : err });
                 });
             }
 
             let cancleCallback = () => {
-                alert.showMessage({ vueObject : this, type : 'info', message : '취소' });
+                alert.elMessageBox({ vueObject : this, type : 'info', message : '취소' });
             }
 
-            alert.showConfirm({
+            alert.elConfirm({
                 vueObject: this,
+                type : 'Warning',
                 confirmMsg : '해당 Todo를 삭제하시겠습니까?',
                 title : '할일 삭제',
                 okCallback : okCallback,

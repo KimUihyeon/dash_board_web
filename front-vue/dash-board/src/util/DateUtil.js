@@ -9,10 +9,9 @@ const moment = require('moment');
 const formatting = (moment ,format) =>{
 
     if(format === null || format === undefined ){
-
         format = 'YYYY-MM-DD HH:mm:ss';
     }
-
+    
     return  moment.format(format)
 }
 

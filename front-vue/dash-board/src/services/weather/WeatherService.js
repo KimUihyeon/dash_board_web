@@ -1,5 +1,4 @@
 import Axios from "axios";
-import { citys } from "../../util/City.js"
 import { rest , date } from '../../util'
 import { WeatherModel , WeatherDetail ,WeatherOneDay }  from './WeatherResponseModel'
 import moment from "moment";
@@ -126,11 +125,4 @@ export const weatherService = {
     getCurrentWeather,
     oneCallWeather,
     getWeatherDetailByLocation
-}
-
-const getCity = () =>{
-    let datas = citys.filter(t=>t.country==="KR");
-    // console.log(datas);
-    // console.log(JSON.stringify(datas));
-    
 }

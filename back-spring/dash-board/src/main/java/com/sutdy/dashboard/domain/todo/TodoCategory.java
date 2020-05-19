@@ -37,6 +37,7 @@ public class TodoCategory {
 
     private LocalDateTime cDate;
 
+
     public void patch(TodoCategoryDto dto) {
         if (!dto.getTitle().equals(this.title)) {
             this.title = dto.getTitle();

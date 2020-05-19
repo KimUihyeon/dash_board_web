@@ -1,4 +1,5 @@
-import { isNull } from "./Data";
+import { data } from "./Data";
+const isNull = data.isNull;
 
 /**
  * Element Ui Alert popup !
@@ -7,7 +8,7 @@ import { isNull } from "./Data";
  * @param {*} type 
  * @param {*} message 
  */
-export const showMessage = ({ vueObject, type, message }) => {
+const elMessageBox = ({ vueObject, type, message }) => {
     vueObject.$message({
         message,
         type
@@ -27,7 +28,7 @@ export const showMessage = ({ vueObject, type, message }) => {
  * @param {function} okCallback ,
  * @param {function} cancelCallback  
  */
-export const showConfirm = (
+const elConfirm = (
     {
         vueObject ,
         type  ,
@@ -39,39 +40,44 @@ export const showConfirm = (
         cancelCallback  }) => 
     {
         
+        type = isNull(type) ? 'Warning' : type;
+        okValue = isNull(okValue) ? '확인' : okValue;
+        cancleValue = isNull(cancleValue) ? '취소' : cancleValue;
 
-    type = isNull(type) ? 'Warning' : type;
-    okValue = isNull(okValue) ? '확인' : okValue;
-    cancleValue = isNull(cancleValue) ? '취소' : cancleValue;
 
+        return  vueObject.$confirm(confirmMsg , title , {
+            confirmButtonText: okValue,
+            cancelButtonText: cancleValue,
+            type : type
+            }).then(() => {
+                if(isNull(okCallback)){
+                    elMessageBox(vueObject , 'success' , '확인 되었습니다.');
+                }
+                else{
+                    okCallback();
+                }
 
-    return  vueObject.$confirm(confirmMsg , title , {
-        confirmButtonText: okValue,
-        cancelButtonText: cancleValue,
-        type: type
-        }).then(() => {
-            if(isNull(okCallback)){
-                showMessage(vueObject , 'success' , '확인 되었습니다.');
-            }
-            else{
-                okCallback();
-            }
-
-        }).catch((e) => {
-            console.log(e);
-            if(isNull(cancelCallback)){
-                showMessage(vueObject , 'info' , '취소 되었습니다.');
-            }
-            else{
-                cancelCallback();
-            }  
-        });
+            }).catch((e) => {
+                console.log(e);
+                if(isNull(cancelCallback)){
+                    elMessageBox(vueObject , 'info' , '취소 되었습니다.');
+                }
+                else{
+                    cancelCallback();
+                }  
+            });
 }
 
 
-export function logger(context){
+function logger(context , functionName){
     let { VUE_APP_MODE } = process.env;
     if(VUE_APP_MODE === 'DEV'){
-        console.log(context)
+        console.log(`${functionname} ---> `, context);
     }
+}
+
+export const alert = {
+    elConfirm,
+    elMessageBox,
+    logger,
 }

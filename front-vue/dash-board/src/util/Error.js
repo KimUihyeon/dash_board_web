@@ -1,19 +1,19 @@
 
-const errorSample = {
+const __errorSample = {
     code : String, // Server Cdoe
     serverCode : Number, // url Code
     msg : String ,  // alert Message
     description : String, // 설명
 }
 
-export const nullExceptionError = {
+const nullExceptionError = {
     code : 'E500',
     serverCode : 500,
     msg : '잘못된 접근 입니다.',
     description : 'Server null exception Error'
 }
 
-export const httpUrlNotSurpport ={
+const httpUrlNotSurpport ={
     code : 'E404',
     serverCode : 404,
     msg : '요청하신 주소를 찾을수 없습니다.',
@@ -21,7 +21,7 @@ export const httpUrlNotSurpport ={
 }
 
 
-export const authencationError = {
+const authencationError = {
     code : 'E403',
     serverCode : 403,
     msg : '로그인이 해제 되었습니다.',
@@ -36,6 +36,15 @@ let errorContainner = [
 ]
 
 
-export const findError = (code) => {
+const findError = (code) => {
     return errorContainner.filter(t=>t.code === code)[0];
+}
+
+
+export const error = {
+    findError,
+
+    nullExceptionError,
+    httpUrlNotSurpport,
+    authencationError
 }

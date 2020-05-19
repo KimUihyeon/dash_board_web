@@ -1,44 +1,89 @@
 <template>
-    <el-dialog title="Shipping address" :visible.sync="show" :close="()=>{showModal()}" :close-on-click-modal="false">
-        <div>
-            {{validation.msg}}
-        </div>
-        <div>
-            <el-input 
-                type="text" 
-                @keydown.enter.native="enterKeyHandle('id')"
-                placeholder="id" 
-                ref="id"
-                v-model="id"
-                size="small"></el-input>
-        </div>
-        <div>
-            <el-input 
-                type="password" 
-                @keydown.enter.native="enterKeyHandle('pw')"
-                placeholder="pw" 
-                ref="pw"
-                v-model="pw"
-                size="small"></el-input>
-        </div>
-        <div>
-            <el-input 
-                type="password" 
-                @keydown.enter.native="enterKeyHandle('pwConfirm')"
-                placeholder="PassWord 확인" 
-                ref="pwConfirm"
-                v-model="pwConfirm"
-                size="small"></el-input>
-        </div>
-        <div>
-            <el-input 
-                type="password" 
-                @keydown.enter.native="enterKeyHandle('name')"
-                placeholder="name" 
-                ref="name"
-                v-model="name"
-                size="small"></el-input>
-        </div>
+    <el-dialog title="간편 회원가입" :visible.sync="show" :close="()=>{showModal()}" :close-on-click-modal="false">
+
+        <ValidationObserver v-slot="{ handleSubmit }">
+            <el-form ref="form" label-width="120px">
+                <div>
+                    <ValidationProvider name="email" v-slot="{errors}" immediate  rules="required|email|minMax:5,30|noTrim">
+                        <el-form-item label="id">
+                                <el-input 
+                                    type="text" 
+                                    @keydown.enter.native="()=>{nextFouse(errors , $refs.pw)}"
+                                    :suffix-icon="isIdConfirm ? 'el-icon-check' : ''"
+                                    placeholder="email 형식 (****@email.com)"
+                                    ref="id"
+                                    v-model="id"
+                                    size="small">
+
+                                    <el-button 
+                                        slot="append"
+                                        v-if="isIdConfirm == false"
+                                        @click="()=>{emailConfirm(errors)}"
+                                        >중복확인</el-button>
+                                </el-input>
+                                <span class="validation-box">{{ errors[0] }}</span>
+                        </el-form-item>
+                    </ValidationProvider>
+                </div>
+                <div>
+                    <ValidationProvider name="password" v-slot="{errors}" rules="required|minMax:3,6">
+                        <el-form-item label="password">
+                            <el-input 
+                                type="password" 
+                                @keydown.enter.native="()=>{nextFouse(errors , $refs.pwConfirm)}"
+                                placeholder="영문 숫자 조합 8자리 이상." 
+                                ref="pw"
+                                v-model="pw"
+                                size="small"></el-input>
+                            <span class="validation-box">{{errors[0]}}</span>
+                        </el-form-item>
+                    </ValidationProvider>
+                </div>
+                <div>
+                    <ValidationProvider v-slot="{errors}" rules="required|minMax:3,6|passwordConfirm:@password">
+                        <el-form-item>
+                            <el-input 
+                                type="password" 
+                                @keydown.enter.native="()=>{nextFouse(errors , $refs.name)}"
+                                placeholder="패스워드 재입력" 
+                                ref="pwConfirm"
+                                v-model="pwConfirm"
+                                size="small"></el-input>
+                            <span class="validation-box">{{errors[0]}}</span>
+                        </el-form-item>
+                    </ValidationProvider>
+                </div>
+                <div>
+                    <ValidationProvider name="name" v-slot="{errors}" rules="required|minMax:3,8|noTrim">
+                        <el-form-item label="name">
+                            <el-input 
+                                type="text" 
+                                @keydown.enter.native="()=>{
+                                    nextFouse(errors , $refs.name);
+                                    handleSubmit(submit);
+                                }"
+                                placeholder="닉네임" 
+                                ref="name"
+                                v-model="name"
+                                size="small"></el-input>
+                            <span class="validation-box">{{errors[0]}}</span>
+                        </el-form-item>
+                    </ValidationProvider>
+                </div>
+                <div>
+                    <el-button
+                        size="small"
+                        type="primary"
+                        @click="handleSubmit(submit)"
+                        round>가입하기</el-button>
+                    <el-button 
+                        size="small"
+                        type="danger"
+                        @click="()=>{show=false}"
+                        round>나가기</el-button>
+                </div>
+            </el-form>
+        </ValidationObserver>
     </el-dialog>
 </template>
 
@@ -46,8 +91,7 @@
 <script>
 
 import { data, alert , rest } from "../../util";
-import { accountService } from '../../services'
-
+import { accountService } from '../../services';
 
 const name = 'Signup';
 const props = { showModal : Boolean }
@@ -61,87 +105,116 @@ export default {
             pw : '',
             pwConfirm : '',
             name : '',
-            valide : {
-                id : false,
-                pw : false,
-                name : false,
-            },
             show : false,
             isIdConfirm : false,
+            isBlurs : false,
         }
     },
     methods : {
         init(){
             this.id = '';
             this.pw = '';
+            this.name = '';
             this.isIdConfirm = false;
         },
-        enterKeyHandle(elType){
-            if(elType === 'id'){
-                this.focusing(this.$refs.pw);
-            }else if(elType === 'pw'){
-                this.focusing(this.$refs.pwConfirm);
-            }else if(elType === 'pwConfirm'){
-                this.focusing(this.$refs.name);
-            }else if(elType === 'name'){
-                if(this.validation()){
-
-                };
-            }
-        },
-        idEnterKeyHandle(){
-        },
-        pwEnterKeyHandle(){
-            this.focusing(this.$refs.name);
-            if(this.validation()){
-                this.submit();
-            }
-        },
-        nameEnterKeyHandle(){
-
-        },
         submit(){
+            if(this.isIdConfirm === false){
+                this.alert('error', '아이디 중복확인을 해주세요');
+                return ;
+            }
+
             accountService.signup(this.id, this.pw).then(res =>{
-                console.log(res);
+                setTimeout(()=>{
+                    this.show = false;
+                },50);
+            }).catch(err=>{
+                this.show = false;
+                this.alert('error' ,err);
             });
         },
-        focusing(element){
-            element.focus();
+        nextFouse(validationErr, nextElement){
+            if(data.isNull(validationErr)){
+                nextElement.focus();
+            }
         },
-        alert( type , message){
-            alert.showMessage({
+        alert(type , message){
+            alert.elMessageBox({
                 vueObject : this ,
                 type,
                 message  
             });
         },
-        validation(){
-            console.log(data.validation(this.id , 'text', [5,20]))
-            console.log(this.id.length);
-            if(!data.validation(this.id , 'text', [5,20])) {
-                this.alert('error', '아이디는 6자이상 20자 미만입니다.')
-                return false;
+        emailConfirm(errors , value){
+            if(!data.isNull(errors)){
+                return;
             }
-            if(!data.validation(this.pw, 'text', [5,14])){
-                this.alert('error', '패스워드는 6자이상 14자 미만입니다.')
-                return false;
+            else {
+                accountService.duplicateCheck(this.id).then(res=>{
+                    if(res === false){
+                        this.alert('success' , "사용가능한 아이디 입니다.");
+                        this.isIdConfirm = true;
+                    }
+                    else {
+                        this.alert('error' , "이미 사용중인 아이디 입니다.");
+                        this.isIdConfirm = false;
+                    }
+                })
             }
-            if(this.pw !== this.pwConfirm){
-                this.alert('error', '패스워드 확인이 일치하지 않습니다.')
-                return false;
-            }
-            if(!data.validation(this.name, 'text', [1,10])){
-                this.alert('error', '이름은 2자이상 10자 미만입니다.')
-                return false;
-            }
-            return true;
         }
     },
     watch : {
         showModal(v){
             this.show = v;
             this.init();
+        },
+        id(v){
+            this.isIdConfirm = false;
         }
     }
 }
 </script>
+
+
+<style>
+/* pc */
+.validation-box{
+    position: absolute;
+    display: block;
+    line-height: 10px;
+    font-size: 11px;
+    color: red;
+    text-indent: 5px;
+}
+
+@media only all and (min-width: 768px) {
+    .el-dialog{
+        min-width: 500px;
+        width: 30% !important;
+    }
+    .el-form-item__label{
+        width: 120px !important;
+    }
+    .el-form-item__content{
+        margin-left: 120px !important;
+    }
+    .el-form-item{
+        margin-bottom: 15px !important;
+    }
+}
+
+/* mobile */
+@media all and (max-width:768px) {
+    .el-dialog{
+        width: 95% !important;
+    }
+    .el-form-item__label{
+        width: 80px !important;
+    }
+    .el-form-item__content{
+        margin-left: 80px !important;
+    }
+    .el-form-item{
+        margin-bottom: 19px !important;
+    }
+}
+</style>

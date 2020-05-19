@@ -2,7 +2,7 @@
     <div>
         <div class="blurred-box">
             <div class="user-login-box">
-                <span class="user-icon-outer" v-show="isLoginCookie" v-bind:class="!isLoginCookie ? 'blurred-box-smail':''">
+                <!-- <span class="user-icon-outer" v-show="isLoginCookie" v-bind:class="!isLoginCookie ? 'blurred-box-smail':''">
                     <span
                         class="user-icon"
                         style="background-image: url(https://avatars3.githubusercontent.com/u/30382976?s=460&u=d8c6040…&v=4);"
@@ -34,7 +34,37 @@
                 </div>
 
                 <div v-show="!isLoginCookie">
-                    <span class="login_help" @click="showSignupModal">signup</span>
+                    <span class="login_help cursor-pointer" @click="showSignupModal">SignUp</span>
+                    <span class="login_help"> | </span>
+                    <span class="login_help">find ID</span>
+                </div> -->
+
+
+                <!-- <span class="user-icon-outer" v-show="isLoginCookie" v-bind:class="!isLoginCookie ? 'blurred-box-smail':''">
+                    <span
+                        class="user-icon"
+                        style="background-image: url(https://avatars3.githubusercontent.com/u/30382976?s=460&u=d8c6040…&v=4);"
+                    ></span>
+                </span> -->
+                
+                <div>
+                    <el-input 
+                        type="text" 
+                        size="small"
+                        @keydown.enter.native='keyPress_handle' 
+                        placeholder="ID" 
+                        v-model="id"></el-input>
+                </div>
+                <div class="inputBox" >
+                    <el-input 
+                        type="password" 
+                        @keydown.enter.native='keyPress_handle'
+                        placeholder="pw" 
+                        v-model="pw"
+                        size="small"></el-input>
+                </div>
+                <div>
+                    <span class="login_help cursor-pointer" @click="showSignupModal">SignUp</span>
                     <span class="login_help"> | </span>
                     <span class="login_help">find ID</span>
                 </div>
@@ -98,7 +128,7 @@ export default {
             }
 
             if(!this.validation.pw || !this.validation.pw) {
-                alert.showMessage({ vueObject : this, type : 'error', message : this.validation.msg });
+                alert.elMessageBox({ vueObject : this, type : 'error', message : this.validation.msg });
             }
             else {
 
@@ -111,14 +141,14 @@ export default {
                         },50)
                     }
                     else if(authType === 'NoAuth'){
-                        alert.showMessage({ 
+                        alert.elMessageBox({ 
                                 vueObject : this ,
                                 type : 'error' , 
                                 message : '비밀번호 혹은 아이디를 확인해주세요.' });
                     }
                 })
                 .catch( err => {
-                    alert.showMessage({ 
+                    alert.elMessageBox({ 
                             vueObject : this ,
                             type : 'error' , 
                             message : err });

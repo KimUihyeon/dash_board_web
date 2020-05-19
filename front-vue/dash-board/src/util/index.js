@@ -1,43 +1,23 @@
 import { convertByUnixDateTime, now } from './DateUtil'
-import { get , post , delete_ , patch} from './AxiosUtil'
+// import {} from './Formater'
+import { rest as Rest } from './Rest'
+import { alert as Alert } from './Alert';
 import { data as Data } from './Data';
-import { showMessage , showConfirm , logger} from './Alert';
-import { authencationError, nullExceptionError , httpUrlNotSurpport, findError } from './Error'
+import { error as Error} from './Error'
 import moment from 'moment';
 
-// #dateTime
-const convertByUnixDate = (dateTime) => {
-    return convertByUnixDateTime(dateTime);
-}
+
 
 export const date = {
     now,
-    convertByUnixDate
+    convertByUnixDate : (dateTime) => {
+        return convertByUnixDateTime(dateTime);
+    }    
 }
 
-export const data = Data;
 
 // #rest ful
-export const rest = {
-    get,
-    post,
-    patch,
-    delete_
-}
-
-export const alert = {
-    showMessage,
-    showConfirm,
-    logger
-}
-
-export const error = {
-    findError,
-
-    nullExceptionError,
-    authencationError,
-    httpUrlNotSurpport,
-
-
-};
-
+export const rest = Rest;
+export const alert = Alert;
+export const error = Error;
+export const data = Data;

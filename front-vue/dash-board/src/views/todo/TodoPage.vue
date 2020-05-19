@@ -147,14 +147,14 @@ export default {
         },
 
         cussessAlert(data){
-            alert.showMessage({ 
+            alert.elMessageBox({ 
                 vueObject : this, 
                 type : 'success', 
                 message : '추가 되엇습니다.' 
             });
         },
         errorAlert(err){
-            alert.showMessage({ 
+            alert.elMessageBox({ 
                 vueObject : this,
                 type : 'error', 
                 message : err 

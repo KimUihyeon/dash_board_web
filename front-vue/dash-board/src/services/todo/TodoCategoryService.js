@@ -3,11 +3,11 @@ import { rest , date , data  } from '../../util'
 const base_url = process.env.VUE_APP_API_BASE_URL + '/v1/todo';
 
 const getCurrentLoginID = () =>{
-    return data.getCookie(process.env.VUE_APP_COOKIE_NAME_LOGIN);
+    return data.cookie.getCookie(process.env.VUE_APP_COOKIE_NAME_LOGIN);
 }
 
 const getHttpHeader =  () =>{
-    return { headers : { Authorization : 'Bearer ' + data.getCookie(process.env.VUE_APP_COOKIE_NAME_TOKEN)}}
+    return { headers : { Authorization : 'Bearer ' + data.cookie.getCookie(process.env.VUE_APP_COOKIE_NAME_TOKEN)}}
 };
 
 

@@ -8,12 +8,12 @@ import { data, rest, error } from '../util';
 
 
 const authCheck = () => (to, from, next) => {
-  let userId = data.getCookie(process.env.VUE_APP_COOKIE_NAME_LOGIN);
+  let userId = data.cookie.getCookie(process.env.VUE_APP_COOKIE_NAME_LOGIN);
 
   let authApi = process.env.VUE_APP_API_BASE_URL + '/v1/auth';
 
   if (!data.isNull(userId)) {
-    let token = data.getCookie(process.env.VUE_APP_COOKIE_NAME_TOKEN);
+    let token = data.cookie.getCookie(process.env.VUE_APP_COOKIE_NAME_TOKEN);
 
     rest.post( authApi , { token }).then(({authType}) => {
       if (authType === 'Auth') { // 인증완료

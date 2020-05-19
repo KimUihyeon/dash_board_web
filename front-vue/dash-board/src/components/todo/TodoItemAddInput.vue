@@ -38,11 +38,11 @@ export default {
 
             this.$store.dispatch('patch_todo', { id : -1, title : this.title , categoryId})
                 .then(data =>{ 
-                    alert.showMessage({ vueObject : this, type : 'success', message : '추가 되었습니다.' });
+                    alert.elMessageBox({ vueObject : this, type : 'success', message : '추가 되었습니다.' });
                     this.title = '';
                 })
                 .catch(error =>{
-                    alert.showMessage({ vueObject : this, type : 'error', message : error });
+                    alert.elMessageBox({ vueObject : this, type : 'error', message : error });
             });
         }
     }

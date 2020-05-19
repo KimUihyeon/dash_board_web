@@ -1,13 +1,6 @@
 import Axios from "axios";
-import { isNull } from './Data'
-// export const get = (url)=>{
-//     return Axios.get(url).then(res=>{
-//         return res.data;
-//     }).catch(e=>{
-//         return e;
-//     })
-// }
-
+import { data } from './Data'
+const isNull = data.isNull;
 
 /**
  * 
@@ -16,9 +9,9 @@ import { isNull } from './Data'
  */
 export function get(url, dataObject , config ){
 
-    const apiurl = urlFactory(url, dataObject);
-    /** */
-    return Axios.get(apiurl , config ).then(res=>{
+    const apiurl = __uriToDataJoinner(url, dataObject);
+
+    return Axios.get(apiurl, config).then(res=>{
         return res.data;
     });
 }
@@ -38,7 +31,7 @@ export function patch(url , dataObject){
 
 
 export function delete_(url, dataObject){
-    const apiurl = urlFactory(url, dataObject);
+    const apiurl = __uriToDataJoinner(url, dataObject);
     return Axios.delete(apiurl, dataObject).then(res=>{
         return res.data;
     });
@@ -46,7 +39,7 @@ export function delete_(url, dataObject){
 
 
 
-function urlFactory(url, params){
+function __uriToDataJoinner(url, params){
     
     let dataToUrl = `${url}?`;
     for(var prop in params){
@@ -55,4 +48,11 @@ function urlFactory(url, params){
         }
     }
     return dataToUrl;
+}
+
+export const rest = {
+    get,
+    post,
+    patch,
+    delete_
 }
