@@ -37,7 +37,7 @@ public class TodoCategory {
 
     @Setter
     @ManyToOne
-    @JoinColumn(name = "accountId")
+    @JoinColumn(name = "userId")
     private Account account;
 
 

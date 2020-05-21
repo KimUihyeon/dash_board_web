@@ -31,7 +31,7 @@ public class Account {
 
     private LocalDateTime cDate;
 
-    private boolean use;
+    private boolean deleteUser;
 
     public void patch(AccountDto dto){
         if(!dto.getCDate().equals(this.cDate)){

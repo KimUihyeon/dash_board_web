@@ -1,5 +1,6 @@
 package com.sutdy.dashboard.controller;
 
+import com.sutdy.dashboard.dto.AccountDto;
 import com.sutdy.dashboard.dto.TodoCategoryDto;
 import com.sutdy.dashboard.dto.TodoDto;
 import com.sutdy.dashboard.service.TodoCategoryService;
@@ -90,7 +91,7 @@ public class TodoApiController {
          * Todo : userid = 이거 널처리 할것 .. ! 널들어오면 Access Exception
          *
          */
-        return this.todoCategoryService.findAll();
+        return this.todoCategoryService.findAll(userId);
     }
 
     @DeleteMapping("/category/{id}")
