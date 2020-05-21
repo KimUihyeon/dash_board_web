@@ -1,10 +1,13 @@
 package com.sutdy.dashboard.service;
 
+import com.sutdy.dashboard.domain.members.Account;
+import com.sutdy.dashboard.domain.members.AccountRepository;
 import com.sutdy.dashboard.domain.todo.Todo;
 import com.sutdy.dashboard.domain.todo.TodoCategory;
 import com.sutdy.dashboard.domain.todo.TodoCategoryRepository;
 import com.sutdy.dashboard.domain.todo.TodoRepository;
 import com.sutdy.dashboard.dto.TodoDto;
+import com.sutdy.dashboard.dto.todo.TodoDtoTest;
 import com.sutdy.dashboard.service.common.BaseCrudService;
 import com.sutdy.dashboard.setting.common.SearchParams;
 import com.sutdy.dashboard.setting.util.TempDataFactory;
@@ -34,7 +37,8 @@ public class TodoService extends BaseCrudService<Todo, TodoDto, Long> {
                        TempDataFactory tempDataFactory) {
         super(todoRepository);
         this.todoCategoryRepository = todoCategoryRepository;
-        tempDataFactory.createTodoDatas();
+
+        tempDataFactory.createTodoDatas(); // // TODO: 2020-05-21 임시데이터 만드는로직.. ! 추후 삭제!
     }
 
 
@@ -44,9 +48,12 @@ public class TodoService extends BaseCrudService<Todo, TodoDto, Long> {
         Todo todo = dto.toEntity();
 
         if (dto.getCategoryId() != null) {
-            TodoCategory category = todoCategoryRepository.findById(dto.getCategoryId()).get();
+            TodoCategory category = todoCategoryRepository
+                    .findById(dto.getCategoryId())
+                    .orElseThrow(()-> new IllegalArgumentException(NOT_FIND_DATA));
             todo.setTodoCategory(category);
         }
+
         return this.entitySave(todo);
     }
 
@@ -88,11 +95,10 @@ public class TodoService extends BaseCrudService<Todo, TodoDto, Long> {
     @Override
     public List<TodoDto> findAll(SearchParams params) {
 
-        if (params.getFilter() == null) {
-            return this.findAll();
-        }
         String userId = params.getFilterDetail().get("userId").toString();
-        Stream<Todo> queryable = this.jpaRepository.findAll().stream();
+        Stream<Todo> queryable = this.jpaRepository.findAll().stream()
+                .filter(t-> t.getTodoCategory() != null)
+                .filter(t -> t.getTodoCategory().getAccount().getId().equals(userId));
 
         switch (params.getFilter().toUpperCase()) {
             case "TODAY": {
@@ -118,8 +124,7 @@ public class TodoService extends BaseCrudService<Todo, TodoDto, Long> {
             case "CATEGORY": {
                 return queryable
                         .filter(t -> !t.isComplete())
-                        .filter(t -> t.getTodoCategory() != null && t.getTodoCategory().getId() == params.getId())
-                        .filter(t -> t.getTodoCategory().getAccount().getId().equals(userId))
+                        .filter(t -> t.getTodoCategory().getId() == params.getId())
                         .map(a -> new TodoDto(a))
                         .collect(Collectors.toList());
             }

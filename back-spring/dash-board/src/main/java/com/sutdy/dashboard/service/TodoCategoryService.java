@@ -1,5 +1,7 @@
 package com.sutdy.dashboard.service;
 
+import com.sutdy.dashboard.domain.members.Account;
+import com.sutdy.dashboard.domain.members.AccountRepository;
 import com.sutdy.dashboard.domain.todo.Todo;
 import com.sutdy.dashboard.domain.todo.TodoCategory;
 import com.sutdy.dashboard.domain.todo.TodoCategoryRepository;
@@ -28,19 +30,26 @@ import java.util.stream.Collectors;
 @Service
 public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCategoryDto, Long> {
 
-    @Autowired
     private TodoRepository todoRepository;
+    private AccountRepository accountRepository;
 
     @Autowired
-    public TodoCategoryService(TodoCategoryRepository todoCategoryRepository) {
+    public TodoCategoryService(TodoCategoryRepository todoCategoryRepository,
+                               AccountRepository accountRepository,
+                               TodoRepository todoRepository
+                               ) {
         super(todoCategoryRepository);
-        tempData();
+        this.todoRepository = todoRepository;
+        this.accountRepository = accountRepository;
+
+
+        defaultCategory("admin@naver.com");
     }
 
-    public List<TodoCategoryDto> getDefaultTodoCategories() {
+
+    public List<TodoCategoryDto> insertDefaultTodoCategories(String userId){
+
         List<TodoCategoryDto> defaultData = new ArrayList<>();
-
-
         defaultData.add(TodoCategoryDto.builder()
                 .canModify(false)
                 .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
@@ -48,14 +57,14 @@ public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCateg
                 .icon("el-icon-folder-delete")
                 .iconColor("white")
                 .fontColor("white")
+                .userId(userId)
                 .build());
 
         return defaultData;
     }
 
-    private void tempData() {
-        List<TodoCategoryDto> list = getDefaultTodoCategories();
-        list.forEach(t -> {
+    private void defaultCategory(String userId){
+        insertDefaultTodoCategories(userId).forEach(t->{
             this.save(t);
         });
     }
@@ -63,7 +72,16 @@ public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCateg
 
     @Override
     public TodoCategoryDto save(TodoCategoryDto dto) {
-        return this.entitySave(dto.toEntity());
+
+        TodoCategory category = dto.toEntity();
+
+        if(dto.getUserId() !=null){
+            Account account = this.accountRepository.findById(dto.getUserId())
+                    .orElseThrow(()-> new IllegalArgumentException(NOT_FIND_DATA));
+            category.setAccount(account);
+        }
+
+        return this.entitySave(category);
     }
 
     @Override
@@ -103,6 +121,15 @@ public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCateg
                 .stream()
                 .map(t -> new TodoCategoryDto(t))
                 .collect(Collectors.toList());
+    }
+
+    public List<TodoCategoryDto> findAll(String userId){
+        return this.jpaRepository.findAll()
+                .stream()
+                .filter(t-> t.getAccount()!= null && t.getAccount().getId().equals(userId))
+                .map(t -> new TodoCategoryDto(t))
+                .collect(Collectors.toList());
+
     }
 
     @Override

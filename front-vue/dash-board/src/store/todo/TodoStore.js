@@ -26,12 +26,7 @@ const getters = {
     },
     getTodoCategories : function(state){
 
-        return state.todo.todo_categories.map(t=>{
-            return {
-                ...t,
-                param : 'category'
-            }
-        });
+        return state.todo.todo_categories;
     },
     getDefaultTodoCategories : function(state){
         return [
@@ -119,8 +114,14 @@ const actions = {
         return new Promise((resolve, reject)=>{
             todoCategoryService.getDatas()
                 .then(data =>{
-                    context.commit('SET_TODO_CATEGORIES' , { todoCategories : data }); 
-                    resolve(data);
+                    const categories = data.map(t=>{
+                        return{
+                            ...t,
+                            param : 'category'
+                        }
+                    })
+                    context.commit('SET_TODO_CATEGORIES' , { todoCategories : categories }); 
+                    resolve(categories);
                 })
                 .catch(err=>{
                     reject(err);

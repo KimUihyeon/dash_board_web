@@ -1,8 +1,8 @@
 package com.sutdy.dashboard.dto.todo;
 
-public class TodoDto {
+public class TodoDtoTest {
 
-    public class RegistorTodo{
+    public static class RegistorTodo{
 
     }
 }

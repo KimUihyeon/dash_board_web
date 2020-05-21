@@ -92,21 +92,24 @@ export default {
         }
     },
     mounted(){
-        this.todoListDownload(null);
-        this.$store.dispatch('fetch_todo_categories');
+
+        this.$store.dispatch('fetch_todo_categories').then((data)=>{
+            this.selectCategory(data[0]);
+        });
     },
     beforeRouteUpdate(to, from, next){
         const { type , id } = to.query;
-    
-        console.log(to.query);
-        this.selectedCategory = [...this.getTodoCategories ,
-                                 ...this.getDefaultTodoCategories]
-                        .filter(t=> t.id === id)[0];
-
-        this.todoListDownload(type , id);
+        const selectedCategory = [...this.getTodoCategories].filter(t=> t.id === id)[0];
+        
+        this.selectCategory(selectedCategory);
     },
     methods:{
-        todoListDownload(filter , id){
+        selectCategory(category){
+            const { param , id } = category;
+            this.selectedCategory = category;
+            this.fetchTodoList(param , id);
+        },
+        fetchTodoList(filter , id){
             this.isLoading = false;
             this.$store.dispatch('fetch_todo_list', { 
                     loginId : 'dkrnl1318@naver.com',
@@ -132,7 +135,7 @@ export default {
                     }, 
                     categoryId : this.selectedCategory.id 
                 })
-                .then(data=> {this.cussessAlert(data);})
+                .then(data=> {this.successAlert(data);})
                 .catch(err=>{this.errorAlert(err); });
         },
 
@@ -142,13 +145,12 @@ export default {
                         id : -1,
                         title : param.keyWord
                     }})
-                .then(data=> {this.cussessAlert(data);})
+                .then(data=> {this.successAlert(data);})
                 .catch(err=>{this.errorAlert(err);});
         },
 
-        cussessAlert(data){
-            alert.elMessageBox({ 
-                vueObject : this, 
+        successAlert(data){
+            alert.elMessageBox({  vueObject : this, 
                 type : 'success', 
                 message : '추가 되엇습니다.' 
             });
