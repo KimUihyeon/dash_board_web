@@ -5,36 +5,34 @@ import LoginPage from '../views/common/LoginPage.vue'
 import TestPage from '../views/TestPage.vue'
 import TodoPage from '../views/todo/TodoPage.vue'
 import { data, rest, error } from '../util';
+import store from '../store/index';
+
+const redirectionMain = () => (to, from , next) => {
+  store.dispatch('app_logout').then(auth=>{
+    return next(`/login`);
+  }).catch(err=>{
+    return next(`/login`);
+  })
+}
 
 
 const authCheck = () => (to, from, next) => {
-  let userId = data.cookie.getCookie(process.env.VUE_APP_COOKIE_NAME_LOGIN);
+  store.dispatch('check_app_auth').then(auth=>{
+    if (auth === 'Auth') { // 인증완료
+      return next();
+    }
+    else { // 정상적인 인증실패
+      return next(`/login?e=${error.authencationError.code}`);
+        }
+  }).catch(err=>{
 
-  let authApi = process.env.VUE_APP_API_BASE_URL + '/v1/auth';
-
-  if (!data.isNull(userId)) {
-    let token = data.cookie.getCookie(process.env.VUE_APP_COOKIE_NAME_TOKEN);
-
-    rest.post( authApi , { token }).then(({authType}) => {
-      if (authType === 'Auth') { // 인증완료
-        return next();
-      }
-      else { // 정상적인 인증실패
-        return next(`/login?e=${error.authencationError.code}`);
-      }
-
-    }).catch(({response}) => {// 서버에러 
-      if(response.status === 404){ // 404
+    if(err.status === 404){ // 404
         return next(`/login?e=${error.httpUrlNotSurpport.code}`);
-      }
-      else { // 500
+    }
+    else { // 500
         return next(`/login?e=${error.nullExceptionError.code}`);
-      }
-    });
-  }
-  else {
-    return next(`/login?e=${error.authencationError.code}`);
-  }
+    }
+  })
 }
 
 
@@ -63,7 +61,7 @@ const routes = [
     path: '/',
     name: 'Home',
     alias: ['/login'],
-    component: Main,
+    component: TodoPage,
     beforeEnter: authCheck()
   },
   {
@@ -77,6 +75,12 @@ const routes = [
     name: 'TestPage',
     component: TestPage,
     beforeEnter: authCheck()
+  },
+  {
+    path: '/Logout',
+    name: 'Logout',
+    component: TestPage,
+    beforeEnter: redirectionMain()
   },
 ]
 

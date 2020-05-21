@@ -3,12 +3,14 @@
       <span class="box-left">
         <Timer></Timer>
       </span>
-
       <HeaderWeather/>
 
       <!-- <RouterItem to="/home" icon="el-icon-finished" name="홈" /> -->
+
       <RouterItem to="/todo" icon="el-icon-finished" name="할일" />
-      <RouterItem to="/Logout" icon="el-icon-finished" name="Logout" @click="logOut" />
+      <RouterItem to="/Logout" icon="el-icon-finished" name="로그아웃" />
+      <span>{{isLogin}}</span>
+      <!-- <RouterItem to="/Logout" icon="el-icon-finished" name="Logout" @click="logOut" /> -->
       
       <!-- 
       <RouterItem to="/calendor" icon="el-icon-date" name="일정" /> 
@@ -38,10 +40,11 @@
 
 <script>
 import Vue from 'vue'
+import { mapGetters } from "vuex";
 import RouterItem from "../common/custome/RouterItem";
 import HeaderWeather from '../common/custome/HeaderWeather';
 import Timer from '../timer/Time'
-import { data } from '../../util'
+import { data , rest } from '../../util'
 
 const name = 'Header';
 const components = {
@@ -58,13 +61,23 @@ export default Vue.extend({
         mode : process.env.VUE_APP_MODE
       }
     },
-    methods: {
-      logOut(){
-        this.$store.dispatch('app_logout').then(()=>{
-          this.$router.push({ path : '/login'});
-        })
-      }
+    // methods: {
+    //   logOut(){
+    //     this.$store.dispatch('app_logout').then(()=>{
+    //       this.$router.push({ path : '/login'});
+    //     })
+    //   },
+    // },
+    computed : {
+      ...mapGetters(['isLogin']),
     }
 })
 </script>
 
+
+
+<style scoped>
+.logout-button{
+  font-size: 24px;
+}
+</style>

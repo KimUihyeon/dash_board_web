@@ -99,8 +99,9 @@ export default {
     },
     beforeRouteUpdate(to, from, next){
         const { type , id } = to.query;
-        const selectedCategory = [...this.getTodoCategories].filter(t=> t.id === id)[0];
-        
+        const selectedCategory = [...this.getDefaultTodoCategories,
+            ...this.getTodoCategories].filter(t=> t.id === id)[0];
+
         this.selectCategory(selectedCategory);
     },
     methods:{
