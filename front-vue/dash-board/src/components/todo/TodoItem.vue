@@ -1,34 +1,39 @@
 <template>
-    <div>
-        <div
-            @mouseover="mouse_handle('hover')" 
-            @mouseout="mouse_handle('out')">
-
-            <div>
-                <div class="todo" v-bind:class="isHover ? 'todo-hover' : ''">
-                    <div  class="todo-left">
-                                            
-                        <span class="chk-span" @click="changed_handle">
-                            <i 
-                                v-show="cloneItem.todoComplete"
-                                class="el-icon-check todo-center"
-                                style="font-size:24px"></i>
-                            <i 
-                                v-show="cloneItem.todoComplete === false"
-                                class="el-icon-minus todo-center"
-                                style="font-size:24px"></i>
-                            
-
-                        </span>
-                        <span class="todo-title-box" @click="click_handle('toggleMemo')">
-                            <span class="todo-center" 
-                            v-bind:class="cloneItem.todoComplete ? 'complate-todo' : ''" >{{cloneItem.title}}</span>
-                        </span>
+    <div
+        @mouseover="mouse_handle('hover')" 
+        @mouseout="mouse_handle('out')">
+        <div class="todo" v-bind:class="isHover ? 'todo-hover' : ''">
+            <div  class="todo-left">
+                                    
+                <span class="chk-span cursor-pointer" @click="changed_handle">
+                    <div class="chk-span-container">
+                        <i 
+                            v-bind:class="cloneItem.todoComplete ? 'active' : ''"
+                            class="el-icon-check todo-center text-center"
+                            style="font-size:24px"></i>
+                        <i 
+                            v-bind:class="!cloneItem.todoComplete ? 'active' : ''"
+                            class="el-icon-minus todo-center text-center"
+                            style="font-size:24px"></i>
                     </div>
-                    <div class="todo-right">
-                        <button @click="click_handle('delete')" class="el-icon-delete todo-center" ></button>
-                    </div>
-
+                </span>
+                <span class="todo-title-box" @click="click_handle('toggleMemo')">
+                    <span class="todo-center" 
+                    v-bind:class="cloneItem.todoComplete ? 'complate-todo' : ''" >{{cloneItem.title}}</span>
+                </span>
+            </div>
+            <div class="todo-right">
+                <button class="el-icon-more continer-open-button" @click='()=>{toggle = true}'></button>
+                <!-- <button @click="click_handle('delete')" class="el-icon-delete todo-center" ></button> -->
+            </div>
+            <div class="button-container" v-bind:class="toggle ? 'button-container-active' : ''">
+                <div class="button-box-close" @click="()=>{toggle = false}">
+                </div>
+                <div class="button-box">
+                    <button class="todo-detail-button el-icon-s-order"></button>
+                    <button class="todo-delete-button  el-icon-delete" @click="click_handle('delete')"></button>
+                    <button class="container-close-button  el-icon-close" @click="()=>{toggle = false}"></button>
+                    
                 </div>
             </div>
 
@@ -37,11 +42,54 @@
 </template>
 
 <style scoped>
+.button-container button{
+    font-size: 20px;
+    padding: 10px;
+    color: white;
+}
+.button-container .todo-detail-button{
+    color: green;
+}
+.button-container .todo-delete-button{
+    color: red;
+}
+.button-container .container-close-button{
+    color: black;
+}
+.button-box-close{
+    background: #000000ba;
+    display: flex;    
+    height: 100%;
+    font-size: 20px;
+    flex:1
+}
+.button-box{
+    display: inline-block;
+    padding: 10px;
+    background: #b3b3b3;
+}
+.button-container-active{
+    left: 0% !important;
+}
+.button-container{
+    position: absolute;
+    display: flex;
+    top: 0px;
+    left: 100%;
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    transition: all 0.5s;
+}
 .todo{
+    position: relative;
     display:flex;
     height: 60px;
     background: rgba(255, 255, 255, 0.461);
-    transition: all 0.1s;
+    transition: all 0.75s;
+    border-radius: 10px;
+    overflow: hidden;
 }
 .todo-hover{
     box-shadow: 5px 5px 10px #000;
@@ -57,6 +105,15 @@
     /* border: 1px solid; */
     /* border-radius: 50%; */
     margin: 15px;
+    overflow: hidden;
+    position: relative;
+}
+.chk-span i{
+    opacity: 0;
+    transition: all 0.3s;
+}
+.chk-span .active{
+    opacity: 1 !important;
 }
 .todo-title-box, .chk-span{
     float: left;
@@ -78,10 +135,12 @@
     transform: translateX(-50%) translateY(-50%);
 }
 .todo-right{
-    width: 20px;
-    height: 20px;
-    margin: 20px;
-    position: relative;
+    margin: 10px;
+    font-size: 15px;
+    text-align: center;
+}
+.todo-right .continer-open-button{
+    padding: 12px;
 }
 </style>
 
@@ -94,6 +153,7 @@ export default {
             cloneItem : {},
             isHover: false,
             isMemoOpen : false,
+            toggle : false,
         }
     },
     props : {
@@ -103,6 +163,9 @@ export default {
         this.cloneItem = this.item;
     },
     methods:{
+        handleToggle(){
+            this.toggle = !this.toggle;
+        },
         click_handle(elementType){
 
             if(elementType === 'delete'){

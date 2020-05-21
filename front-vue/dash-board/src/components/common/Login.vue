@@ -47,6 +47,10 @@
                     ></span>
                 </span> -->
                 
+                <span class="user-icon-outer">
+                    <span class="user-icon login-title-icon"></span>
+                </span>
+
                 <div>
                     <el-input 
                         type="text" 
@@ -209,6 +213,7 @@ export default {
     overflow: hidden;
     text-align: center;
     z-index: 1;
+    background: #00000024;
 }
 
 .blurred-box:after{
@@ -226,6 +231,7 @@ export default {
 }
 .login_help{
     font-size: 13px;
+    color: white;
 }
 
 .el-input__inner{
@@ -244,13 +250,14 @@ export default {
     border-radius: 50%;
     padding: 3px;
     transition: all 1s;
+    margin-bottom: 30px;
 }
 .user-icon {
     display: inline-block;
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    background-size: contain;
+    background-position: center;
 }
 
 </style>

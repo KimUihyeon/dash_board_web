@@ -1,14 +1,32 @@
 <template>
     <div id="nav">
-      <span class="box-left">
+      <span class="box-left nav-color-white time-box">
         <Timer></Timer>
       </span>
       <HeaderWeather/>
 
       <!-- <RouterItem to="/home" icon="el-icon-finished" name="홈" /> -->
 
+
+
+      <el-dropdown trigger="click" @command="route" class="nav-color-white">
+        <span class="el-dropdown-link">Menu<i class="el-icon-s-unfold el-icon--right"></i>
+        </span>
+        <el-dropdown-menu slot="dropdown">
+          <el-dropdown-item :disabled='!isLogin' icon="el-icon-s-home" command='/home'>Home</el-dropdown-item>
+          <el-dropdown-item :disabled='!isLogin' icon="el-icon-circle-check" command='/todo'>todoList</el-dropdown-item>
+          <el-dropdown-item :disabled='!isLogin' icon="el-icon-date" command='/cal'>calendar</el-dropdown-item>
+          <el-dropdown-item v-show="isLogin" icon="el-icon-lock" divided command='/logout'>logout</el-dropdown-item>
+          <el-dropdown-item v-show="!isLogin" icon="el-icon-user-solid" divided command='/signup'>sign Up</el-dropdown-item>
+        </el-dropdown-menu>
+      </el-dropdown>
+
+
+<!-- 
       <RouterItem v-show="isLogin" to="/todo" icon="el-icon-finished" name="할일" />
-      <RouterItem v-show="isLogin" to="/Logout" icon="el-icon-finished" name="로그아웃" />
+      <RouterItem v-show="isLogin" to="/Logout" icon="el-icon-finished" name="로그아웃" /> -->
+
+      
       <!-- <RouterItem to="/Logout" icon="el-icon-finished" name="Logout" @click="logOut" /> -->
       
       <!-- 
@@ -60,15 +78,17 @@ export default Vue.extend({
         mode : process.env.VUE_APP_MODE
       }
     },
-    // methods: {
-    //   logOut(){
-    //     this.$store.dispatch('app_logout').then(()=>{
-    //       this.$router.push({ path : '/login'});
-    //     })
-    //   },
-    // },
     computed : {
       ...mapGetters(['isLogin']),
+    },
+    methods : {
+      route(path){
+        if(path.indexOf('signup') !== -1){
+          console.log('회원가입')
+        }else{
+          this.$router.push({path});
+        }
+      }
     }
 })
 </script>
@@ -76,7 +96,26 @@ export default Vue.extend({
 
 
 <style scoped>
+
+@media only all and (min-width: 768px) {
+  #nav > .time-box{
+    opacity: 1;
+  }
+}
+
+@media all and (max-width:768px) {
+  #nav > .time-box{
+    opacity: 0;
+  }
+}
+
 .logout-button{
   font-size: 24px;
+}
+#nav > .el-dropdown{
+  color: white;
+}
+#nav > .nav-color-white{
+  color: white !important;
 }
 </style>

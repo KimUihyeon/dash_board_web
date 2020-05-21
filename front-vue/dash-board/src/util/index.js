@@ -1,13 +1,12 @@
 import { convertByUnixDateTime, now } from './DateUtil'
-// import {} from './Formater'
 import { rest as Rest } from './Rest'
 import { alert as Alert } from './Alert';
 import { data as Data } from './Data';
 import { error as Error} from './Error'
-import moment from 'moment';
 
 
 
+/** dependency -> Moment */
 export const date = {
     now,
     convertByUnixDate : (dateTime) => {
@@ -16,7 +15,7 @@ export const date = {
 }
 
 
-// #rest ful
+/** dependency -> Axios */
 export const rest = Rest;
 export const alert = Alert;
 export const error = Error;
