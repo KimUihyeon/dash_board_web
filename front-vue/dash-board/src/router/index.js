@@ -7,7 +7,7 @@ import TodoPage from '../views/todo/TodoPage.vue'
 import { data, rest, error } from '../util';
 import store from '../store/index';
 
-const redirectionMain = () => (to, from , next) => {
+const logoutProcess = () => (to, from , next) => {
   store.dispatch('app_logout').then(auth=>{
     return next(`/login`);
   }).catch(err=>{
@@ -80,7 +80,7 @@ const routes = [
     path: '/Logout',
     name: 'Logout',
     component: TestPage,
-    beforeEnter: redirectionMain()
+    beforeEnter: logoutProcess()
   },
 ]
 

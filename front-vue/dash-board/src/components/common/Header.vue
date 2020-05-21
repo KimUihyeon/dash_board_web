@@ -7,9 +7,8 @@
 
       <!-- <RouterItem to="/home" icon="el-icon-finished" name="홈" /> -->
 
-      <RouterItem to="/todo" icon="el-icon-finished" name="할일" />
-      <RouterItem to="/Logout" icon="el-icon-finished" name="로그아웃" />
-      <span>{{isLogin}}</span>
+      <RouterItem v-show="isLogin" to="/todo" icon="el-icon-finished" name="할일" />
+      <RouterItem v-show="isLogin" to="/Logout" icon="el-icon-finished" name="로그아웃" />
       <!-- <RouterItem to="/Logout" icon="el-icon-finished" name="Logout" @click="logOut" /> -->
       
       <!-- 

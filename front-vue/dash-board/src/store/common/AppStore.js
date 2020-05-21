@@ -72,7 +72,6 @@ const actions = {
             if (!data.isNull(userId)) {
     
                 rest.post( authApi , { token }).then(({authType}) => {
-                    console.log(authType);
 
                     if (authType === 'Auth') { // 인증완료
                         context.commit('SET_IS_LOGIN', { isLogin : true});

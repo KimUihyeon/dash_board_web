@@ -174,7 +174,6 @@ const mutation = {
     /// todo Items
     /// todo Items
     SET_TODO_LIST : function(state ,payload){
-        console.log(payload);
         state.todo.todo_list = payload.todoList;
     },
     REMOVE_TODO : function (state, payload){
