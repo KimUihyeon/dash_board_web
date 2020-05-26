@@ -14,7 +14,7 @@
         </span>
         <el-dropdown-menu slot="dropdown">
           <el-dropdown-item :disabled='!isLogin' icon="el-icon-s-home" command='/home'>Home</el-dropdown-item>
-          <el-dropdown-item :disabled='!isLogin' icon="el-icon-circle-check" command='/todo'>todoList</el-dropdown-item>
+          <el-dropdown-item :disabled='!isLogin' icon="el-icon-circle-check" command='/todoCategory'>todoList</el-dropdown-item>
           <el-dropdown-item :disabled='!isLogin' icon="el-icon-date" command='/cal'>calendar</el-dropdown-item>
           <el-dropdown-item v-show="isLogin" icon="el-icon-lock" divided command='/logout'>logout</el-dropdown-item>
           <el-dropdown-item v-show="!isLogin" icon="el-icon-user-solid" divided command='/signup'>sign Up</el-dropdown-item>
@@ -42,7 +42,7 @@
             <router-link to="/login">Login</router-link>
           </span>
           <span style="padding:10px">
-            <span @click='logOut'>logOut</span>
+            <!-- <span @click='logOut'>logOut</span> -->
           </span>
           <span style="padding:10px">
             <router-link to="/main">Main</router-link>

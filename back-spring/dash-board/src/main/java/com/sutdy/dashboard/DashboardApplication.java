@@ -6,7 +6,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.PropertySource;
 
 @SpringBootApplication
-@PropertySource(PropertyFileManager.DEV_DATA_SOURCE_PROP)
+@PropertySource(PropertyFileManager.REL_DATA_SOURCE_PROP)
 public class DashboardApplication {
 
     public static void main(String[] args) {

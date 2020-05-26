@@ -18,12 +18,16 @@ const __COOKIE_PROPS_NAME_LOGIN_HISTORY = process.env.VUE_APP_COOKIE_NAME_LOGIN_
 
 const state = {
     isLogin : false,
+    windowSize : 0,
     token : '',
 }
 
 const getters = {
     isLogin : function (state){
         return state.app.isLogin;
+    },
+    getWindowSize : function (state){
+        return state.app.windowSize;
     }
 }
 
@@ -104,6 +108,9 @@ const mutation = {
     },
     REMOVE_TOKEN : function (state , payload){
         state.app.token = '';
+    },
+    SET_WINDOW_SIZE : function (state, payload){
+        state.app.windowSize = payload.windowSize;
     }
 }
 

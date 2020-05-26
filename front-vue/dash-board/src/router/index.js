@@ -4,6 +4,7 @@ import Main from '../views/Main.vue'
 import LoginPage from '../views/common/LoginPage.vue'
 import TestPage from '../views/TestPage.vue'
 import TodoPage from '../views/todo/TodoPage.vue'
+import TodoCategoryPage from '../views/todo/TodoCategoryPage.vue'
 import { data, rest, error } from '../util';
 import store from '../store/index';
 
@@ -65,8 +66,14 @@ const routes = [
     beforeEnter: authCheck()
   },
   {
+    path: '/todoCategory',
+    name: 'TodoCategoryPage',
+    component: TodoCategoryPage,
+    beforeEnter: authCheck()
+  },
+  {
     path: '/todo',
-    name: 'TestPage',
+    name: 'TodoPage',
     component: TodoPage,
     beforeEnter: authCheck()
   },

@@ -14,11 +14,12 @@ import Header from "@/components/common/Header.vue"
 export default {
   components : {
     Header,
-    complate : {
-      test(){
-        return true
-      }
-    }
+  },
+  created(){
+    this.$store.commit('SET_WINDOW_SIZE', { windowSize : window.innerWidth});
+    window.addEventListener('resize', () => {
+      this.$store.commit('SET_WINDOW_SIZE', { windowSize : window.innerWidth});
+    });
   }
 }
 </script>

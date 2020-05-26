@@ -3,35 +3,19 @@
     <div class="full-height">
         <RadianBox
             title="123"
-            width="50%"
+            :width="getWindowSize > 765 ? '50%' : '100%'"
             height="100%"
-            maxWidth="500px"
+            :maxWidth="getWindowSize > 765 ? '500px' : 'none'"
             >
-            
-            <div class="folder-area">
-                <div class="folder-list-area">
-                    <TodoFolderList :folders='getDefaultTodoCategories'/>
-                    <hr/>
-                    <TodoFolderList :folders='getTodoCategories'/>
-                </div>
-
-                <div class="folder-add-area">
-                    <hr/>
-                    <AddButton
-                        width="100%"
-                        height="100%"
-                        placeholder="디렉토리 추가"
-                        marginTop="5px"
-                        iconColor="#ACFFCF"
-                        fontSize="12px"
-                        iconSize="17px"
-                        :inputEnterKeyPress_handle="addTodoCategory"
-                        />
-                </div>
-            </div>
             <div class="todo-area">
+            {{inputDisabled}}
                 <div>
-                    <h1>{{selectedCategory.title}}</h1>
+                    <h1>
+                        <span :style="'color : ' + selectedCategory.iconColor">
+                            <i v-bind:class='selectedCategory.icon'></i>
+                        </span>
+                        <span>{{selectedCategory.title}}</span>
+                    </h1>
                 </div>
                 <div class="todo-list-area">
                     <TodoList 
@@ -39,23 +23,23 @@
                 </div>
 
                 <hr/>
-                <div class="todo-add-area">
-                    <AddButton
+                <div class="add-area">
+                    <ItmeAdd
                         v-if='selectedCategory.id > 0'
                         placeholder="새 할일 추가하기."
                         width="100%"
-                        height="calc(100% - 1px)"
+                        height="100%"
                         backgroundColor="#ffffff61"
                         marginTop="5px"
                         iconColor="#ACFFCF"
+                        fontColor="#fff"
                         fontSize="12px"
                         iconSize="17px"
+                        :isReadOnly="inputDisabled"
                         :inputEnterKeyPress_handle="addTodoItem"
-                    ></AddButton>
-                    <!-- <TodoItemAddInput></TodoItemAddInput> -->
+                    ></ItmeAdd>
                 </div>
             </div>
-
         </RadianBox>
     </div>
 
@@ -63,22 +47,17 @@
 
 <script>
 import TodoList from "../../components/todo/TodoList";
-import TodoFolderAddInput from "../../components/todo/TodoFolderAddInput";
-import TodoFolderList from "../../components/todo/TodoFolderList";
-import TodoItemAddInput from "../../components/todo/TodoItemAddInput";
 import RadianBox from '../../components/common/RadianBox';
-import AddButton  from '../../components/common/AddButton';
+import { todoCategoryService } from '../../services'
+import ItmeAdd  from '../../components/todo/ItmeAdd';
 import { mapGetters } from 'vuex';
 import { data , date , alert } from '../../util'
 
 const name = 'TodoPage';
 const components = {
         TodoList,
-        TodoFolderList,
-        TodoFolderAddInput,
-        TodoItemAddInput,
         RadianBox,
-        AddButton }
+        ItmeAdd }
 
 export default {
     name ,
@@ -87,24 +66,33 @@ export default {
         return {
             isLoading : true,
             selectedCategory : { 
-                title : '' 
+                title : '',
+                param : '',
             } ,
         }
     },
-    mounted(){
-
-        this.$store.dispatch('fetch_todo_categories').then((data)=>{
-            this.selectCategory(data[0]);
-        });
-    },
-    beforeRouteUpdate(to, from, next){
-        const { type , id } = to.query;
-        const selectedCategory = [...this.getDefaultTodoCategories,
-            ...this.getTodoCategories].filter(t=> t.id === id)[0];
-
+    async mounted(){
+        const { id } = this.$route.query;
+        const selectedCategory = await this.findCategoryItem(id);
         this.selectCategory(selectedCategory);
     },
     methods:{
+        findCategoryItem(id){
+            return new Promise((resolve,reject)=>{
+                let fintCategory = this.getDefaultTodoCategories.filter(t=>t.id === id)[0];
+                if(data.isNull(fintCategory)){
+                    todoCategoryService.get(id).then((res)=>{
+                        let data = {
+                            ...res,
+                            param : 'category',
+                        }
+                        resolve(data);
+                    });
+                }else {
+                    resolve(fintCategory);
+                }
+            })
+        },
         selectCategory(category){
             const { param , id } = category;
             this.selectedCategory = category;
@@ -138,17 +126,6 @@ export default {
                 .then(data=> {this.successAlert(data);})
                 .catch(err=>{this.errorAlert(err); });
         },
-
-        addTodoCategory(e, param) {
-            this.$store.dispatch('patch_todo_category' , { 
-                    todoCategory : {
-                        id : -1,
-                        title : param.keyWord
-                    }})
-                .then(data=> {this.successAlert(data);})
-                .catch(err=>{this.errorAlert(err);});
-        },
-
         successAlert(data){
             alert.elMessageBox({  vueObject : this, 
                 type : 'success', 
@@ -164,33 +141,31 @@ export default {
         }
     },
     computed : {
-        ...mapGetters(['getTodoList', 'getTodoCategories' , 'getDefaultTodoCategories']),
+        ...mapGetters(['getTodoList', 'getTodoCategories' , 'getDefaultTodoCategories', 'getWindowSize']),
+        inputDisabled : function(){
+            if(data.isNull(this.selectedCategory) ){
+                return true;
+            }
+            const param = this.selectedCategory.param;
+            console.log(param);
+            return (data.isNull(param) ||param.indexOf('category') === -1) ?
+                true : false;
+        }
     },
 }
 </script>
 
 
 <style scoped>
+
 .folder-list-area{
     flex: 1;
     overflow: auto;
 }
-.folder-area{
-    width: 35%;
-    height: 100%;
-    padding-right: 2%;
-    float: left;
-    box-sizing: border-box;
-    border-right: 1px solid #f5f5f512;
-
-    display: flex;
-    flex-direction: column;
-}
 .todo-area{
     overflow: auto;
-    width: 65%;
+    width: 100%;
     height: 100%;
-    padding-left: 2%;
     float: left;
     overflow: hidden;
     display: flex;
@@ -201,11 +176,7 @@ export default {
     flex: 1;
     overflow: auto;
 }
-.todo-add-area ,
-.folder-add-area{
-    height: 40px;
-}
-.todo-add-area{
+.add-area{
     height: 50px;
 }
 hr{

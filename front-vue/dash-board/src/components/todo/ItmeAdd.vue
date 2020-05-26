@@ -53,7 +53,7 @@ input:focus {
 <script>
 
 import { data } from "../../util";
-const name = 'AddButton';
+const name = 'ItmeAdd';
 
 export default {
     name,

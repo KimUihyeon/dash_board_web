@@ -1,6 +1,6 @@
 <template>
     <div class="folder-item" >
-        <span class="cursor-pointer" @click="click_handle">
+        <span class="cursor-pointer" @click="()=>{handleClick(cloneFolder)}">
             <span :style="'color : ' + cloneFolder.iconColor">
                 <i v-bind:class='cloneFolder.icon'></i>
             </span>
@@ -21,7 +21,7 @@
 
 <script>
 
-const name = 'TodoFolderItem';
+const name = 'TodoCategoryItem';
 
 export default {
     name ,
@@ -31,16 +31,11 @@ export default {
         }
     },
     props : {
-        folder : Object
+        folder : Object,
+        handleClick : Function
     },
     mounted(){
         this.cloneFolder = this.folder;
     },
-    methods: {
-        click_handle(){
-            let { param , id } = this.cloneFolder;
-            this.$router.push({ path: 'todo', query: { type : param , id : id }});
-        }
-    }
 }
 </script>

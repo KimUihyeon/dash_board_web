@@ -7,7 +7,6 @@
             </div>
         </div>
     </div>
-
 </template>
 
 
@@ -19,28 +18,14 @@
     position: relative;
 }
 .todo-container{
-    padding: 1%;
+    padding: 2%;
     height: calc(100% - 15px);
     position: absolute;
     right: 15px;
     background: #21212185;
     border-radius: 20px;
     text-align: left;
-    /* overflow: hidden; */
-}
-
-
-@media all and (max-width:768px) {
-.todo-container{
-    padding: 1%;
-    height: calc(100% - 15px);
-    position: absolute;
-    right: 15px;
-    background: #21212185;
-    border-radius: 20px;
-    text-align: left;
-    /* overflow: hidden; */
-}
+    display: flex;
 }
 
 </style>

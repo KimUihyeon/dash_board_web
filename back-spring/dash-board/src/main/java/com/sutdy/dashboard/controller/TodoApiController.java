@@ -99,6 +99,11 @@ public class TodoApiController {
         return this.todoCategoryService.delete(id);
     }
 
+    @GetMapping("/category/{id}")
+    public TodoCategoryDto getTodoCategory(@PathVariable Long id, String userId) {
+        return this.todoCategoryService.findById(id);
+    }
+
     @PostMapping("/category")
     public TodoCategoryDto inertTodoCategory(@RequestBody TodoCategoryDto todoCategoryDto) {
         todoCategoryDto.setCDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT));

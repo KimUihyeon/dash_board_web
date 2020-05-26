@@ -3,9 +3,15 @@ import { getBaseUrl , getCurrentLoginID , httpAuhorizationHeaderConfig } from '.
 
 const base_url = getBaseUrl() + '/v1/todo';
 
+
 const getDatas = () =>{
     const userId = getCurrentLoginID();
     return rest.get(base_url + `/categories/${userId}`);
+}
+
+const get = (id) =>{
+    const userId = getCurrentLoginID();
+    return rest.get(base_url + `/category/${id}`, { userId , id });
 }
 
 const addItem = (todoCategory) =>{
@@ -23,6 +29,7 @@ const deleteItem = (id) =>{
 
 
 export const todoCategoryService = {
+    get,
     getDatas,
     addItem,
     modifyItem,
