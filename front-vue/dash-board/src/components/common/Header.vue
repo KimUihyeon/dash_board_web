@@ -5,10 +5,6 @@
       </span>
       <HeaderWeather/>
 
-      <!-- <RouterItem to="/home" icon="el-icon-finished" name="홈" /> -->
-
-
-
       <el-dropdown trigger="click" @command="route" class="nav-color-white">
         <span class="el-dropdown-link">Menu<i class="el-icon-s-unfold el-icon--right"></i>
         </span>
@@ -52,6 +48,11 @@
           </span>
         </div>
       </div>
+
+      <Signup
+          :submitHandle="()=>{}"
+          :showModal='showSignup'
+      />
     </div>
 </template>
 
@@ -60,6 +61,7 @@ import Vue from 'vue'
 import { mapGetters } from "vuex";
 import RouterItem from "../common/custome/RouterItem";
 import HeaderWeather from '../common/custome/HeaderWeather';
+import Signup from './Signup';
 import Timer from '../timer/Time'
 import { data , rest } from '../../util'
 
@@ -67,7 +69,8 @@ const name = 'Header';
 const components = {
   Timer,
   RouterItem,
-  HeaderWeather
+  HeaderWeather,
+  Signup
 }
 
 export default Vue.extend({
@@ -75,7 +78,8 @@ export default Vue.extend({
     components,
     data(){
       return {
-        mode : process.env.VUE_APP_MODE
+        mode : process.env.VUE_APP_MODE,
+        showSignup : false,
       }
     },
     computed : {
@@ -84,11 +88,17 @@ export default Vue.extend({
     methods : {
       route(path){
         if(path.indexOf('signup') !== -1){
-          console.log('회원가입')
+          this.showSignupModal();
         }else{
           this.$router.push({path});
         }
-      }
+      },
+      showSignupModal (){
+          this.showSignup = false;
+            setTimeout(()=>{
+              this.showSignup = true
+          }, 1); 
+      },
     }
 })
 </script>

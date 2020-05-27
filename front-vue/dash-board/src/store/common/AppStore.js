@@ -53,8 +53,8 @@ const actions = {
     app_logout : function (context){
         return new Promise((resolve , reject)=>{
             try{
-                data.cookie.removeCookie(__COOKIE_PROPS_NAME_LOGIN_HISTORY);
-                data.cookie.removeCookie(__COOKIE_PROPS_NAME_LOGIN_ID);
+                // data.cookie.removeCookie(__COOKIE_PROPS_NAME_LOGIN_HISTORY);
+                // data.cookie.removeCookie(__COOKIE_PROPS_NAME_LOGIN_ID);
                 data.cookie.removeCookie(__COOKIE_PROPS_NAME_TOKEN);
                 context.commit('SET_IS_LOGIN', { isLogin : false});
                 resolve();

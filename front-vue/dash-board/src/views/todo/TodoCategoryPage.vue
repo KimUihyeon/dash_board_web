@@ -72,7 +72,6 @@ export default {
     },
     methods:{
         selectedCategory(category){
-            console.log(category);
             let { param , id } = category;
             this.$router.push({ path: 'todo', query: { type : param , id : id }});
         },

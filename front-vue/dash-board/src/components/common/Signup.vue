@@ -1,5 +1,5 @@
 <template>
-    <el-dialog title="간편 회원가입" :visible.sync="show" :close="()=>{showModal()}" :close-on-click-modal="false">
+    <el-dialog title="간편 회원가입" :visible.sync="show" :close="()=>{showModal()}" :close-on-click-modal="false" >
 
         <ValidationObserver v-slot="{ handleSubmit }">
             <el-form ref="form" label-width="120px">
@@ -26,7 +26,7 @@
                     </ValidationProvider>
                 </div>
                 <div>
-                    <ValidationProvider name="password" v-slot="{errors}" rules="required|minMax:3,6">
+                    <ValidationProvider name="password" v-slot="{errors}" rules="required|minMax:8,20">
                         <el-form-item label="password">
                             <el-input 
                                 type="password" 
@@ -40,7 +40,7 @@
                     </ValidationProvider>
                 </div>
                 <div>
-                    <ValidationProvider v-slot="{errors}" rules="required|minMax:3,6|passwordConfirm:@password">
+                    <ValidationProvider v-slot="{errors}" rules="required|minMax:8,20|passwordConfirm:@password">
                         <el-form-item>
                             <el-input 
                                 type="password" 
@@ -54,7 +54,7 @@
                     </ValidationProvider>
                 </div>
                 <div>
-                    <ValidationProvider name="name" v-slot="{errors}" rules="required|minMax:3,8|noTrim">
+                    <ValidationProvider name="name" v-slot="{errors}" rules="required|minMax:2,20|noTrim">
                         <el-form-item label="name">
                             <el-input 
                                 type="text" 
@@ -70,7 +70,7 @@
                         </el-form-item>
                     </ValidationProvider>
                 </div>
-                <div>
+                <div style="text-align: center;">
                     <el-button
                         size="small"
                         type="primary"

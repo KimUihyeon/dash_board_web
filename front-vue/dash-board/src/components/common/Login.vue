@@ -112,7 +112,6 @@ export default {
     },
     mounted(){
         this.init();
-        console.log(this.$router)
     },
     methods : {
         init () {
@@ -128,7 +127,7 @@ export default {
                 this.validation.msg = '아이디를 입력해주세요.(6자 이상)';
             }
             if(!this.validation.pw) {
-                this.validation.msg = '패스워드를 입력해주세요.(8자 이상)';
+                this.validation.msg = '패스워드를 입력해주세요.(8자 이상, 20자 이하)';
             }
 
             if(!this.validation.pw || !this.validation.pw) {
