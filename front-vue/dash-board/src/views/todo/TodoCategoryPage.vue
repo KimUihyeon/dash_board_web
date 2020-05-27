@@ -2,10 +2,12 @@
     <div class="full-height">
         <RadianBox
             title="123"
-            :width="getWindowSize > 765 ? '50%' : '100%'"
+            :margin="getWindowSize > 765 ? '0px' : '1%'"
+            :padding="getWindowSize > 765 ? '2%' : '4%'"
+            :right="getWindowSize > 765 ? '15px' : '0px'"
+            :width="getWindowSize > 765 ? '50%' : '98%'"
             height="100%"
-            :maxWidth="getWindowSize > 765 ? '500px' : 'none'"
-            >
+            :maxWidth="getWindowSize > 765 ? '500px' : 'none'"> 
 
             <div class="folder-area">
                 <div class="folder-list-area">
@@ -66,6 +68,7 @@ export default {
         this.$store.dispatch('fetch_todo_categories').then(()=>{
             this.isLoading = false;
         });
+        this.$store.dispatch('clear_todo_list');
     },
     methods:{
         selectedCategory(category){

@@ -141,7 +141,7 @@ export default {
                     let { authType} = res;
                     if(authType === 'Auth'){
                         setTimeout(()=>{
-                            this.$router.push({ path : '/todo'})
+                            this.$router.push({ path : '/todoCategory'})
                         },50)
                     }
                     else if(authType === 'NoAuth'){

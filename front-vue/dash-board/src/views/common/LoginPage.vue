@@ -13,8 +13,5 @@ export default {
   components: {
     Login,
   },
-  mounted(){
-    console.log('ttt')
-  }
 }
 </script>

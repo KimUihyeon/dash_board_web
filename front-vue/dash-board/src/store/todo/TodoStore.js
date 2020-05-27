@@ -65,6 +65,13 @@ const actions = {
         })
     },
 
+    clear_todo_list : function (context, payload){
+        return new Promise((resolve , reject)=>{
+            console.log('clear')
+            context.commit('SET_TODO_LIST', { todoList : []});
+        });
+    },
+
     /**
      * 
      * @param {*} context 
@@ -189,7 +196,7 @@ const mutation = {
     },
     ADD_TODO : function(state , payload){
         let { todoItem } = payload;
-        state.todo.todo_list.push(todoItem);
+        state.todo.todo_list.unshift(todoItem);
     },
     PATCH_TODO : function(state , payload){
         let { todoItem } = payload;

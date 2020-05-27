@@ -2,15 +2,17 @@
 
     <div class="full-height">
         <RadianBox
-            title="123"
-            :width="getWindowSize > 765 ? '50%' : '100%'"
+            :isLoading='isLoading'
+            :margin="getWindowSize > 765 ? '0px' : '1%'"
+            :padding="getWindowSize > 765 ? '2%' : '4%'"
+            :right="getWindowSize > 765 ? '15px' : '0px'"
+            :width="getWindowSize > 765 ? '50%' : '98%'"
             height="100%"
-            :maxWidth="getWindowSize > 765 ? '500px' : 'none'"
-            >
+            :maxWidth="getWindowSize > 765 ? '500px' : 'none'"> 
             <div class="todo-area">
-            {{inputDisabled}}
                 <div>
-                    <h1>
+                    <h1 class="todo-title">
+                        <button @click='back' class="el-icon-d-arrow-left"></button>
                         <span :style="'color : ' + selectedCategory.iconColor">
                             <i v-bind:class='selectedCategory.icon'></i>
                         </span>
@@ -22,8 +24,8 @@
                         v-bind:items="getTodoList"/>
                 </div>
 
-                <hr/>
-                <div class="add-area">
+                <hr v-show="!inputDisabled"/>
+                <div class="add-area" v-show="!inputDisabled">
                     <ItmeAdd
                         v-if='selectedCategory.id > 0'
                         placeholder="새 할일 추가하기."
@@ -77,6 +79,9 @@ export default {
         this.selectCategory(selectedCategory);
     },
     methods:{
+        back(){
+            this.$router.push({path : '/todoCategory'});
+        },
         findCategoryItem(id){
             return new Promise((resolve,reject)=>{
                 let fintCategory = this.getDefaultTodoCategories.filter(t=>t.id === id)[0];
@@ -99,17 +104,20 @@ export default {
             this.fetchTodoList(param , id);
         },
         fetchTodoList(filter , id){
-            this.isLoading = false;
-            this.$store.dispatch('fetch_todo_list', { 
-                    loginId : 'dkrnl1318@naver.com',
-                    filter, 
-                    id
-                })
-                .then( data => {
-                    this.isLoading = true;
-                })
-                .catch(err =>{ this.isLoading = true; 
-            });
+            this.isLoading = true;
+
+            setTimeout(()=>{
+                this.$store.dispatch('fetch_todo_list', { 
+                        loginId : 'dkrnl1318@naver.com',
+                        filter, 
+                        id
+                    })
+                    .then( data => {
+                        this.isLoading = false;
+                    })
+                    .catch(err =>{ this.isLoading = false; 
+                });
+            },300)
         },
 
         addTodoItem(e, param){
@@ -147,7 +155,6 @@ export default {
                 return true;
             }
             const param = this.selectedCategory.param;
-            console.log(param);
             return (data.isNull(param) ||param.indexOf('category') === -1) ?
                 true : false;
         }
@@ -186,5 +193,14 @@ hr{
 }
 h1{
     color: white;
+}
+
+.todo-title button{
+    margin-right: 15px ;
+    font-size: 0.75em;
+    color: #bab1b5;
+}
+.todo-title span{
+    margin-right: 10px ;
 }
 </style>

@@ -2,7 +2,10 @@
     <div v-bind:style="'height:'+ height">
         <div class="todo-warp">
             <div class="todo-container" 
-                v-bind:style="'max-width:'+ maxWidth +'; width:'+ width">
+                v-loading="isLoading"
+                element-loading-text="로딩중..."
+                element-loading-background="#21212185"
+                v-bind:style="getStyle">
                 <slot></slot>
             </div>
         </div>
@@ -18,10 +21,8 @@
     position: relative;
 }
 .todo-container{
-    padding: 2%;
     height: calc(100% - 15px);
     position: absolute;
-    right: 15px;
     background: #21212185;
     border-radius: 20px;
     text-align: left;
@@ -40,6 +41,26 @@ export default {
         height : String,
         width : String,
         maxWidth : String,
+        padding : String,
+        right : String,
+        isLoading : Boolean,
+        margin : String,
+    },
+    computed : {
+        getStyle (){
+            let style = {
+                'max-width': this.maxWidth,
+                'width' : this.width,
+                'padding' : this.padding,
+                'right' : this.right,
+                'margin' : this.margin
+            }
+            let styleStr = '';
+            for(let prop in style){
+                styleStr += prop + ':' + style[prop] + ';';
+            }
+            return styleStr;
+        }
     }
 }
 </script>
