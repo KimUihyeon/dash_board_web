@@ -13,6 +13,7 @@ import com.sutdy.dashboard.setting.common.SearchParams;
 import com.sutdy.dashboard.setting.util.TempDataFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
@@ -96,7 +97,7 @@ public class TodoService extends BaseCrudService<Todo, TodoDto, Long> {
     public List<TodoDto> findAll(SearchParams params) {
 
         String userId = params.getFilterDetail().get("userId").toString();
-        Stream<Todo> queryable = this.jpaRepository.findAll().stream()
+        Stream<Todo> queryable = this.jpaRepository.findAll(Sort.by("id").descending()).stream()
                 .filter(t-> t.getTodoCategory() != null)
                 .filter(t -> t.getTodoCategory().getAccount().getId().equals(userId));
 
