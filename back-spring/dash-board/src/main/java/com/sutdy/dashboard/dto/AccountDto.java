@@ -45,7 +45,7 @@ public class AccountDto extends AbsDtoConverter<Account> {
     @Override
     public void createDto(Account entity) {
         this.id = entity.getId();
-        this.pw = entity.getPw();
+//        this.pw = entity.getPw();
         this.name = entity.getName();
         this.cDate = entity.getCDate();
     }

@@ -32,8 +32,8 @@ public class AccountApiController {
      * @return 인증상태 및 토큰 리턴함.
      */
     @PostMapping("/login")
-    public AuthResponse login(@RequestBody AccountDto member){
-        AccountDto findMember = this.accountService.findByMemberDto(member);
+    public AuthResponse login(@RequestBody AccountDto member) throws Exception {
+        AccountDto findMember = this.accountService.login(member);
 
         try{
             String jwt = JWT.createToken(findMember.getId(), findMember.getName(),3);

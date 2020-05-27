@@ -26,6 +26,12 @@ public class AuthApiController {
     private AccountService accountService;
 
 
+    /**
+     * 페이지 인증,권한 메소드
+     *
+     * @param authRequest
+     * @return
+     */
     @PostMapping()
     public AuthResponse auth(@RequestBody AuthRequest authRequest){
         // // TODO: 2020-05-14 : 나중에 해더 로직으로 변경할것 ..!

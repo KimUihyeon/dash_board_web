@@ -37,7 +37,7 @@ public class TempDataFactory {
 
         Account saveAccount = null;
         try{
-            String securityPw = SecurityStringUtil.encryptAES256("123123", ApplicationStringConfig.STRING_ENCRYPTION_KEY);
+            String securityPw = SecurityStringUtil.encryptSHA256("123123123");
             Account account = Account.builder()
                     .id("test@naver.com")
                     .pw(securityPw )

@@ -4,7 +4,9 @@ import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.domain.members.AccountRepository;
 import com.sutdy.dashboard.dto.AccountDto;
 import com.sutdy.dashboard.service.common.BaseCrudService;
+import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.common.SearchParams;
+import com.sutdy.dashboard.setting.util.SecurityStringUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -40,13 +42,23 @@ public class AccountService extends BaseCrudService<Account, AccountDto, String>
         this.save(AccountDto.builder()
                 .id(id)
                 .name("김의현")
-                .pw("12312321")
+                .pw("123123123")
                 .build());
     }
 
     @Override
     public AccountDto save(AccountDto dto) {
-        return this.entitySave(dto.toEntity());
+        try{
+
+            String pw = SecurityStringUtil.encryptSHA256(dto.getPw());
+            dto.setPw(pw);
+            return this.entitySave(dto.toEntity());
+        }
+        catch (Exception e){
+            return null;
+        }
+
+
     }
 
     @Override
@@ -89,6 +101,19 @@ public class AccountService extends BaseCrudService<Account, AccountDto, String>
             return null;
         }
         return new AccountDto(member);
+    }
+
+    public AccountDto login(AccountDto dto) throws Exception {
+        Account member = this.jpaRepository
+                .findById(dto.getId()).orElse(null);
+
+        String pw = SecurityStringUtil.encryptSHA256(dto.getPw());
+
+        if (member != null &&  member.getPw().equals(pw)) {
+            return new AccountDto(member);
+        } else {
+            return null;
+        }
     }
 
 
