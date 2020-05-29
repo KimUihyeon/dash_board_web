@@ -4,6 +4,8 @@ import com.fasterxml.jackson.core.JsonParser;
 import com.sutdy.dashboard.domain.todo.TodoCategory;
 import com.sutdy.dashboard.dto.TodoCategoryDto;
 import com.sutdy.dashboard.dto.TodoDto;
+import com.sutdy.dashboard.setting.ApplicationStringConfig;
+import com.sutdy.dashboard.setting.util.DateUtil;
 import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 import org.junit.Assert;
@@ -52,7 +54,8 @@ public class TodoCategoryServiceTest {
     public void saveTest() {
         //given
         TodoCategoryDto category = TodoCategoryDto.builder()
-                .cDate(LocalDateTime.now().toString())
+                .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(),
+                        ApplicationStringConfig.DATE_FORMAT))
                 .fontColor("black")
                 .icon("icon-test")
                 .iconColor("block")
@@ -80,7 +83,8 @@ public class TodoCategoryServiceTest {
     public void updateTest() {
         //given
         TodoCategoryDto category = TodoCategoryDto.builder()
-                .cDate(LocalDateTime.now().toString())
+                .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(),
+                        ApplicationStringConfig.DATE_FORMAT))
                 .fontColor("black")
                 .icon("icon-test")
                 .iconColor("block")

@@ -9,6 +9,8 @@ import com.sutdy.dashboard.setting.util.auth.jwt.JWT;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.NoSuchAlgorithmException;
+
 /**
  * 계정 관련 !
  *
@@ -62,7 +64,7 @@ public class AccountApiController {
      * @return
      */
     @PostMapping("/signup")
-    public AccountDto signup(@RequestBody AccountDto accountRequest){
+    public AccountDto signup(@RequestBody AccountDto accountRequest) throws NoSuchAlgorithmException {
         return this.accountService.save(accountRequest);
     }
 

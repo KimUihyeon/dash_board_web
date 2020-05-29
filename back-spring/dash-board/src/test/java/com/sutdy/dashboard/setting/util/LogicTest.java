@@ -17,7 +17,6 @@ public class LogicTest {
 
     @Test
     public void stringToDateTimeTest(){
-        LocalDateTime ld = LocalDateTime.now();
 
         // toString
         String dateStr = "2020-05-08T17:35:59.184";
@@ -30,9 +29,7 @@ public class LogicTest {
         System.out.println(parseDate.toLocalDate());
 
 
-
-
-        Assert.assertTrue(ld.toString().equals(parseDate.toString()));
+        Assert.assertTrue(dateStr.toString().equals(parseDate.toString()));
 
     }
 
@@ -50,8 +47,6 @@ public class LogicTest {
     @Test
     public void dateTimeToStringTest() {
 
-        LocalDateTime ld = LocalDateTime.now();
-
         // toString
         String dateStr = "2020-05-08T17:35:59.184";
         System.out.println(dateStr);
@@ -63,8 +58,6 @@ public class LogicTest {
         System.out.println(parseDate.toLocalDate());
 
 
-
-
-        Assert.assertTrue(ld.toString().equals(parseDate.toString()));
+        Assert.assertTrue(dateStr.toString().equals(parseDate.toString()));
     }
 }

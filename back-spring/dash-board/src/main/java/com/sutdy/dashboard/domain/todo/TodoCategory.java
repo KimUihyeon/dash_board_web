@@ -2,6 +2,8 @@ package com.sutdy.dashboard.domain.todo;
 
 import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.dto.TodoCategoryDto;
+import com.sutdy.dashboard.setting.ApplicationStringConfig;
+import com.sutdy.dashboard.setting.util.DateUtil;
 import lombok.*;
 
 import javax.persistence.*;
@@ -55,7 +57,7 @@ public class TodoCategory {
             this.iconColor = dto.getIconColor();
         }
         if (!dto.getCDate().equals(this.cDate)) {
-            this.cDate = LocalDateTime.parse(dto.getCDate());
+            this.cDate = DateUtil.stringToLocalDateTime(dto.getCDate(), ApplicationStringConfig.DATE_FORMAT);
         }
         if (dto.isCanModify() != this.canModify) {
             this.canModify = dto.isCanModify();

@@ -1,6 +1,8 @@
 package com.sutdy.dashboard.service;
 
 import com.sutdy.dashboard.dto.TodoDto;
+import com.sutdy.dashboard.setting.ApplicationStringConfig;
+import com.sutdy.dashboard.setting.util.DateUtil;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -48,7 +50,7 @@ public class TodoServiceTest {
     public void saveTest(){
         //given
         TodoDto dto = TodoDto.builder()
-                .date(LocalDateTime.now().toString())
+                .date(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
                 .memo("memo test Logic")
                 .title("title test Logic")
                 .build();

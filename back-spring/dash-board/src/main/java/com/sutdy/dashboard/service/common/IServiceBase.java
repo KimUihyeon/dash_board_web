@@ -4,6 +4,7 @@ import com.sutdy.dashboard.setting.common.SearchParams;
 import org.springframework.data.domain.Page;
 
 import javax.transaction.Transactional;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 /**
@@ -17,7 +18,7 @@ public interface IServiceBase<T, ID> {
 
 
     @Transactional
-    T save(T dto);
+    T save(T dto) throws NoSuchAlgorithmException;
 
     @Transactional
     T update(ID pk, T dto);

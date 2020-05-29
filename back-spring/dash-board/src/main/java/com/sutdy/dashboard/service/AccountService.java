@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.transaction.Transactional;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 /**
@@ -31,11 +32,16 @@ public class AccountService extends BaseCrudService<Account, AccountDto, String>
     @Autowired
     public AccountService(AccountRepository accountRepository) {
         super(accountRepository);
-        tempDate();
+
+        try {
+            tempDate();
+        } catch (NoSuchAlgorithmException e) {
+            e.printStackTrace();
+        }
     }
 
 
-    public void tempDate() {
+    public void tempDate() throws NoSuchAlgorithmException {
         String id = "admin@naver.com";
         logger.info("account Save -> " + id );
 
@@ -47,18 +53,10 @@ public class AccountService extends BaseCrudService<Account, AccountDto, String>
     }
 
     @Override
-    public AccountDto save(AccountDto dto) {
-        try{
-
-            String pw = SecurityStringUtil.encryptSHA256(dto.getPw());
-            dto.setPw(pw);
-            return this.entitySave(dto.toEntity());
-        }
-        catch (Exception e){
-            return null;
-        }
-
-
+    public AccountDto save(AccountDto dto) throws NoSuchAlgorithmException {
+        String pw = SecurityStringUtil.encryptSHA256(dto.getPw());
+        dto.setPw(pw);
+        return this.entitySave(dto.toEntity());
     }
 
     @Override
