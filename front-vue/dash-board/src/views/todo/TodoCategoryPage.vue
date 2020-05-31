@@ -35,7 +35,7 @@
                         :inputEnterKeyPress_handle="addTodoCategory"
                         />
                 </div>
-            </div>
+            </div> 
         </RadianBox>
     </div>
 
