@@ -16,44 +16,23 @@
           <el-dropdown-item v-show="!isLogin" icon="el-icon-user-solid" divided command='/signup'>sign Up</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-      
-<!-- 
-      <div v-if="mode === 'DEV'">
-        <div>
-          <span style="padding:10px">
-            <router-link to="/login">Login</router-link>
-          </span>
-          <span style="padding:10px">
-          </span>
-          <span style="padding:10px">
-            <router-link to="/main">Main</router-link>
-          </span>
-          <span style="padding:10px">
-            <router-link to="/test">Test</router-link>
-          </span>
-        </div>
-      </div> -->
 
-      <Signup
-          :submitHandle="()=>{}"
-          :showModal='showSignup'
-      />
+      <Signup :submitHandle="()=>{}" :showModal='showSignup' />
     </div>
 </template>
 
 <script>
 import Vue from 'vue'
 import { mapGetters } from "vuex";
-import RouterItem from "../common/custome/RouterItem";
+import { data , rest } from '../../util'
+
 import HeaderWeather from '../weather/HeaderWeather';
 import Signup from '../account/Signup';
 import Timer from '../timer/Time'
-import { data , rest } from '../../util'
 
 const name = 'Header';
 const components = {
   Timer,
-  RouterItem,
   HeaderWeather,
   Signup
 }

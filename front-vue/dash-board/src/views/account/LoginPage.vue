@@ -1,21 +1,23 @@
 <template>
     <div class="home">
-
         <div class="blurred-box">
             <div class="user-login-box">
-            
                 <div class="login-components">
-                    <Login />
+                    <Login :showSiugnupHandle="showSignupModal" />
                 </div>
 
-                <div>
-                    <span class="login_help cursor-pointer" @click="showSignupModal">SignUp</span>
-                    <span class="login_help"> | </span>
-                    <span class="login_help">find ID</span>
+                <div class="sns-login-container">
+                    <SnsLoginButton
+                        v-for="(sns, index) in snsComponents"
+                        v-bind:key="index"
+                        :size="snsSize"
+                        :margin="snsMargin"
+                        :iconClass="sns.icon"
+                        :clickHandle="sns.click"
+                    ></SnsLoginButton>
                 </div>
             </div>
         </div>
-
         <Signup :submitHandle="() => {}" :showModal="showSignUp" />
     </div>
 </template>
@@ -24,34 +26,53 @@
 // @ is an alias to /src
 import Login from '../../components/account/Login';
 import Signup from '../../components/account/Signup';
+import SnsLoginButton from '../../components/account/SnsLoginButton';
+
+import { alert } from '../../util';
 
 const name = 'LoginPage';
-const components = { Login, Signup };
+const components = { Login, Signup, SnsLoginButton };
 
 export default {
     name,
     components,
-    data(){
+    data() {
         return {
-            showSignUp : false,
-        }
+            showSignUp: false,
+            snsSize: '35px',
+            snsMargin: '10px',
+            snsComponents: [
+                { icon: 'kakao-login-icon', click: this.kakaoLogin },
+                { icon: 'naver-login-icon', click: this.naverLogin },
+                { icon: 'google-login-icon', click: this.googleLogin },
+            ],
+        };
     },
-    methods : {
-
+    methods: {
+        kakaoLogin() {
+            alert.elMessageBox({ vueObject: this, type: 'info', message: 'kakao 로그인' });
+        },
+        naverLogin() {
+            alert.elMessageBox({ vueObject: this, type: 'success', message: 'naver 로그인' });
+        },
+        googleLogin() {
+            alert.elMessageBox({ vueObject: this, type: 'error', message: 'google 로그인' });
+        },
         showSignupModal() {
-            console.log('123123');
             this.showSignUp = false;
             setTimeout(() => {
                 this.showSignUp = true;
             }, 1);
         },
-    }
+    },
 };
 </script>
 
-
 <style scoped>
-.login-components{
+.sns-login-container {
+    margin: 0 auto;
+}
+.login-components {
     margin: 5px auto;
 }
 .not-valide {
@@ -66,8 +87,8 @@ export default {
 .blurred-box {
     position: absolute;
     width: 250px;
-    height: 350px;
-    top: calc(50% - 150px);
+    height: 430px;
+    top: calc(50% - 215px);
     left: calc(50% - 125px);
     background: inherit;
     border-radius: 2px;
@@ -80,7 +101,7 @@ export default {
 .blurred-box:after {
     content: '';
     width: 300px;
-    height: 350px;
+    height: 430px;
     background: inherit;
     position: absolute;
     left: -25px;

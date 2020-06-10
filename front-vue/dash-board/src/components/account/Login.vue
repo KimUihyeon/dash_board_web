@@ -13,23 +13,31 @@
         <div class="inputBox">
             <el-input type="password" @keydown.enter.native="keyPress_handle" placeholder="pw" v-model="pw" size="small"></el-input>
         </div>
-        <div>
-            <el-button size="small" type="primary" class="loginButton"  @click="keyPress_handle">login</el-button>
+        <div class="inputBox">
+            <el-button size="small" type="primary" class="loginButton" @click="keyPress_handle">login</el-button>
+        </div>
+        <div class="inputBox">
+            <el-button type="success" size="small" class="loginButton" @click="showSiugnupHandle">Signup</el-button>
         </div>
     </div>
 </template>
 
 <script>
 import { data, alert } from '../../util';
-import Signup from './Signup';
 import { accountService } from '../../services';
+import Signup from './Signup';
 
 const name = 'Login';
-const components = { Signup };
 
 export default {
     name,
-    components,
+    components: { Signup },
+    props: {
+        showSiugnupHandle: {
+            type: Function,
+            default: () => {},
+        },
+    },
     data() {
         return {
             pw: '',
@@ -41,6 +49,7 @@ export default {
                 id: false,
                 msg: '',
             },
+            showSignUp: false,
         };
     },
     mounted() {
@@ -112,15 +121,14 @@ export default {
 };
 </script>
 
-
 <style scoped>
-.icon-continer{
+.icon-continer {
     width: 100px;
     height: 100px;
     margin: 20px auto;
     margin-top: 0px;
 }
-.loginButton{
+.loginButton {
     width: 100%;
 }
 

@@ -49,6 +49,9 @@ html{
 #nav{
   text-align: end;
 }
+#nav .el-dialog__header{
+  text-align: center;
+}
 
 .box-left{
   float: left;
@@ -59,4 +62,18 @@ html{
 
 .cursor-pointer{
   cursor: pointer;
+}
+
+
+.kakao-login-icon {  
+  background-image:url(../kakaolink_btn_small.png);
+  background-size: cover;
+}
+.naver-login-icon {  
+    background-image:url(../naver_login_button_green.png);
+    background-size: cover;
+}
+.google-login-icon {  
+    background-image:url(../google_login_button.jpg);
+    background-size: cover;
 }
