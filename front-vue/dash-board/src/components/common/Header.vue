@@ -16,29 +16,14 @@
           <el-dropdown-item v-show="!isLogin" icon="el-icon-user-solid" divided command='/signup'>sign Up</el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>
-
-
+      
 <!-- 
-      <RouterItem v-show="isLogin" to="/todo" icon="el-icon-finished" name="할일" />
-      <RouterItem v-show="isLogin" to="/Logout" icon="el-icon-finished" name="로그아웃" /> -->
-
-      
-      <!-- <RouterItem to="/Logout" icon="el-icon-finished" name="Logout" @click="logOut" /> -->
-      
-      <!-- 
-      <RouterItem to="/calendor" icon="el-icon-date" name="일정" /> 
-      <RouterItem to="/search" icon="el-icon-finished" name="검색" /> 
-      <RouterItem to="/study" icon="el-icon-date" name="공부" /> 
-      <RouterItem to="/setting" icon="el-icon-finished" name="설정" /> 
-      -->
-
       <div v-if="mode === 'DEV'">
         <div>
           <span style="padding:10px">
             <router-link to="/login">Login</router-link>
           </span>
           <span style="padding:10px">
-            <!-- <span @click='logOut'>logOut</span> -->
           </span>
           <span style="padding:10px">
             <router-link to="/main">Main</router-link>
@@ -47,7 +32,7 @@
             <router-link to="/test">Test</router-link>
           </span>
         </div>
-      </div>
+      </div> -->
 
       <Signup
           :submitHandle="()=>{}"
@@ -60,8 +45,8 @@
 import Vue from 'vue'
 import { mapGetters } from "vuex";
 import RouterItem from "../common/custome/RouterItem";
-import HeaderWeather from '../common/custome/HeaderWeather';
-import Signup from './Signup';
+import HeaderWeather from '../weather/HeaderWeather';
+import Signup from '../account/Signup';
 import Timer from '../timer/Time'
 import { data , rest } from '../../util'
 

@@ -1,18 +1,13 @@
 <template>
     <span>
         <span class="time-box">
-            <div class="date">
-                {{dateTime.split(' ')[0]}}
-            </div>
-            <div class="time">
-                {{dateTime.split(' ')[1]}}
-            </div>
+            <div class="date">{{dateTime.split(' ')[0]}}</div>
+            <div class="time">{{dateTime.split(' ')[1]}}</div>
         </span>
     </span>
 </template>
 
 <script>
-import moment from 'moment';
 import { mapGetters } from 'vuex'
 export default {
     name : 'Time',
@@ -37,6 +32,5 @@ export default {
     color: #2c3e50;
     font-size: 12px;
     text-align: center;
-    /* text-shadow: 1px 1px 1px #000; */
 }
 </style>

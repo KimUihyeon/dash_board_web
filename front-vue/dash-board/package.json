@@ -4,31 +4,32 @@
   "private": true,
   "scripts": {
     "serve": "vue-cli-service serve --port 3000",
-    "httpsServe" : "vue-cli-service serve --port 3000 --https",
+    "httpsServe": "vue-cli-service serve --port 3000 --https",
     "build": "vue-cli-service build"
   },
   "dependencies": {
     "axios": "^0.19.2",
+    "bulma": "^0.9.0",
     "core-js": "^3.6.4",
     "dotenv": "^8.2.0",
-    "element-ui": "^2.13.1",
+    "element-ui": "^2.13.2",
     "lodash": "^4.17.15",
-    "moment": "^2.24.0",
-    "vee-validate": "^3.3.0",
+    "moment": "^2.26.0",
+    "vee-validate": "^3.3.3",
     "vue": "^2.6.11",
-    "vue-router": "^3.1.6",
-    "vuetify": "^2.2.11",
-    "vuex": "^3.1.3"
+    "vue-router": "^3.3.2",
+    "vuetify": "^2.2.33",
+    "vuex": "^3.4.0"
   },
   "devDependencies": {
     "@vue/cli-plugin-babel": "~4.3.0",
     "@vue/cli-plugin-router": "~4.3.0",
     "@vue/cli-plugin-vuex": "~4.3.0",
     "@vue/cli-service": "~4.3.0",
-    "sass": "^1.19.0",
+    "sass": "^1.26.8",
     "sass-loader": "^8.0.0",
     "vue-cli-plugin-vuetify": "~2.0.5",
     "vue-template-compiler": "^2.6.11",
-    "vuetify-loader": "^1.3.0"
+    "vuetify-loader": "^1.4.4"
   }
 }

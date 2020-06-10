@@ -1,12 +1,12 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-import Main from '../views/Main.vue'
-import LoginPage from '../views/common/LoginPage.vue'
+import store from '../store/index';
+import { data, rest, error } from '../util';
+
+import LoginPage from '../views/account/LoginPage.vue'
 import TestPage from '../views/TestPage.vue'
 import TodoPage from '../views/todo/TodoPage.vue'
 import TodoCategoryPage from '../views/todo/TodoCategoryPage.vue'
-import { data, rest, error } from '../util';
-import store from '../store/index';
 
 const logoutProcess = () => (to, from , next) => {
   store.dispatch('app_logout').then(auth=>{
@@ -15,7 +15,6 @@ const logoutProcess = () => (to, from , next) => {
     return next(`/login`);
   })
 }
-
 
 const authCheck = () => (to, from, next) => {
   store.dispatch('check_app_auth').then(auth=>{
@@ -37,20 +36,12 @@ const authCheck = () => (to, from, next) => {
 }
 
 
-Vue.use(VueRouter)
-
 const routes = [
   {
     path: '/login',
     name: 'Login',
     alias: ['/login'],
     component: LoginPage,
-  },
-  {
-    path: '/main',
-    name: 'TestPage',
-    component: Main,
-    beforeEnter: authCheck()
   },
   {
     path: '/test',
@@ -97,4 +88,5 @@ const router = new VueRouter({
     routes
 })
 
+Vue.use(VueRouter)
 export default router
