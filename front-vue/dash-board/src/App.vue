@@ -11,9 +11,13 @@
 
 <script>
 import Header from "@/components/common/Header.vue"
+
 export default {
   components : {
     Header,
+  },
+  mounted(){
+    console.log(process.env);
   },
   created(){
     this.$store.commit('SET_WINDOW_SIZE', { windowSize : window.innerWidth});
