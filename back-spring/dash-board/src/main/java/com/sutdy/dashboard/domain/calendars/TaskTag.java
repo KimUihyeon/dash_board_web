@@ -40,8 +40,16 @@ public class TaskTag {
     private List<Task> task;
 
 
-    public void patch(TaskTagDto dto){
-
+    public void patch(TaskTagDto dto) {
+        if (dto.getTitle() != null && !dto.getTitle().equals(this.title)) {
+            this.title = dto.getTitle();
+        }
+        if (dto.getDescription() != null && !dto.getDescription().equals(this.description)) {
+            this.description = dto.getDescription();
+        }
+        if (dto.getColor() != null && !dto.getColor().equals(this.color)) {
+            this.color = dto.getColor();
+        }
     }
 
 }

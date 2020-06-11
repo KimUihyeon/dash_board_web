@@ -7,7 +7,9 @@ import com.sutdy.dashboard.dto.AccountDto;
 import com.sutdy.dashboard.dto.TaskTagDto;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.DateUtil;
+import org.junit.After;
 import org.junit.Assert;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,31 +40,53 @@ public class CalendarServiceTest {
     @Autowired
     private AccountService accountService;
 
+
     private String loginId = "smaple_account1@naver.com";
+    private Long tempTaskTagId;
 
-    private AccountDto getAccountSample() {
-        AccountDto dto = new AccountDto(Account.builder()
-                .id(loginId)
-                .name("userName")
-                .cDate(LocalDateTime.now())
-                .build());
-        dto.setPw("123123123");
-        return dto;
-    }
 
-    private Account createSampleData() throws NoSuchAlgorithmException {
+    @Before
+    public void createSampleData() throws NoSuchAlgorithmException {
+
+        AccountDto accountDto = null;
+
         if (this.accountService.findById(loginId) != null) {
-            return this.accountService.findById(loginId).toEntity();
+            accountDto = this.accountService.findById(loginId);
         } else {
-            return this.accountService.save(getAccountSample()).toEntity();
+
+            AccountDto dto = new AccountDto(Account.builder()
+                    .id(loginId)
+                    .name("userName")
+                    .cDate(LocalDateTime.now())
+                    .build());
+            dto.setPw("123123123");
+
+            accountDto = this.accountService.save(dto);
         }
+
+        TaskTagDto dto = TaskTagDto.builder()
+                .userId(accountDto.getId())
+                .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                .color("#fff")
+                .description("test Data")
+                .title("테스트 캘린더 테그 생성")
+                .build();
+
+        this.tempTaskTagId = this.calendarService.tagSave(dto).getId();
     }
+
+    @After
+    public void cleanup(){
+        this.accountService.delete(loginId);
+        this.taskTagRepository.deleteById(tempTaskTagId);
+    }
+
 
     @Test
     @Transactional
     public void tagSaveTest() throws NoSuchAlgorithmException {
         //given
-        Account account = createSampleData();
+        Account account = this.accountService.findById(loginId).toEntity();
         TaskTagDto dto = TaskTagDto.builder()
                 .userId(account.getId())
                 .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
@@ -84,7 +108,7 @@ public class CalendarServiceTest {
     @Transactional
     public void tagListTest() throws NoSuchAlgorithmException {
         //given
-        Account account = createSampleData();
+        Account account = this.accountService.findById(loginId).toEntity();
         List<TaskTagDto> taskTags = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
 
@@ -138,7 +162,7 @@ public class CalendarServiceTest {
     @Transactional
     public void tagDeleteTest() throws NoSuchAlgorithmException {
         //given
-        Account account = createSampleData();
+        Account account = this.accountService.findById(loginId).toEntity();
         TaskTagDto dto = TaskTagDto.builder()
                 .userId(account.getId())
                 .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
@@ -147,7 +171,7 @@ public class CalendarServiceTest {
                 .title("테스트 캘린더 테그 생성")
                 .build();
         TaskTagDto savedTag = this.calendarService.tagSave(dto);
-        TaskTagDto deletedTag =this.calendarService.tagDelete(savedTag.getId());
+        TaskTagDto deletedTag = this.calendarService.tagDelete(savedTag.getId());
 
         //when
         TaskTag findTag = this.taskTagRepository.findById(deletedTag.getId()).orElse(null);
@@ -159,9 +183,30 @@ public class CalendarServiceTest {
 
     }
 
-    public void tagUpdateTest() {
+    @Test
+    @Transactional
+    public void tagUpdateTest() throws NoSuchAlgorithmException {
+        // given
+        Account account = this.accountService.findById(loginId).toEntity();
+        TaskTagDto dto = TaskTagDto.builder()
+                .userId(account.getId())
+                .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                .color("#fff")
+                .description("test Data")
+                .title("테스트 캘린더 테그 생성")
+                .build();
+        TaskTagDto savedTag = this.calendarService.tagSave(dto);
+        String changeTitle = "변경된 타이틀 !";
+        savedTag.setTitle(changeTitle);
 
+        //when
+        TaskTagDto updatedDto = this.calendarService.tagUpdate(savedTag);
+
+        //then
+        Assert.assertEquals(changeTitle, updatedDto.getTitle());
+        Assert.assertEquals(updatedDto.getTitle(), savedTag.getTitle());
     }
+
 
 
     public void saveTest() {
@@ -172,8 +217,7 @@ public class CalendarServiceTest {
 
     }
 
-
-    public void insertTest() {
+    public void deleteTest() {
 
     }
 
