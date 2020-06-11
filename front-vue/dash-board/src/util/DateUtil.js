@@ -26,3 +26,8 @@ export const convertByUnixDateTime = (unix_DateTime,format) =>{
     var date = new Date(unix_DateTime * 1000);
     return formatting(moment(date) , format);
 }
+
+
+export const format = (dateStr, format) =>{
+    return moment(dateStr).format(format);
+}

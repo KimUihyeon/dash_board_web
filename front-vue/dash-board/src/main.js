@@ -11,7 +11,8 @@ import '@/assets/css/codepen-bg-blurbox.css';
 import '@/assets/css/element-ui-custom.css';
 import '@/assets/css/default.css';
 import '@/assets/css/nav.css';
-Vue.use(ElementUI);
+import locale from 'element-ui/lib/locale/lang/ko'
+Vue.use(ElementUI,{ locale });
 
 
 /** vuetify 아이콘만ㅁ 쓰는중 ..! */

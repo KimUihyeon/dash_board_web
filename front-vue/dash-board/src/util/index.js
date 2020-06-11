@@ -1,4 +1,4 @@
-import { convertByUnixDateTime, now } from './DateUtil'
+import { convertByUnixDateTime, now , format} from './DateUtil'
 import { rest as Rest } from './Rest'
 import { alert as Alert } from './Alert';
 import { data as Data } from './Data';
@@ -11,7 +11,8 @@ export const date = {
     now,
     convertByUnixDate : (dateTime) => {
         return convertByUnixDateTime(dateTime);
-    }    
+    },
+    format
 }
 
 

@@ -15,7 +15,7 @@
 </template>
 
 <script>
-const name = 'calendar';
+const name = 'Calendar';
 
 export default {
     name,
