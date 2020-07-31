@@ -4,6 +4,7 @@ import com.querydsl.jpa.impl.JPAQueryFactory;
 import com.sutdy.dashboard.domain.todo.QTodo;
 import com.sutdy.dashboard.domain.todo.Todo;
 import com.sutdy.dashboard.domain.todo.TodoRepository;
+import com.sutdy.dashboard.domain.todo.TodoRepositoryImpl;
 import com.sutdy.dashboard.service.TodoService;
 import org.junit.Assert;
 import org.junit.Test;
@@ -27,15 +28,18 @@ import java.util.stream.Collectors;
  */
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class HibernateConfigTest {
+public class HibernateTest {
 
-    private Logger logger = LoggerFactory.getLogger(HibernateConfigTest.class);
+    private Logger logger = LoggerFactory.getLogger(HibernateTest.class);
 
     @Autowired
     private JPAQueryFactory jpaQueryFactory;
 
     @Autowired
     private TodoService todoService;
+
+//    @Autowired
+//    private  TodoRepositoryImpl todoRepositoryImpl;
 
     @Autowired
     private TodoRepository todoRepository;
@@ -48,7 +52,7 @@ public class HibernateConfigTest {
             Todo todo = Todo.builder()
                     .title("테스트 타이틀 " + i)
                     .cDate(LocalDateTime.now())
-                    .contents("테스트 내용__" + i + "\n" + "HibernateConfigTest 에서 생성됨.")
+                    .contents("테스트 내용__" + i + "\n" + "HibernateTest 에서 생성됨.")
                     .build();
             tempDatas.add(todo);
         }
@@ -73,7 +77,6 @@ public class HibernateConfigTest {
 
     /**
      * query Dsl 세팅 기능테스트.
-     *
      */
     @Test
     @Rollback
@@ -93,7 +96,7 @@ public class HibernateConfigTest {
         }
 
         // then
-        List<Todo> queryDslTodos =  this.jpaQueryFactory.selectFrom(QTodo.todo)
+        List<Todo> queryDslTodos = this.jpaQueryFactory.selectFrom(QTodo.todo)
                 .where(QTodo.todo.id.in(pks))
                 .fetch();
 
@@ -102,10 +105,10 @@ public class HibernateConfigTest {
 
         // when
         boolean success = true;
-        for(Todo queryDslTodo : queryDslTodos){ // DataValidation
+        for (Todo queryDslTodo : queryDslTodos) { // DataValidation
             long pk = queryDslTodo.getId();
-            Todo findTodo = jpaTodo.stream().filter(t-> t.getId() == pk).findFirst().orElse(null);
-            if(findTodo == null){
+            Todo findTodo = jpaTodo.stream().filter(t -> t.getId() == pk).findFirst().orElse(null);
+            if (findTodo == null) {
                 success = false;
                 logger.error("error not find Entity -> " + pk);
                 Assert.assertTrue(false);
@@ -113,11 +116,41 @@ public class HibernateConfigTest {
 
         }
 
-        if(success
-                && (queryDslTodos.size() == 0 || queryDslTodos.size() != jpaTodo.size())){ // Collection Size Validation
+        if (success
+                && (queryDslTodos.size() == 0 || queryDslTodos.size() != jpaTodo.size())) { // Collection Size Validation
             success = false;
         }
 
         Assert.assertTrue(success);
+    }
+
+
+    @Test
+    @Rollback
+    @Transactional
+    public void queryDsl_타이틀_검색_테스트() {
+
+        // given
+        int dataCount = 30;
+        List<Todo> jpaTodo = createTodoList(dataCount);
+        List<Long> pks = jpaTodo.stream()
+                .map(t -> t.getId()).collect(Collectors.toList());
+
+        logger.debug("jpaTodo size => " + jpaTodo.size());
+        for (Todo todo : jpaTodo) {
+            logger.debug("jpaTodo title => " + todo.getTitle());
+        }
+
+        // then
+
+        List<Todo> findTodo = this.todoRepository.이게왜됨(jpaTodo.get(0).getTitle());
+
+
+        logger.error("찾을 Todo Title-> " +jpaTodo.get(0).getTitle());
+        logger.error("찾은 Todo Title-> " +findTodo.get(0).getTitle());
+
+        Assert.assertTrue(findTodo.size() > 0);
+        Assert.assertEquals(findTodo.get(0).getTitle() , jpaTodo.get(0).getTitle());
+
     }
 }
