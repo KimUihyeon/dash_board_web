@@ -207,8 +207,6 @@ public class CalendarServiceTest {
         Assert.assertEquals(updatedDto.getTitle(), savedTag.getTitle());
     }
 
-
-
     public void saveTest() {
 
     }

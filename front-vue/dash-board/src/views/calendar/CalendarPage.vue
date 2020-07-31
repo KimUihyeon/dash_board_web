@@ -1,8 +1,8 @@
 <template>
     <div>
         <div>{{ start.month }} // {{ end.year }}</div>
-        <el-button @click="prev"> 이전 </el-button>
-        <el-button @click="next"> 다음 </el-button>
+        <el-button @click="()=>{$refs.calendar.prev()}"> 이전 </el-button>
+        <el-button @click="()=>{$refs.calendar.next()}"> 다음 </el-button>
         <el-button @click="reg">+</el-button>
         <v-sheet height="600">
             <v-calendar
@@ -10,20 +10,23 @@
                 v-model="value"
                 color="primary"
                 locale='ko'
-                :day-format='removeString'
+                :day-format="(e)=>e.day"
                 :show-month-on-first='false'
                 :weekdays="weekday"
                 :type="type"
                 :events="events"
                 :event-overlap-mode="mode"
                 :event-overlap-threshold="30"
-                :event-color="getEventColor"
+                :event-color="(e)=>e.color"
                 @click:more="showEvent"
                 @click:event="showEvent"
                 @change="updateCalcendar"
             ></v-calendar>
         </v-sheet>
-        <TaskFrom :showModal='showFormModal'></TaskFrom>
+        <TaskFrom 
+            :submitAfterHandle='formSubmit'
+            :showModal='showFormModal'>
+        </TaskFrom>
     </div>
 </template>
 
@@ -55,11 +58,8 @@ export default {
                 this.showFormModal = true;
             }, 1);
         },
-        prev() {
-            this.$refs.calendar.prev();
-        },
-        next() {
-            this.$refs.calendar.next();
+        formSubmit(task){
+            this.updateCalcendar({start : this.start , end : this.end});
         },
         updateCalcendar({ start, end }) {
             this.start = start;
@@ -90,21 +90,10 @@ export default {
                     name: 'Meeting',
                 },
             ];
-        },
-        removeString(e){
-            return e.day;
-        },
-        getEventColor(event) {
-            return event.color;
+            console.log('업데이트');
         },
         showEvent(e,t) {
             console.log(e);
-            // alert(e);
-        },
-        formatDate(a, withTime) {
-            return withTime
-                ? `${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()} ${a.getHours()}:${a.getMinutes()}`
-                : `${a.getFullYear()}-${a.getMonth() + 1}-${a.getDate()}`;
         },
     },
 };

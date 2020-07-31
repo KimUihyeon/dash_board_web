@@ -1,9 +1,23 @@
+
+buildscript {
+    ext {
+        querydslPluginVersion = '1.0.10' // 플러그인 버전
+    }
+    repositories {
+        maven { url "https://plugins.gradle.org/m2/" } // 플러그인 저장소
+    }
+    dependencies {
+        classpath("gradle.plugin.com.ewerk.gradle.plugins:querydsl-plugin:${querydslPluginVersion}") // querydsl 플러그인 의존성 등록
+    }
+}
+
 plugins {
     id 'org.springframework.boot' version '2.2.6.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'org.asciidoctor.convert' version '1.5.8'
     id 'java'
 }
+
 
 group = 'com.sutdy'
 version = '0.0.1-SNAPSHOT'
@@ -17,6 +31,8 @@ configurations {
 
 repositories {
     mavenCentral()
+
+    maven { url "https://plugins.gradle.org/m2/" } // 플러그인 저장소
 }
 
 ext {
@@ -38,6 +54,8 @@ dependencies {
 
     compile('org.springframework.boot:spring-boot-starter-jdbc')
     compile('mysql:mysql-connector-java')
+    compile("com.querydsl:querydsl-jpa") // querydsl
+    compile("com.querydsl:querydsl-apt") // querydsl
 
 }
 
@@ -50,3 +68,29 @@ asciidoctor {
     inputs.dir snippetsDir
     dependsOn test
 }
+
+
+apply plugin: "com.ewerk.gradle.plugins.querydsl" // Plugin 적용
+def querydslSrcDir = 'src/main/generated' // QClass 생성 위치
+
+querydsl {
+    library = "com.querydsl:querydsl-apt"
+    jpa = true
+    querydslSourcesDir = querydslSrcDir
+}
+
+sourceSets {
+    main {
+        java {
+            srcDirs = ['src/main/java', querydslSrcDir]
+        }
+    }
+}
+compileQuerydsl{
+    options.annotationProcessorPath = configurations.querydsl
+}
+
+configurations {
+    querydsl.extendsFrom compileClasspath
+}
+
