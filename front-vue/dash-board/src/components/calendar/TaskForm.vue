@@ -1,12 +1,7 @@
 <template>
     <el-dialog
-        title="일정 등록하기."
+        title="일정 등록하기"
         :visible.sync="show"
-        :close="
-            () => {
-                showModal();
-            }
-        "
         :close-on-click-modal="false"
     >
         <ValidationObserver v-slot="{ handleSubmit }">
@@ -23,7 +18,7 @@
                                 "
                                 placeholder="일정을 적어주세요."
                                 ref="task"
-                                v-model="task.title"
+                                v-model="cloneTask.title"
                                 size="small"
                             >
                             </el-input>
@@ -74,44 +69,23 @@
                             :rows="5" 
                             ref='memo'
                             placeholder="메모"
-                            v-model="task.memo"
+                            v-model="cloneTask.memo"
                             size="small">
                         </el-input>
                         </el-input>
                     </el-form-item>
                 </div>
-                <!-- 
-                <div>
-                    <ValidationProvider name="name" v-slot="{ errors }" rules="required|minMax:2,20|noTrim">
-                        <el-form-item label="name">
-                            <el-input
-                                type="text"
-                                @keydown.enter.native="
-                                    () => {
-                                        nextFouse(errors, $refs.name);
-                                        handleSubmit(submit);
-                                    }
-                                "
-                                placeholder="닉네임"
-                                ref="name"
-                                v-model="name"
-                                size="small"
-                            ></el-input>
-                            <span class="validation-box">{{ errors[0] }}</span>
-                        </el-form-item>
-                    </ValidationProvider>
-                </div> -->
-
                 <div style="text-align: center;">
-                    <el-button size="small" type="primary" @click="handleSubmit(submit)" round>가입하기</el-button>
+                    <el-button 
+                        size="small" 
+                        type="primary" 
+                        @click="handleSubmit(submit)" 
+                        round>저장</el-button>
+
                     <el-button
                         size="small"
                         type="danger"
-                        @click="
-                            () => {
-                                show = false;
-                            }
-                        "
+                        @click="close"
                         round
                         >나가기</el-button
                     >
@@ -126,14 +100,21 @@ import { data, alert, rest, date } from '../../util';
 import { accountService } from '../../services';
 
 const name = 'TaskForm';
-const props = { showModal: Boolean };
+const props = { 
+    showModal: Boolean , 
+    submitAfterHandle : { 
+        type : Function , 
+        default :  () => {}
+    },
+    task : Object
+};
 
 export default {
     name,
     props,
     data() {
         return {
-            task: {
+            cloneTask: {
                 title: '',
                 start: '',
                 end: '',
@@ -146,7 +127,7 @@ export default {
     },
     methods: {
         init() {
-            this.task = {
+            this.cloneTask = {
                 title: '',
                 start: '',
                 end: '',
@@ -154,8 +135,13 @@ export default {
             };
         },
         submit() {
-            this.alert('error', '아이디 중복확인을 해주세요');
-            return;
+
+            this.close();
+
+            setTimeout(()=>{
+                this.alert('error', '아이디 중복확인을 해주세요');
+                this.submitAfterHandle(this.cloneTask);
+            },10)
 
             // accountService
             //     .signup(this.title, this.pw)
@@ -181,6 +167,9 @@ export default {
                 message,
             });
         },
+        close(){
+            this.show = false;
+        }
     },
     watch: {
         showModal(v) {
@@ -196,8 +185,8 @@ export default {
             let start = date.format(v[0], format);
             let end = date.format(v[1], format);
 
-            this.task.start = start;
-            this.task.end = end;
+            this.cloneTask.start = start;
+            this.cloneTask.end = end;
         },
     },
 };

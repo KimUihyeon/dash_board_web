@@ -33,3 +33,6 @@ out/
 
 nohup.out
 application-db-rel.properties
+
+### Query DSL ###
+generated
