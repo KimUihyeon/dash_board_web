@@ -54,6 +54,9 @@ dependencies {
 
     compile('org.springframework.boot:spring-boot-starter-jdbc')
     compile('mysql:mysql-connector-java')
+
+    compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.2'
+
     compile("com.querydsl:querydsl-jpa") // querydsl
     compile("com.querydsl:querydsl-apt") // querydsl
 
