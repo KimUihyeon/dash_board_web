@@ -1,13 +1,15 @@
 package com.sutdy.dashboard.dto;
 
 import com.sutdy.dashboard.domain.todo.Todo;
-import com.sutdy.dashboard.dto.common.AbsDtoConverter;
+import com.sutdy.dashboard.dto.common.ToEntity;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.DateUtil;
+import com.sutdy.dashboard.setting.util.data.ModelConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.PropertyMap;
 
 import java.time.LocalDateTime;
 
@@ -20,7 +22,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TodoDto extends AbsDtoConverter<Todo> {
+public class TodoDto implements ToEntity<Todo> {
 
     private Long id;
 
@@ -44,8 +46,9 @@ public class TodoDto extends AbsDtoConverter<Todo> {
 
     private String categoryName;
 
-    public TodoDto(Todo entity) {
-        this.createDto(entity);
+
+    public TodoDto(Todo todo){
+        of(todo);
     }
 
     @Override
@@ -70,19 +73,29 @@ public class TodoDto extends AbsDtoConverter<Todo> {
     }
 
     @Override
-    public void createDto(Todo entity) {
-        String dateFormat = ApplicationStringConfig.DATE_FORMAT;
-        this.id = entity.getId();
-        this.title = entity.getTitle();
-        this.todoComplete = entity.isComplete();
-        this.date = entity.getCDate() == null ? null : DateUtil.localDateTimeToString(entity.getCDate() ,dateFormat );
-        this.memo = entity.getContents();
-        this.isImportant = entity.isImportant();
-        this.toDay = entity.isToDay();
-        this.categoryName = entity.getTodoCategory() == null ? null : entity.getTodoCategory().getTitle();
-        this.categoryId = entity.getTodoCategory() == null ? null : entity.getTodoCategory().getId();
-        this.eDate = entity.getEDate() == null ? null : DateUtil.localDateTimeToString(entity.getEDate() ,dateFormat );
-        this.sDate = entity.getSDate() == null ? null : DateUtil.localDateTimeToString(entity.getSDate() ,dateFormat );
-    }
+    public void of(Todo todo) {
 
+        PropertyMap<Todo , TodoDto> propertyMap = new PropertyMap<Todo, TodoDto>() {
+            @Override
+            protected void configure() {
+                map().setSDate(
+                        DateUtil.localDateTimeToString(
+                                source.getSDate(), ApplicationStringConfig.DATE_FORMAT)
+                );
+
+                map().setEDate(
+                        DateUtil.localDateTimeToString(
+                                source.getEDate(), ApplicationStringConfig.DATE_FORMAT)
+                );
+
+                map().setDate(
+                        DateUtil.localDateTimeToString(
+                                source.getCDate(), ApplicationStringConfig.DATE_FORMAT)
+                );
+                map().setId(source.getId());
+            }
+        };
+        TodoDto dto = ModelConverter.map(propertyMap, todo , TodoDto.class);
+        this.setId(dto.getId());
+    }
 }

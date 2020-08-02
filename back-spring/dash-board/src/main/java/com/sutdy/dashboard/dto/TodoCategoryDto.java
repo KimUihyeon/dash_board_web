@@ -1,13 +1,15 @@
 package com.sutdy.dashboard.dto;
 
 import com.sutdy.dashboard.domain.todo.TodoCategory;
-import com.sutdy.dashboard.dto.common.AbsDtoConverter;
+import com.sutdy.dashboard.dto.common.ToEntity;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.DateUtil;
+import com.sutdy.dashboard.setting.util.data.ModelConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.PropertyMap;
 
 /**
  * @author kuh
@@ -18,7 +20,7 @@ import lombok.NoArgsConstructor;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TodoCategoryDto extends AbsDtoConverter<TodoCategory> {
+public class TodoCategoryDto implements ToEntity<TodoCategory> {
 
     private Long id;
 
@@ -36,12 +38,6 @@ public class TodoCategoryDto extends AbsDtoConverter<TodoCategory> {
 
     private String userId;
 
-
-    public TodoCategoryDto(TodoCategory entity){
-        createDto(entity);
-    }
-
-
     @Override
     public TodoCategory toEntity() {
         return TodoCategory.builder()
@@ -55,15 +51,20 @@ public class TodoCategoryDto extends AbsDtoConverter<TodoCategory> {
                 .build();
     }
 
-    @Override
-    public void createDto(TodoCategory entity) {
-        this.id = entity.getId();
-        this.title = entity.getTitle();
-        this.canModify = entity.isCanModify();
-        this.cDate = entity.getCDate() == null ? null : DateUtil.localDateTimeToString(entity.getCDate() , ApplicationStringConfig.DATE_FORMAT);
-        this.icon = entity.getIcon();
-        this.iconColor = entity.getIconColor();
-        this.fontColor = entity.getFontColor();
-        this.userId = entity.getAccount() == null ? null : entity.getAccount().getId();
+    public TodoCategoryDto(TodoCategory entity) {
+        of(entity);
     }
+
+    @Override
+    public void of(TodoCategory todoCategory) {
+        PropertyMap<TodoCategory, TodoCategoryDto> map = new PropertyMap<TodoCategory, TodoCategoryDto>() {
+            @Override
+            protected void configure() {
+
+            }
+        };
+
+        ModelConverter.map(map, todoCategory, TodoCategoryDto.class);
+    }
+
 }

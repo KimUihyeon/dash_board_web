@@ -78,9 +78,5 @@ public class Todo {
         if(dto.getSDate() != null && !DateUtil.dateTimeCompare(dto.getSDate(), this.sDate , dateFormat)){
             this.sDate = DateUtil.stringToLocalDateTime(dto.getSDate(), dateFormat);
         }
-
-
-
-
     }
 }

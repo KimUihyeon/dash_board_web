@@ -2,6 +2,7 @@ package com.sutdy.dashboard.service.common;
 
 import com.sutdy.dashboard.setting.common.SearchParams;
 import org.springframework.data.domain.Page;
+import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
@@ -16,25 +17,20 @@ import java.util.List;
  */
 public interface IServiceBase<T, ID> {
 
-
     @Transactional
     T save(T dto) throws NoSuchAlgorithmException;
 
     @Transactional
-    T update(ID pk, T dto);
+    T update(ID pk, T dto) throws NotImplementedException;
 
     @Transactional
     T delete(ID pk);
 
-    Page<T> findAll(int page, int size);
-
-    List<T> findAll();
-
-    List<T> findAllById(Iterable<Long> ids);
-
-    List<T> findAll(SearchParams params);
+    List<T> deleteAll(Iterable<ID> ids);
 
     T findById(ID pk);
 
+    Page<T> findAll(int page, int size);
 
+    List<T> findAllById(Iterable<ID> ids);
 }

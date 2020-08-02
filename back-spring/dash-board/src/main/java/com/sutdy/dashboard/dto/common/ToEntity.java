@@ -1,12 +1,12 @@
 package com.sutdy.dashboard.dto.common;
 
 /**
+ * DTO -> Entity 변환 인터페이스
  *
  * @param <T> entity class
  */
-public interface IDtoConverter<T> {
-
+public interface ToEntity<T> {
     T toEntity();
 
-    void createDto(T entity);
+    void of(T t);
 }

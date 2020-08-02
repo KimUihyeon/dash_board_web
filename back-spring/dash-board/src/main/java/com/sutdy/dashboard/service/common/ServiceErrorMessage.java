@@ -10,7 +10,7 @@ import org.springframework.context.annotation.PropertySource;
  */
 
 @PropertySource(PropertyFileManager.ERROR_MGS_PROP)
-public abstract class ServiceErrorBundle {
+public abstract class ServiceErrorMessage {
 
     @Value("${not_find_data}")
     protected String NOT_FIND_DATA;
@@ -26,4 +26,7 @@ public abstract class ServiceErrorBundle {
 
     @Value("${fail_delete_jpa}")
     protected String FAIL_DELETE_JPA;
+
+    @Value("구현이 안된 메소드 입니다.")
+    protected String NOT_IMPLEMENT_METHOD;
 }

@@ -5,6 +5,7 @@ import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.dto.AccountDto;
 import com.sutdy.dashboard.service.AccountService;
 import com.sutdy.dashboard.setting.exception.ExceptionAdvice;
+import com.sutdy.dashboard.setting.util.data.ModelConverter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,7 +51,7 @@ public class AccountApiControllerTest {
         String id = "admin@naver.com";
         String name = "김의현";
         String pw = "123123";
-        return new AccountDto( Account.builder()
+        return new AccountDto(Account.builder()
                 .id(id)
                 .pw(pw)
                 .name(name)

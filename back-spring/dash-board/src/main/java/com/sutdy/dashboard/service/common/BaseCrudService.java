@@ -1,18 +1,22 @@
 package com.sutdy.dashboard.service.common;
 
-import com.sutdy.dashboard.dto.common.AbsDtoConverter;
-import com.sutdy.dashboard.dto.common.IDtoConverter;
+import com.sutdy.dashboard.dto.AccountDto;
+import com.sutdy.dashboard.dto.common.ToEntity;
+import com.sutdy.dashboard.setting.util.data.ModelConverter;
+import org.modelmapper.ModelMapper;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.jpa.repository.JpaRepository;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
-import javax.persistence.Id;
 import javax.transaction.Transactional;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,11 +24,10 @@ import java.util.stream.Collectors;
  * @author kuh
  * @since 2020.04.16
  */
+public abstract class BaseCrudService<Entity, Dto extends ToEntity<Entity> , ID>
+        extends ServiceErrorMessage implements IServiceBase<Dto , ID> {
 
-
-public abstract class BaseCrudService<Entity, Dto extends AbsDtoConverter<Entity>, ID>
-        extends ServiceErrorBundle implements IServiceBase<Dto , ID> {
-
+    private final Logger logger = LoggerFactory.getLogger(BaseCrudService.class);
 
     protected JpaRepository<Entity, ID> jpaRepository;
 
@@ -34,10 +37,11 @@ public abstract class BaseCrudService<Entity, Dto extends AbsDtoConverter<Entity
 
     private Dto getDtoInstance(Entity entity) {
         try {
-            Constructor<Dto> dtoConstructor =  dtoClass.getConstructor(entityClass);;
+            Constructor<Dto> dtoConstructor =  dtoClass.getConstructor(entityClass);
             return dtoConstructor.newInstance(entity);
         } catch (Exception e5) {
             e5.printStackTrace();
+            logger.error(e5.getMessage());
         }
         return null;
     }
@@ -56,18 +60,30 @@ public abstract class BaseCrudService<Entity, Dto extends AbsDtoConverter<Entity
     }
 
 
-    protected Dto entitySave(Entity entity) {
+    /**
+     * @since 20.08.02
+     * @return
+     */
+
+    /**
+     * @since 20.08.02
+     * @param entity 엔티티객체
+     * @return
+     */
+    @Transactional
+    public Dto saveEntity(Entity entity) {
         try {
             return getDtoInstance(this.jpaRepository.save(entity));
         } catch (Exception e5) {
             e5.printStackTrace();
+            logger.error(e5.getMessage());
         }
         return null;
     }
 
 
     @Transactional
-    protected Dto entityDelete(ID id) throws DataAccessException {
+    public Dto deleteEntity(ID id) throws DataAccessException {
         Entity entity = null;
 
         try {
@@ -81,44 +97,73 @@ public abstract class BaseCrudService<Entity, Dto extends AbsDtoConverter<Entity
             e.printStackTrace();
             throw new IllegalArgumentException(FAIL_DELETE_JPA);
         }
-
-
     }
 
-    protected List<Dto> entityFindAllById(Iterable<ID> ids){
+    public List<Dto> findAllEntityByIds(Iterable<ID> ids){
         return this.jpaRepository.findAllById(ids)
                 .stream()
                 .map(entity->getDtoInstance(entity))
                 .collect(Collectors.toList());
     }
 
-
-    protected Page<Dto> entityFindAll(int page, int size) {
+    public Page<Dto> findAllEntity(int page, int size) {
         return this.jpaRepository.findAll(PageRequest.of(page, size))
                 .map(en -> getDtoInstance(en));
     }
 
-    protected List<Dto> entityFindAll() {
-
+    public List<Dto> findAllEntity() {
         return this.jpaRepository.findAll().stream()
                 .map(en -> getDtoInstance(en)).collect(Collectors.toList());
-    }
+    };
 
-    ;
-
-    protected Entity entityFindById(ID id) {
+    protected Entity findEntityById(ID id) {
         return this.jpaRepository.findById(id).orElseThrow(() ->
                 new IllegalArgumentException(NOT_FIND_DATA));
     }
 
     protected Dto entityFindByIdCastDto(ID id) {
-        return getDtoInstance(entityFindById(id));
+        return getDtoInstance(findEntityById(id));
     }
 
 
     @Transactional
-    protected Entity entityUpdate(ID id, IDtoConverter<Entity> dto) {
+    protected Entity entityUpdate(ID id, ToEntity<Entity> dto) {
         throw new NotImplementedException();
     }
 
+    @Override
+    public Dto update(ID pk, Dto dto) {
+        throw new NotImplementedException();
+    }
+
+    @Override
+    public Dto save(Dto dto) throws NoSuchAlgorithmException {
+        return saveEntity(dto.toEntity());
+    }
+
+    @Override
+    public Dto delete(ID pk) {
+        return deleteEntity(pk);
+    }
+
+    @Override
+    public List<Dto> deleteAll(Iterable<ID> ids) {
+        return deleteAll(ids);
+    }
+
+    @Override
+    public Dto findById(ID pk) {
+        return getDtoInstance(findEntityById(pk));
+    }
+
+
+    @Override
+    public Page<Dto> findAll(int page, int size) {
+        return null;
+    }
+
+    @Override
+    public List<Dto> findAllById(Iterable<ID> ids) {
+        return null;
+    }
 }

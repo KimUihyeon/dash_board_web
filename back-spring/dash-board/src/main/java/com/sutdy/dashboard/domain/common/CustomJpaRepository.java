@@ -1,9 +1,8 @@
 package com.sutdy.dashboard.domain.common;
 
 import com.sutdy.dashboard.dto.common.AbsDtoConverter;
-import com.sutdy.dashboard.dto.common.IDtoConverter;
-import com.sutdy.dashboard.service.common.IServiceBase;
-import com.sutdy.dashboard.service.common.ServiceErrorBundle;
+import com.sutdy.dashboard.dto.common.ToEntity;
+import com.sutdy.dashboard.service.common.ServiceErrorMessage;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -22,7 +21,7 @@ import java.util.stream.Collectors;
  * @since 2020.05.06
  */
 public abstract class CustomJpaRepository<Entity, Dto extends AbsDtoConverter<Entity>>
-        extends ServiceErrorBundle implements JpaRepository<Entity , Long> {
+        extends ServiceErrorMessage implements JpaRepository<Entity , Long> {
 
 
 //    protected JpaRepository<Entity, Long> jpaRepository;
@@ -112,7 +111,7 @@ public abstract class CustomJpaRepository<Entity, Dto extends AbsDtoConverter<En
     }
 
     @Deprecated
-    protected Entity entityUpdate(long id, IDtoConverter<Entity> dto) {
+    protected Entity entityUpdate(long id, ToEntity<Entity> dto) {
         throw new NotImplementedException();
     }
 }

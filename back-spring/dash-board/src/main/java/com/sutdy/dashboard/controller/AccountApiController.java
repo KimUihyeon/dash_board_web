@@ -35,7 +35,7 @@ public class AccountApiController {
      */
     @PostMapping("/login")
     public AuthResponse login(@RequestBody AccountDto member) throws Exception {
-        AccountDto findMember = this.accountService.login(member);
+        AccountDto findMember = this.accountService.login(member.getId(), member.getPw());
 
         try{
             String jwt = JWT.createToken(findMember.getId(), findMember.getName(),3);

@@ -6,11 +6,11 @@ import com.sutdy.dashboard.domain.calendars.TaskTag;
 import com.sutdy.dashboard.domain.calendars.TaskTagRepository;
 import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.domain.members.AccountRepository;
-import com.sutdy.dashboard.dto.AccountDto;
 import com.sutdy.dashboard.dto.TaskDto;
 import com.sutdy.dashboard.dto.TaskTagDto;
 import com.sutdy.dashboard.service.common.BaseCrudService;
 import com.sutdy.dashboard.setting.common.SearchParams;
+import com.sutdy.dashboard.setting.util.data.ModelConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,8 +19,8 @@ import org.springframework.stereotype.Service;
 import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.List;
+import java.util.stream.Collectors;
 
 /**
  * @author kuh
@@ -41,49 +41,12 @@ public class CalendarService extends BaseCrudService<Task, TaskDto, Long> {
         this.accountRepository = accountRepository;
     }
 
-
-    @Override
-    public TaskDto save(TaskDto dto) throws NoSuchAlgorithmException {
-        return this.entitySave(dto.toEntity());
-    }
-
     @Override
     public TaskDto update(Long pk, TaskDto dto) {
-        Task entity = this.entityFindById(pk);
+        Task entity = this.findEntityById(pk);
         entity.patch(dto);
         return new TaskDto(entity);
     }
-
-    @Override
-    public TaskDto delete(Long pk) {
-        return this.entityDelete(pk);
-    }
-
-    @Override
-    public Page<TaskDto> findAll(int page, int size) {
-        return this.entityFindAll(page, size);
-    }
-
-    @Override
-    public List<TaskDto> findAll() {
-        return this.entityFindAll();
-    }
-
-    @Override
-    public List<TaskDto> findAllById(Iterable<Long> ids) {
-        return null;
-    }
-
-    @Override
-    public List<TaskDto> findAll(SearchParams params) {
-        return null;
-    }
-
-    @Override
-    public TaskDto findById(Long pk) {
-        return null;
-    }
-
 
     @Transactional
     public TaskTagDto tagUpdate(TaskTagDto dto) {
@@ -94,26 +57,11 @@ public class CalendarService extends BaseCrudService<Task, TaskDto, Long> {
         return new TaskTagDto(origin);
     }
 
-    public List<TaskTagDto> tagFindAllByPager(Pageable pageable) {
-        List<TaskTag> datas = this.taskTagRepository.findAll(pageable).toList();
-        List<TaskTagDto> result = new ArrayList<>();
-        datas.forEach(t -> {
-            if (t != null) {
-                result.add(new TaskTagDto(t));
-            }
-        });
-        return result;
-    }
-
     public List<TaskTagDto> tagFindAllById(Iterable<Long> ids) {
-        List<TaskTag> datas = this.taskTagRepository.findAllById(ids);
-        List<TaskTagDto> result = new ArrayList<>();
-        datas.forEach(t -> {
-            if (t != null) {
-                result.add(new TaskTagDto(t));
-            }
-        });
-        return result;
+        return this.taskTagRepository.findAllById(ids)
+                .stream()
+                .map(t-> new TaskTagDto(t))
+                .collect(Collectors.toList());
     }
 
     @Transactional
@@ -134,7 +82,7 @@ public class CalendarService extends BaseCrudService<Task, TaskDto, Long> {
 
             entity.setAccount(account);
         }
-        return new TaskTagDto(this.taskTagRepository.save(entity));
+        return new TaskTagDto(entity);
     }
 
     public TaskTagDto tagFindById(Long id) {

@@ -2,19 +2,17 @@ package com.sutdy.dashboard.service;
 
 import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.domain.members.AccountRepository;
-import com.sutdy.dashboard.domain.todo.Todo;
 import com.sutdy.dashboard.domain.todo.TodoCategory;
 import com.sutdy.dashboard.domain.todo.TodoCategoryRepository;
 import com.sutdy.dashboard.domain.todo.TodoRepository;
+import com.sutdy.dashboard.dto.AccountDto;
 import com.sutdy.dashboard.dto.TodoCategoryDto;
 import com.sutdy.dashboard.service.common.BaseCrudService;
-import com.sutdy.dashboard.setting.common.SearchParams;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.DateUtil;
+import com.sutdy.dashboard.setting.util.data.ModelConverter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Service;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.transaction.Transactional;
 import java.time.LocalDateTime;
@@ -30,24 +28,21 @@ import java.util.stream.Collectors;
 @Service
 public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCategoryDto, Long> {
 
-    private TodoRepository todoRepository;
     private AccountRepository accountRepository;
 
     @Autowired
     public TodoCategoryService(TodoCategoryRepository todoCategoryRepository,
-                               AccountRepository accountRepository,
-                               TodoRepository todoRepository
-                               ) {
+                               AccountRepository accountRepository) {
         super(todoCategoryRepository);
-        this.todoRepository = todoRepository;
         this.accountRepository = accountRepository;
 
 
-        defaultCategory("admin@naver.com");
+        // !테스트 코드
+        defaultCategoryInsert("admin@naver.com");
     }
 
 
-    public List<TodoCategoryDto> insertDefaultTodoCategories(String userId){
+    public List<TodoCategoryDto> defaultTodoCategories(String userId) {
 
         List<TodoCategoryDto> defaultData = new ArrayList<>();
         defaultData.add(TodoCategoryDto.builder()
@@ -63,59 +58,37 @@ public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCateg
         return defaultData;
     }
 
-    private void defaultCategory(String userId){
-        insertDefaultTodoCategories(userId).forEach(t->{
-            this.save(t);
-        });
-    }
+    private void defaultCategoryInsert(String userId) {
+        List<TodoCategory> entity = defaultTodoCategories(userId)
+                .stream()
+                .map(t -> t.toEntity())
+                .collect(Collectors.toList());
 
-
-    @Override
-    public TodoCategoryDto save(TodoCategoryDto dto) {
-
-        TodoCategory category = dto.toEntity();
-
-        if(dto.getUserId() !=null){
-            Account account = this.accountRepository.findById(dto.getUserId())
-                    .orElseThrow(()-> new IllegalArgumentException(NOT_FIND_DATA));
-            category.setAccount(account);
-        }
-
-        return this.entitySave(category);
-    }
-
-    @Override
-    public TodoCategoryDto update(Long pk, TodoCategoryDto dto) {
-        TodoCategory entity = this.entityFindById(pk);
-        entity.patch(dto);
-        return new TodoCategoryDto(entity);
+        this.jpaRepository.saveAll(entity);
     }
 
     @Override
     @Transactional
-    public TodoCategoryDto delete(Long pk) {
+    public TodoCategoryDto save(TodoCategoryDto dto) {
 
-        List<Todo> dd = todoRepository.findAll()
-                .stream()
-                .filter(t -> {
-                    if (t.getTodoCategory() != null && t.getTodoCategory().getId() == pk) {
-                        return true;
-                    }
-                    return false;
-                })
-                .collect(Collectors.toList());
+        TodoCategory category = dto.toEntity();
+        if (dto.getUserId() != null) {
+            Account account = this.accountRepository.findById(dto.getUserId())
+                    .orElseThrow(() -> new IllegalArgumentException(NOT_FIND_DATA));
+            category.setAccount(account);
+        }
 
-        todoRepository.deleteInBatch(dd);
-
-        return this.entityDelete(pk);
+        return this.saveEntity(category);
     }
 
     @Override
-    public Page<TodoCategoryDto> findAll(int page, int size) {
-        throw new NotImplementedException();
+    public TodoCategoryDto update(Long pk, TodoCategoryDto dto) {
+        TodoCategory entity = this.findEntityById(pk);
+        entity.patch(dto);
+        return new TodoCategoryDto(entity);
     }
 
-    @Override
+
     public List<TodoCategoryDto> findAll() {
         return this.jpaRepository.findAll()
                 .stream()
@@ -123,27 +96,11 @@ public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCateg
                 .collect(Collectors.toList());
     }
 
-    public List<TodoCategoryDto> findAll(String userId){
+    public List<TodoCategoryDto> findAll(String userId) {
         return this.jpaRepository.findAll()
                 .stream()
-                .filter(t-> t.getAccount()!= null && t.getAccount().getId().equals(userId))
+                .filter(t -> t.getAccount() != null && t.getAccount().getId().equals(userId))
                 .map(t -> new TodoCategoryDto(t))
                 .collect(Collectors.toList());
-
-    }
-
-    @Override
-    public List<TodoCategoryDto> findAllById(Iterable<Long> ids) {
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public List<TodoCategoryDto> findAll(SearchParams params) {
-        return null;
-    }
-
-    @Override
-    public TodoCategoryDto findById(Long pk) {
-        return this.entityFindByIdCastDto(pk);
     }
 }

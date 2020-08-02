@@ -1,11 +1,14 @@
 package com.sutdy.dashboard.dto;
 
+import com.sutdy.dashboard.domain.calendars.Task;
 import com.sutdy.dashboard.domain.members.Account;
-import com.sutdy.dashboard.dto.common.AbsDtoConverter;
+import com.sutdy.dashboard.dto.common.ToEntity;
+import com.sutdy.dashboard.setting.util.data.ModelConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.PropertyMap;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +21,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountDto extends AbsDtoConverter<Account> {
+public class AccountDto implements ToEntity<Account> {
 
     private String id;
 
@@ -28,8 +31,8 @@ public class AccountDto extends AbsDtoConverter<Account> {
 
     private LocalDateTime cDate;
 
-    public AccountDto(Account entity) {
-        createDto(entity);
+    public AccountDto(Account account){
+        of(account);
     }
 
     @Override
@@ -43,10 +46,14 @@ public class AccountDto extends AbsDtoConverter<Account> {
     }
 
     @Override
-    public void createDto(Account entity) {
-        this.id = entity.getId();
-//        this.pw = entity.getPw();
-        this.name = entity.getName();
-        this.cDate = entity.getCDate();
+    public void of(Account account) {
+        PropertyMap<Account, AccountDto> map = new PropertyMap<Account, AccountDto>() {
+            @Override
+            protected void configure() {
+
+            }
+        };
+
+        ModelConverter.map(map, account, AccountDto.class);
     }
 }

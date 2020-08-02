@@ -1,11 +1,15 @@
 package com.sutdy.dashboard.dto;
 
 import com.sutdy.dashboard.domain.calendars.Task;
+import com.sutdy.dashboard.domain.calendars.TaskTag;
 import com.sutdy.dashboard.dto.common.AbsDtoConverter;
+import com.sutdy.dashboard.dto.common.ToEntity;
+import com.sutdy.dashboard.setting.util.data.ModelConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.PropertyMap;
 
 import java.time.LocalDateTime;
 
@@ -18,7 +22,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaskDto extends AbsDtoConverter<Task> {
+public class TaskDto implements ToEntity<Task> {
 
     private Long id;
 
@@ -27,17 +31,29 @@ public class TaskDto extends AbsDtoConverter<Task> {
     private String color; // HexColor 예)#fff
     private LocalDateTime cDate;
 
-    public TaskDto(Task entity) {
-        this.createDto(entity);
+    public TaskDto(Task entity){
+        of(entity);
     }
 
     @Override
     public Task toEntity() {
-        return null;
+        return Task.builder()
+                .cDate(cDate)
+                .context(description)
+                .title(title)
+                .build();
     }
 
     @Override
-    public void createDto(Task entity) {
+    public void of(Task task) {
+        PropertyMap<Task, TaskDto> map = new PropertyMap<Task, TaskDto>() {
+            @Override
+            protected void configure() {
 
+            }
+        };
+
+        ModelConverter.map(map, task, TaskDto.class);
     }
+
 }

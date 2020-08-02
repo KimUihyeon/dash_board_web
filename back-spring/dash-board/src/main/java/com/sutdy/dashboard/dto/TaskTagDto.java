@@ -3,13 +3,17 @@ package com.sutdy.dashboard.dto;
 import com.sutdy.dashboard.domain.calendars.Task;
 import com.sutdy.dashboard.domain.calendars.TaskTag;
 import com.sutdy.dashboard.domain.members.Account;
+import com.sutdy.dashboard.domain.todo.TodoCategory;
 import com.sutdy.dashboard.dto.common.AbsDtoConverter;
+import com.sutdy.dashboard.dto.common.ToEntity;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.DateUtil;
+import com.sutdy.dashboard.setting.util.data.ModelConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.PropertyMap;
 
 import java.util.List;
 
@@ -22,7 +26,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaskTagDto extends AbsDtoConverter<TaskTag> {
+public class TaskTagDto implements ToEntity<TaskTag> {
 
     private Long id;
     private String title;
@@ -33,28 +37,30 @@ public class TaskTagDto extends AbsDtoConverter<TaskTag> {
     private String userId;
 
 
-    public TaskTagDto(TaskTag entity) {
-        this.createDto(entity);
-    }
-
-
     @Override
     public TaskTag toEntity() {
         return TaskTag.builder()
                 .color(this.color)
-                .cDate(DateUtil.stringToLocalDateTime(this.cDate , ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.stringToLocalDateTime(this.cDate, ApplicationStringConfig.DATE_FORMAT))
                 .description(this.description)
                 .title(this.title)
                 .build();
 
     }
 
+    public TaskTagDto(TaskTag entity){
+        of(entity);
+    }
+
     @Override
-    public void createDto(TaskTag entity) {
-        this.id = entity.getId();
-        this.title = entity.getTitle();
-        this.color = entity.getColor();
-        this.cDate = DateUtil.localDateTimeToString(entity.getCDate() , ApplicationStringConfig.DATE_FORMAT);
-        this.userId = entity.getAccount() != null ? entity.getAccount().getId() : null;
+    public void of(TaskTag taskTag) {
+        PropertyMap<TaskTag, TaskTagDto> map = new PropertyMap<TaskTag, TaskTagDto>() {
+            @Override
+            protected void configure() {
+
+            }
+        };
+
+        ModelConverter.map(map, taskTag, TaskTagDto.class);
     }
 }

@@ -1,7 +1,11 @@
 package com.sutdy.dashboard.setting.util;
 
 import com.sutdy.dashboard.domain.members.Account;
+import com.sutdy.dashboard.domain.todo.Todo;
 import com.sutdy.dashboard.dto.AccountDto;
+import com.sutdy.dashboard.dto.TodoDto;
+import com.sutdy.dashboard.setting.ApplicationStringConfig;
+import com.sutdy.dashboard.setting.util.data.ModelConverter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -93,5 +97,28 @@ public class ModelMapperTest {
 //        Assert.assertEquals(dto.getId(), account.getId());
 //        Assert.assertEquals(dto.getPw(), account.getPw());
 //        Assert.assertEquals(dto.getCDate(), account.getCDate());
+    }
+
+    @Test
+    public void modelConverter_기본맵핑_테스트(){
+
+        TodoDto dto = TodoDto.builder()
+                .date(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                .memo("memo test Logic")
+                .title("title test Logic")
+                .build();
+
+
+        //when
+        Todo todo = dto.toEntity();
+        TodoDto convertedDto = new TodoDto(todo);
+
+        //then
+
+        Assert.assertEquals(todo.getTitle(), convertedDto.getTitle());
+        Assert.assertEquals(todo.getId(), convertedDto.getId());
+
+        // TODO : contents, memo 프로퍼티 다른데 어떻게 맵핑되는지 알아보기.
+        Assert.assertEquals(todo.getContents(), convertedDto.getMemo());
     }
 }

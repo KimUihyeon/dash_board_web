@@ -1,16 +1,15 @@
 package com.sutdy.dashboard.service;
 
-import com.sutdy.dashboard.domain.members.Account;
-import com.sutdy.dashboard.domain.members.AccountRepository;
 import com.sutdy.dashboard.domain.todo.Todo;
 import com.sutdy.dashboard.domain.todo.TodoCategory;
 import com.sutdy.dashboard.domain.todo.TodoCategoryRepository;
 import com.sutdy.dashboard.domain.todo.TodoRepository;
+import com.sutdy.dashboard.dto.AccountDto;
 import com.sutdy.dashboard.dto.TodoDto;
-import com.sutdy.dashboard.dto.todo.TodoDtoTest;
 import com.sutdy.dashboard.service.common.BaseCrudService;
 import com.sutdy.dashboard.setting.common.SearchParams;
 import com.sutdy.dashboard.setting.util.TempDataFactory;
+import com.sutdy.dashboard.setting.util.data.ModelConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Sort;
@@ -55,45 +54,18 @@ public class TodoService extends BaseCrudService<Todo, TodoDto, Long> {
             todo.setTodoCategory(category);
         }
 
-        return this.entitySave(todo);
+        return this.saveEntity(todo);
     }
 
     @Override
     @Transactional
     public TodoDto update(Long pk, TodoDto dto) {
-        Todo todo = this.entityFindById(pk);
+        Todo todo = this.findEntityById(pk);
         todo.patch(dto);
         return new TodoDto(todo);
     }
 
-    @Override
-    @Transactional
-    public TodoDto delete(Long pk) {
-        TodoDto entity = new TodoDto(this.entityFindById(pk));
-        this.entityDelete(pk);
 
-        return entity;
-    }
-
-    @Override
-    public Page<TodoDto> findAll(int page, int size) {
-        throw new NotImplementedException();
-    }
-
-    @Override
-    public List<TodoDto> findAll() {
-        return this.jpaRepository.findAll()
-                .stream()
-                .map(t -> new TodoDto(t))
-                .collect(Collectors.toList());
-    }
-
-    @Override
-    public List<TodoDto> findAllById(Iterable<Long> ids) {
-        return null;
-    }
-
-    @Override
     public List<TodoDto> findAll(SearchParams params) {
 
         String userId = params.getFilterDetail().get("userId").toString();
@@ -137,9 +109,5 @@ public class TodoService extends BaseCrudService<Todo, TodoDto, Long> {
         }
     }
 
-    @Override
-    public TodoDto findById(Long pk) {
-        return new TodoDto(entityFindById(pk));
-    }
 
 }

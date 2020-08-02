@@ -6,6 +6,7 @@ import com.sutdy.dashboard.dto.AccountDto;
  * @author kuh
  * @since 2020.05.09
  */
+@Deprecated
 public interface IAuthenticationService {
 
     AccountDto authentication(String jwt);
