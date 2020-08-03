@@ -1,6 +1,9 @@
 package com.sutdy.dashboard.service;
 
+import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.domain.todo.Todo;
+import com.sutdy.dashboard.dto.AccountDto;
+import com.sutdy.dashboard.dto.TodoCategoryDto;
 import com.sutdy.dashboard.dto.TodoDto;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.common.SearchParams;
@@ -28,6 +31,9 @@ public class TodoServiceTest {
 
     @Autowired
     private TodoService todoService;
+
+    @Autowired
+    private AccountService accountService;
 
     private String userId = "admin@naver.com";
 
@@ -59,9 +65,34 @@ public class TodoServiceTest {
     @Rollback(true)
     public void todo_리스트_가져오기() {
         //given
+        String id = "testset@naver.com";
+        AccountDto accountDto = new AccountDto();
+        accountDto.setPw("123123213");
+        accountDto.setCDate(LocalDateTime.now());
+        accountDto.setName("테스트 중");
+        accountDto.setId(id);
+
+        AccountDto savedAccount = null;
+        try{
+            savedAccount = this.accountService.save(accountDto);
+        }catch (Exception e){
+
+        }
+
+        TodoCategoryDto categoryDto = new TodoCategoryDto();
+        categoryDto.setTitle("테스트 카테고리");
+        categoryDto.setUserId(userId);
+
+        TodoDto dto = TodoDto.builder()
+                .date(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                .memo("memo test Logic")
+                .title("title test Logic")
+                .todoComplete(true)
+                .build();
+        TodoDto savedDto = this.todoService.save(dto);
 
         SearchParams params = new SearchParams();
-        params.setFilter("CATEGORY");
+        params.setFilter("COMPLATE");
         params.getFilterDetail().put("userId", userId);
 
         //when
@@ -70,8 +101,6 @@ public class TodoServiceTest {
 
 
         //then
-
-
         datas.forEach((t) -> {
             System.out.println(t.toString());
         });
@@ -84,23 +113,24 @@ public class TodoServiceTest {
     @Rollback(true)
     public void todo_삭제_테스트() {
         //given
-
-        SearchParams params = new SearchParams();
-        params.setFilter("CATEGORY");
-        params.getFilterDetail().put("userId" , userId);
-        List<TodoDto> dbTodoList = this.todoService.findAll(params);
-        int deleteObjectIndex = (int) Math.random() * dbTodoList.size();
-        TodoDto deleteTarget = dbTodoList.get(deleteObjectIndex);
-
+        TodoDto dto = TodoDto.builder()
+                .date(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                .memo("memo test Logic")
+                .title("title test Logic")
+                .todoComplete(true)
+                .build();
+        TodoDto savedDto = this.todoService.save(dto);
 
         //when
-        TodoDto deletedDto = this.todoService.delete(deleteTarget.getId());
+        TodoDto deletedDto = this.todoService.delete(savedDto.getId());
+        TodoDto afterTodo = null;
+        try{
+            afterTodo = this.todoService.findById(savedDto.getId());
+        }catch (Exception e){
+        }
 
         //then
-        List<TodoDto> deleteBeforeList = this.todoService.findAll(params);
-
-        Assert.assertTrue(deleteBeforeList.size() != dbTodoList.size());
-        Assert.assertTrue(deletedDto.getId() == deleteTarget.getId());
+        Assert.assertNull(afterTodo);
     }
 
 
@@ -109,19 +139,19 @@ public class TodoServiceTest {
     @Rollback(true)
     public void todo_수정_테스트() {
         //given
-        Todo todo = Todo.builder()
+
+        TodoDto todo = TodoDto.builder()
+                .date(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                .memo("memo test Logic")
                 .title("update Test")
-                .contents("")
-                .cDate(LocalDateTime.now())
                 .build();
 
-        TodoDto todoDto = this.todoService.saveEntity(todo);
+        TodoDto todoDto = this.todoService.save(todo);
 
         todoDto.setTitle("업데이트 된 타이틀!");
         //when
-        this.todoService.update(todoDto.getId(), todoDto);
-        TodoDto updatedDto = this.todoService.findById(todoDto.getId());
-        TodoDto findDto = this.todoService.findById(todoDto.getId());
+        TodoDto updatedDto = this.todoService.update(todoDto.getId(), todoDto);
+        TodoDto findDto = this.todoService.findById(updatedDto.getId());
 
         //then
 
@@ -130,6 +160,8 @@ public class TodoServiceTest {
         }
 
         Assert.assertTrue(!todoDto.getTitle().equals(findDto.getTitle()));
+        Assert.assertTrue(!"업데이트 된 타이틀!".equals(updatedDto.getTitle()));
         Assert.assertTrue(todoDto.getId() == findDto.getId());
+        Assert.assertTrue(todoDto.getId() == updatedDto.getId());
     }
 }

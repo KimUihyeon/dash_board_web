@@ -34,8 +34,8 @@ public abstract class BaseCrudService<Entity, Dto extends ToConverter<Entity, Dt
 
     private Dto getDtoInstance(Entity entity) {
         try {
-            Constructor<Dto> dtoConstructor =  dtoClass.getConstructor(entityClass);
-            return dtoConstructor.newInstance(entity);
+            Constructor<Dto> dtoConstructor =  dtoClass.getConstructor();
+            return ((ToConverter<Entity,Dto>)dtoConstructor.newInstance()).of(entity);
         } catch (Exception e5) {
             e5.printStackTrace();
             logger.error(e5.getMessage());

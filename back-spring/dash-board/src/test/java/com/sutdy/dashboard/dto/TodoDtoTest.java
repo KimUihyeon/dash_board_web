@@ -43,9 +43,9 @@ public class TodoDtoTest {
         //then
         Assert.assertEquals(todo.getTitle(), dto.getTitle());
         Assert.assertEquals(todo.getId(), dto.getId());
-//        Assert.assertEquals(DateUtil.localDateTimeToString(todo.getCDate(), ApplicationStringConfig.DATE_FORMAT), dto.getDate());
-//        Assert.assertEquals(DateUtil.localDateTimeToString(todo.getEDate(), ApplicationStringConfig.DATE_FORMAT), dto.getEDate());
-//        Assert.assertEquals(DateUtil.localDateTimeToString(todo.getSDate(), ApplicationStringConfig.DATE_FORMAT), dto.getSDate());
+        Assert.assertEquals(DateUtil.localDateTimeToString(todo.getCDate(), ApplicationStringConfig.DATE_FORMAT), dto.getDate());
+        Assert.assertEquals(DateUtil.localDateTimeToString(todo.getEDate(), ApplicationStringConfig.DATE_FORMAT), dto.getEDate());
+        Assert.assertEquals(DateUtil.localDateTimeToString(todo.getSDate(), ApplicationStringConfig.DATE_FORMAT), dto.getSDate());
         Assert.assertEquals(todo.getContents(), dto.getMemo());
         Assert.assertEquals(todo.isComplete(), dto.isTodoComplete());
         Assert.assertEquals(todo.isToDay(), dto.isToDay());
@@ -75,9 +75,9 @@ public class TodoDtoTest {
         //then
         Assert.assertEquals(todo.getTitle(), dto.getTitle());
         Assert.assertEquals(todo.getId(), dto.getId());
-//        Assert.assertEquals(DateUtil.localDateTimeToString(todo.getCDate(), ApplicationStringConfig.DATE_FORMAT), dto.getDate());
-//        Assert.assertEquals(DateUtil.localDateTimeToString(todo.getEDate(), ApplicationStringConfig.DATE_FORMAT), dto.getEDate());
-//        Assert.assertEquals(DateUtil.localDateTimeToString(todo.getSDate(), ApplicationStringConfig.DATE_FORMAT), dto.getSDate());
+        Assert.assertEquals(DateUtil.localDateTimeToString(todo.getCDate(), ApplicationStringConfig.DATE_FORMAT), dto.getDate());
+        Assert.assertEquals(DateUtil.localDateTimeToString(todo.getEDate(), ApplicationStringConfig.DATE_FORMAT), dto.getEDate());
+        Assert.assertEquals(DateUtil.localDateTimeToString(todo.getSDate(), ApplicationStringConfig.DATE_FORMAT), dto.getSDate());
         Assert.assertEquals(todo.getContents(), dto.getMemo());
         Assert.assertEquals(todo.isComplete(), dto.isTodoComplete());
         Assert.assertEquals(todo.isToDay(), dto.isToDay());
@@ -109,9 +109,9 @@ public class TodoDtoTest {
         //then
         Assert.assertEquals(reconvertDto.getTitle(), dto.getTitle());
         Assert.assertEquals(reconvertDto.getId(), dto.getId());
-//        Assert.assertEquals(reconvertDto.getDate(), dto.getDate());
-//        Assert.assertEquals(reconvertDto.getEDate(), dto.getEDate());
-//        Assert.assertEquals(reconvertDto.getSDate(), dto.getSDate());
+        Assert.assertEquals(reconvertDto.getDate(), dto.getDate());
+        Assert.assertEquals(reconvertDto.getEDate(), dto.getEDate());
+        Assert.assertEquals(reconvertDto.getSDate(), dto.getSDate());
         Assert.assertEquals(reconvertDto.getMemo(), dto.getMemo());
         Assert.assertEquals(reconvertDto.isTodoComplete(), dto.isTodoComplete());
         Assert.assertEquals(reconvertDto.isToDay(), dto.isToDay());

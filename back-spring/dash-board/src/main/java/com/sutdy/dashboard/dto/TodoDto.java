@@ -78,28 +78,40 @@ public class TodoDto implements ToConverter<Todo, TodoDto> {
         PropertyMap<Todo , TodoDto> propertyMap = new PropertyMap<Todo, TodoDto>() {
             @Override
             protected void configure() {
-                map().setSDate(
-                        DateUtil.localDateTimeToString(
-                                source.getSDate(), ApplicationStringConfig.DATE_FORMAT)
-                );
-
-                map().setEDate(
-                        DateUtil.localDateTimeToString(
-                                source.getEDate(), ApplicationStringConfig.DATE_FORMAT)
-                );
-
-                map().setDate(
-                        DateUtil.localDateTimeToString(
-                                source.getCDate(), ApplicationStringConfig.DATE_FORMAT)
-                );
                 map().setId(source.getId());
                 map().setTitle(source.getTitle());
                 map().setMemo(source.getContents());
                 map().setTodoComplete(source.isComplete());
                 map().setToDay(source.isToDay());
                 map().setImportant(source.isImportant());
+                map().setSDate(
+                        DateUtil.localDateTimeToString(
+                                source.getSDate(), ApplicationStringConfig.DATE_FORMAT)
+                );
+                map().setEDate(
+                        DateUtil.localDateTimeToString(
+                                source.getEDate(), ApplicationStringConfig.DATE_FORMAT)
+                );
+                map().setDate(
+                        DateUtil.localDateTimeToString(
+                                source.getCDate(), ApplicationStringConfig.DATE_FORMAT)
+                );
             }
         };
-        return ModelConverter.map(propertyMap, todo , TodoDto.class);
+
+        TodoDto dto = ModelConverter.map(propertyMap, todo , TodoDto.class);
+        dto.setSDate(
+                DateUtil.localDateTimeToString(
+                        todo.getSDate(), ApplicationStringConfig.DATE_FORMAT)
+        );
+        dto.setEDate(
+                DateUtil.localDateTimeToString(
+                        todo.getEDate(), ApplicationStringConfig.DATE_FORMAT)
+        );
+        dto.setDate(
+                DateUtil.localDateTimeToString(
+                        todo.getCDate(), ApplicationStringConfig.DATE_FORMAT)
+        );
+        return dto;
     }
 }

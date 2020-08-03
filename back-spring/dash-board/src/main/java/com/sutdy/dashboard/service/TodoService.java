@@ -62,7 +62,7 @@ public class TodoService extends BaseCrudService<Todo, TodoDto, Long> {
     public TodoDto update(Long pk, TodoDto dto) {
         Todo todo = this.findEntityById(pk);
         todo.patch(dto);
-        return new TodoDto(todo);
+        return new TodoDto().of(todo);
     }
 
 

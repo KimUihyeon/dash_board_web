@@ -17,12 +17,13 @@ import org.springframework.test.context.junit4.SpringRunner;
 public class AccountDtoTest {
 
     @Test
-    public void TodoDto_엔티티_컨버팅_테스트(){
-
+    public void AccountDto_엔티티_컨버팅_테스트(){
     }
 
     @Test
-    public void TodoDto_컨버팅_테스트(){
-
+    public void AccountDto_컨버팅_테스트(){
+    }
+    @Test
+    public void AccountDto_연쇄_컨버팅_테스트(){
     }
 }
