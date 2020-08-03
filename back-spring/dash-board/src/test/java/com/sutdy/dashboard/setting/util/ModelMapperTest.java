@@ -3,9 +3,9 @@ package com.sutdy.dashboard.setting.util;
 import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.domain.todo.Todo;
 import com.sutdy.dashboard.dto.AccountDto;
+import com.sutdy.dashboard.dto.AccountDtoTest;
 import com.sutdy.dashboard.dto.TodoDto;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
-import com.sutdy.dashboard.setting.util.data.ModelConverter;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -69,8 +69,9 @@ public class ModelMapperTest {
     @Test
     public void modelMapper_기본맵핑_역방향_테스트() {
         /**
-         * Model Mapper는 Mapping 될 객체를 리플렉션 하면서
-         * setter를 타고 Mapping을 해주는 라이브러리 인데,
+         * ModelMapper
+         * -> 리플렉션 돌면서 Setter에 필드의 유사도로 데이터를 넣어주는 라이브러리.
+         *
          * Entity 객체는 Setter가 없으므로 맵핑이 안된다.
          *
          * 따라서
@@ -111,7 +112,7 @@ public class ModelMapperTest {
 
         //when
         Todo todo = dto.toEntity();
-        TodoDto convertedDto = new TodoDto(todo);
+        TodoDto convertedDto = new TodoDto().of(todo);
 
         //then
 

@@ -1,18 +1,8 @@
 package com.sutdy.dashboard.setting.util.data;
 
-import com.sutdy.dashboard.dto.TodoDto;
-import com.sutdy.dashboard.dto.common.ToEntity;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.PropertyMap;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-import org.springframework.stereotype.Component;
-
-import javax.swing.text.html.parser.Entity;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.ParameterizedType;
-import java.lang.reflect.Type;
-import java.util.function.Function;
+import org.modelmapper.convention.MatchingStrategies;
 
 /**
  * @author kuh
@@ -26,6 +16,7 @@ public class ModelConverter {
     public static <M> M map(PropertyMap propertyMap, Object source, Class<M> m) {
         ModelMapper mapper = new ModelMapper();
         mapper.addMappings(propertyMap);
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
         return mapper.map(source, m);
     }
 

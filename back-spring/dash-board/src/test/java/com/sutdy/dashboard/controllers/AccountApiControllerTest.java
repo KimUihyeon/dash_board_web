@@ -3,31 +3,20 @@ package com.sutdy.dashboard.controllers;
 import com.sutdy.dashboard.controller.AccountApiController;
 import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.dto.AccountDto;
+import com.sutdy.dashboard.dto.AccountDtoTest;
 import com.sutdy.dashboard.service.AccountService;
 import com.sutdy.dashboard.setting.exception.ExceptionAdvice;
-import com.sutdy.dashboard.setting.util.data.ModelConverter;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.boot.web.servlet.error.ErrorController;
-import org.springframework.restdocs.operation.Parameters;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.MvcResult;
-import org.springframework.test.web.servlet.ResultActions;
-import org.springframework.util.MultiValueMap;
-
-import java.util.Collection;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 
 /**
  * @author kuh
@@ -51,7 +40,7 @@ public class AccountApiControllerTest {
         String id = "admin@naver.com";
         String name = "김의현";
         String pw = "123123";
-        return new AccountDto(Account.builder()
+        return new AccountDto().of(Account.builder()
                 .id(id)
                 .pw(pw)
                 .name(name)

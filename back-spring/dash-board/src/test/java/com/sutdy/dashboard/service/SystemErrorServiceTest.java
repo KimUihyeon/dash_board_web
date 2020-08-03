@@ -27,7 +27,7 @@ public class SystemErrorServiceTest {
     private SystemErrorService systemErrorService;
 
     @Test
-    public void saveTest() {
+    public void system_저장_테스트() {
         //given
         SystemError error;
         try {
@@ -36,10 +36,11 @@ public class SystemErrorServiceTest {
 
             error = this.systemErrorService.save(0, e);
         }
-        //then
-        SystemError findError = this.systemErrorService.findById(error.getId());
 
         //when
+        SystemError findError = this.systemErrorService.findById(error.getId());
+
+        //then
         Assert.assertTrue(findError.getId() == error.getId());
         Assert.assertEquals(findError.getError(), error.getError());
         System.out.println(findError.toString());

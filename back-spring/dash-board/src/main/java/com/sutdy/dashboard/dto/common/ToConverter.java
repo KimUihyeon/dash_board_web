@@ -5,8 +5,8 @@ package com.sutdy.dashboard.dto.common;
  *
  * @param <T> entity class
  */
-public interface ToEntity<T> {
+public interface ToConverter<T, Dto> {
     T toEntity();
 
-    void of(T t);
+    Dto of(T t);
 }

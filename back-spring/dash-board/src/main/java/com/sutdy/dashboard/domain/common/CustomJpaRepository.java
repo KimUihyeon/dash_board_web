@@ -1,7 +1,7 @@
 package com.sutdy.dashboard.domain.common;
 
 import com.sutdy.dashboard.dto.common.AbsDtoConverter;
-import com.sutdy.dashboard.dto.common.ToEntity;
+import com.sutdy.dashboard.dto.common.ToConverter;
 import com.sutdy.dashboard.service.common.ServiceErrorMessage;
 import org.springframework.dao.DataAccessException;
 import org.springframework.data.domain.Page;
@@ -111,7 +111,7 @@ public abstract class CustomJpaRepository<Entity, Dto extends AbsDtoConverter<En
     }
 
     @Deprecated
-    protected Entity entityUpdate(long id, ToEntity<Entity> dto) {
+    protected Entity entityUpdate(long id, ToConverter<Entity, Dto> dto) {
         throw new NotImplementedException();
     }
 }

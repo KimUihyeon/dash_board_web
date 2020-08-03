@@ -22,23 +22,35 @@ public class TodoRepositoryImpl extends QuerydslRepositorySupport implements Tod
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
-
-    public List<Todo> findAllTest() {
-        return this.jpaQueryFactory.selectFrom(QTodo.todo)
-                .fetch();
-    }
-
+    //## 20.08.03 queryDsl안됨
     @Override
     public List<Todo> findContainsName(String name) {
-        return this.jpaQueryFactory.selectFrom(QTodo.todo)
-                .where(QTodo.todo.title.contains(name))
-                .fetch();
+        return null;
     }
 
+    //## 20.08.03 queryDsl안됨
     @Override
     public List<Todo> 이게왜됨(String name) {
-        return this.jpaQueryFactory.selectFrom(QTodo.todo)
-                .where(QTodo.todo.title.contains(name))
-                .fetch();
+        return null;
     }
+
+
+//    public List<Todo> findAllTest() {
+//        return this.jpaQueryFactory.selectFrom(QTodo.todo)
+//                .fetch();
+//    }
+//
+//    @Override
+//    public List<Todo> findContainsName(String name) {
+//        return this.jpaQueryFactory.selectFrom(QTodo.todo)
+//                .where(QTodo.todo.title.contains(name))
+//                .fetch();
+//    }
+//
+//    @Override
+//    public List<Todo> 이게왜됨(String name) {
+//        return this.jpaQueryFactory.selectFrom(QTodo.todo)
+//                .where(QTodo.todo.title.contains(name))
+//                .fetch();
+//    }
 }

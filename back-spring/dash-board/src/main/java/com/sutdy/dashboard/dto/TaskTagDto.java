@@ -1,11 +1,7 @@
 package com.sutdy.dashboard.dto;
 
-import com.sutdy.dashboard.domain.calendars.Task;
 import com.sutdy.dashboard.domain.calendars.TaskTag;
-import com.sutdy.dashboard.domain.members.Account;
-import com.sutdy.dashboard.domain.todo.TodoCategory;
-import com.sutdy.dashboard.dto.common.AbsDtoConverter;
-import com.sutdy.dashboard.dto.common.ToEntity;
+import com.sutdy.dashboard.dto.common.ToConverter;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.DateUtil;
 import com.sutdy.dashboard.setting.util.data.ModelConverter;
@@ -14,8 +10,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.PropertyMap;
-
-import java.util.List;
 
 /**
  * @author kuh
@@ -26,7 +20,7 @@ import java.util.List;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaskTagDto implements ToEntity<TaskTag> {
+public class TaskTagDto implements ToConverter<TaskTag, TaskTagDto> {
 
     private Long id;
     private String title;
@@ -53,7 +47,7 @@ public class TaskTagDto implements ToEntity<TaskTag> {
     }
 
     @Override
-    public void of(TaskTag taskTag) {
+    public TaskTagDto of(TaskTag taskTag) {
         PropertyMap<TaskTag, TaskTagDto> map = new PropertyMap<TaskTag, TaskTagDto>() {
             @Override
             protected void configure() {
@@ -61,6 +55,6 @@ public class TaskTagDto implements ToEntity<TaskTag> {
             }
         };
 
-        ModelConverter.map(map, taskTag, TaskTagDto.class);
+        return ModelConverter.map(map, taskTag, TaskTagDto.class);
     }
 }

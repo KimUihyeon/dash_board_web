@@ -53,4 +53,11 @@ public class DateUtil {
             return false;
         }
     }
+
+
+    public static LocalDateTime now(String format){
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
+        LocalDateTime parseDate  = LocalDateTime.parse(LocalDateTime.now().toString(), formatter);
+        return parseDate;
+    }
 }

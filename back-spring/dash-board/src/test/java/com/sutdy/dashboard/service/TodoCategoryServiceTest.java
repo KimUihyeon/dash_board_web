@@ -1,19 +1,13 @@
 package com.sutdy.dashboard.service;
 
-import com.fasterxml.jackson.core.JsonParser;
-import com.sutdy.dashboard.domain.todo.TodoCategory;
 import com.sutdy.dashboard.dto.TodoCategoryDto;
-import com.sutdy.dashboard.dto.TodoDto;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.DateUtil;
-import org.json.simple.parser.JSONParser;
-import org.json.simple.parser.ParseException;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.stereotype.Service;
 import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -34,11 +28,11 @@ public class TodoCategoryServiceTest {
     private TodoCategoryService todoCategoryService;
 
     @Test
-    public void listTest() {
+    public void todoCategory_리스트_불러오기() {
         //given
         //when
-        //then
         List<TodoCategoryDto> categories = this.todoCategoryService.findAll();
+        //then
 
         categories.forEach((t) -> {
             System.out.println(t.toString());
@@ -51,7 +45,7 @@ public class TodoCategoryServiceTest {
     @Test
     @Transactional
     @Rollback(true)
-    public void saveTest() {
+    public void todoCategory_저장_테스트() {
         //given
         TodoCategoryDto category = TodoCategoryDto.builder()
                 .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(),
@@ -65,8 +59,8 @@ public class TodoCategoryServiceTest {
         //when
         TodoCategoryDto before = this.todoCategoryService.save(category);
         List<TodoCategoryDto> categories = this.todoCategoryService.findAll();
-        //then
 
+        //then
         categories.forEach((t) -> {
             System.out.println(t.toString());
         });
@@ -80,7 +74,7 @@ public class TodoCategoryServiceTest {
     @Test
     @Transactional
     @Rollback(true)
-    public void updateTest() {
+    public void todoCategory_수정_테스트() {
         //given
         TodoCategoryDto category = TodoCategoryDto.builder()
                 .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(),

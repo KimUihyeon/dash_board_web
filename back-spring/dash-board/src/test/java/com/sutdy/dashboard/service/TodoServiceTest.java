@@ -1,7 +1,6 @@
 package com.sutdy.dashboard.service;
 
 import com.sutdy.dashboard.domain.todo.Todo;
-import com.sutdy.dashboard.domain.todo.TodoCategory;
 import com.sutdy.dashboard.dto.TodoDto;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.common.SearchParams;
@@ -35,7 +34,7 @@ public class TodoServiceTest {
     @Test
     @Transactional
     @Rollback(true)
-    public void todo_저장테스트() {
+    public void todo_저장_테스트() {
         //given
         TodoDto dto = TodoDto.builder()
                 .date(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
@@ -83,7 +82,7 @@ public class TodoServiceTest {
     @Test
     @Transactional
     @Rollback(true)
-    public void todo_삭제테스트() {
+    public void todo_삭제_테스트() {
         //given
 
         SearchParams params = new SearchParams();
@@ -108,7 +107,7 @@ public class TodoServiceTest {
     @Test
     @Transactional
     @Rollback(true)
-    public void todo_수정테스트() {
+    public void todo_수정_테스트() {
         //given
         Todo todo = Todo.builder()
                 .title("update Test")

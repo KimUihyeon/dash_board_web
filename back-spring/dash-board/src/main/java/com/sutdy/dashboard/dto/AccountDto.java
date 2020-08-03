@@ -1,8 +1,7 @@
 package com.sutdy.dashboard.dto;
 
-import com.sutdy.dashboard.domain.calendars.Task;
 import com.sutdy.dashboard.domain.members.Account;
-import com.sutdy.dashboard.dto.common.ToEntity;
+import com.sutdy.dashboard.dto.common.ToConverter;
 import com.sutdy.dashboard.setting.util.data.ModelConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -21,7 +20,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class AccountDto implements ToEntity<Account> {
+public class AccountDto implements ToConverter<Account, AccountDto> {
 
     private String id;
 
@@ -46,7 +45,7 @@ public class AccountDto implements ToEntity<Account> {
     }
 
     @Override
-    public void of(Account account) {
+    public AccountDto of(Account account) {
         PropertyMap<Account, AccountDto> map = new PropertyMap<Account, AccountDto>() {
             @Override
             protected void configure() {
@@ -54,6 +53,6 @@ public class AccountDto implements ToEntity<Account> {
             }
         };
 
-        ModelConverter.map(map, account, AccountDto.class);
+        return ModelConverter.map(map, account, AccountDto.class);
     }
 }

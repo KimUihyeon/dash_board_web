@@ -12,27 +12,33 @@ import java.security.NoSuchAlgorithmException;
 public class EncrytionTest {
 
     @Test
-    public void md5Test() throws NoSuchAlgorithmException {
+    public void md5_기능테스트() throws NoSuchAlgorithmException {
+        // given
         String str = "hello world";
+        //when
         String securityString = SecurityStringUtil.encryptMD5(str);
 
+        //then
         System.out.println(securityString);
         Assert.assertTrue(!securityString.isEmpty());
     }
 
 
     @Test
-    public void SHA256Test() throws NoSuchAlgorithmException {
+    public void SHA256_기능_테스트() throws NoSuchAlgorithmException {
+        // given
         String str = "hello world";
+        //when
         String securityString = SecurityStringUtil.encryptSHA256(str);
 
+        //then
         System.out.println(securityString);
         Assert.assertTrue(!securityString.isEmpty());
     }
 
 
     @Test
-    public void AES256Test() throws Exception {
+    public void AES256_기능_테스트() throws Exception {
 
         // given
         String str = "hello world";

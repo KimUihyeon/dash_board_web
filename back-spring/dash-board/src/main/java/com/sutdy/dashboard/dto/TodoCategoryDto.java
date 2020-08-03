@@ -1,7 +1,7 @@
 package com.sutdy.dashboard.dto;
 
 import com.sutdy.dashboard.domain.todo.TodoCategory;
-import com.sutdy.dashboard.dto.common.ToEntity;
+import com.sutdy.dashboard.dto.common.ToConverter;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.DateUtil;
 import com.sutdy.dashboard.setting.util.data.ModelConverter;
@@ -20,7 +20,7 @@ import org.modelmapper.PropertyMap;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TodoCategoryDto implements ToEntity<TodoCategory> {
+public class TodoCategoryDto implements ToConverter<TodoCategory, TodoCategoryDto> {
 
     private Long id;
 
@@ -56,7 +56,7 @@ public class TodoCategoryDto implements ToEntity<TodoCategory> {
     }
 
     @Override
-    public void of(TodoCategory todoCategory) {
+    public TodoCategoryDto of(TodoCategory todoCategory) {
         PropertyMap<TodoCategory, TodoCategoryDto> map = new PropertyMap<TodoCategory, TodoCategoryDto>() {
             @Override
             protected void configure() {
@@ -64,7 +64,7 @@ public class TodoCategoryDto implements ToEntity<TodoCategory> {
             }
         };
 
-        ModelConverter.map(map, todoCategory, TodoCategoryDto.class);
+        return ModelConverter.map(map, todoCategory, TodoCategoryDto.class);
     }
 
 }

@@ -1,7 +1,7 @@
 package com.sutdy.dashboard.dto;
 
 import com.sutdy.dashboard.domain.todo.Todo;
-import com.sutdy.dashboard.dto.common.ToEntity;
+import com.sutdy.dashboard.dto.common.ToConverter;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.DateUtil;
 import com.sutdy.dashboard.setting.util.data.ModelConverter;
@@ -22,7 +22,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class TodoDto implements ToEntity<Todo> {
+public class TodoDto implements ToConverter<Todo, TodoDto> {
 
     private Long id;
 
@@ -73,7 +73,7 @@ public class TodoDto implements ToEntity<Todo> {
     }
 
     @Override
-    public void of(Todo todo) {
+    public TodoDto of(Todo todo) {
 
         PropertyMap<Todo , TodoDto> propertyMap = new PropertyMap<Todo, TodoDto>() {
             @Override
@@ -93,9 +93,13 @@ public class TodoDto implements ToEntity<Todo> {
                                 source.getCDate(), ApplicationStringConfig.DATE_FORMAT)
                 );
                 map().setId(source.getId());
+                map().setTitle(source.getTitle());
+                map().setMemo(source.getContents());
+                map().setTodoComplete(source.isComplete());
+                map().setToDay(source.isToDay());
+                map().setImportant(source.isImportant());
             }
         };
-        TodoDto dto = ModelConverter.map(propertyMap, todo , TodoDto.class);
-        this.setId(dto.getId());
+        return ModelConverter.map(propertyMap, todo , TodoDto.class);
     }
 }

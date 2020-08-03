@@ -1,9 +1,6 @@
 package com.sutdy.dashboard.service.common;
 
-import com.sutdy.dashboard.dto.AccountDto;
-import com.sutdy.dashboard.dto.common.ToEntity;
-import com.sutdy.dashboard.setting.util.data.ModelConverter;
-import org.modelmapper.ModelMapper;
+import com.sutdy.dashboard.dto.common.ToConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;
@@ -24,7 +21,7 @@ import java.util.stream.Collectors;
  * @author kuh
  * @since 2020.04.16
  */
-public abstract class BaseCrudService<Entity, Dto extends ToEntity<Entity> , ID>
+public abstract class BaseCrudService<Entity, Dto extends ToConverter<Entity, Dto>, ID>
         extends ServiceErrorMessage implements IServiceBase<Dto , ID> {
 
     private final Logger logger = LoggerFactory.getLogger(BaseCrudService.class);
@@ -127,7 +124,7 @@ public abstract class BaseCrudService<Entity, Dto extends ToEntity<Entity> , ID>
 
 
     @Transactional
-    protected Entity entityUpdate(ID id, ToEntity<Entity> dto) {
+    protected Entity entityUpdate(ID id, ToConverter<Entity, Dto> dto) {
         throw new NotImplementedException();
     }
 
