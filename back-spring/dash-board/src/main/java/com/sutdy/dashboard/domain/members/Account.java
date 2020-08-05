@@ -1,6 +1,9 @@
 package com.sutdy.dashboard.domain.members;
 
 import com.sutdy.dashboard.dto.AccountDto;
+import com.sutdy.dashboard.setting.ApplicationConfig;
+import com.sutdy.dashboard.setting.ApplicationStringConfig;
+import com.sutdy.dashboard.setting.util.DateUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Getter;
@@ -33,16 +36,16 @@ public class Account {
 
     private boolean deleteUser;
 
-    public void patch(AccountDto dto){
-        if(!dto.getCDate().equals(this.cDate)){
-            this.cDate = dto.getCDate();
+    public void patch(AccountDto dto) {
+        if (dto.getCDate() != null && !DateUtil.dateTimeCompare(dto.getCDate(), this.cDate, ApplicationStringConfig.DATE_FORMAT)) {
+            this.cDate = DateUtil.stringToLocalDateTime(dto.getCDate(), ApplicationStringConfig.DATE_FORMAT);
         }
 
-        if(!dto.getName().equals(this.name)) {
+        if (!dto.getName().equals(this.name)) {
             this.name = dto.getName();
         }
 
-        if(!dto.getPw().equals(this.name)){
+        if (!dto.getPw().equals(this.name)) {
             this.pw = dto.getPw();
         }
 

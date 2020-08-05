@@ -24,6 +24,7 @@ public class ModelConverter {
 
     public static <M> M map(Object source, Class<M> m) {
         ModelMapper mapper = new ModelMapper();
+        mapper.getConfiguration().setMatchingStrategy(MatchingStrategies.STANDARD);
         return mapper.map(source, m);
     }
 }

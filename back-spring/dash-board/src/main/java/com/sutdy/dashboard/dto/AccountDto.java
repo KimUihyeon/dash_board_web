@@ -2,6 +2,8 @@ package com.sutdy.dashboard.dto;
 
 import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.dto.common.ToConverter;
+import com.sutdy.dashboard.setting.ApplicationStringConfig;
+import com.sutdy.dashboard.setting.util.DateUtil;
 import com.sutdy.dashboard.setting.util.data.ModelConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -28,9 +30,9 @@ public class AccountDto implements ToConverter<Account, AccountDto> {
 
     private String name;
 
-    private LocalDateTime cDate;
+    private String cDate;
 
-    public AccountDto(Account account){
+    public AccountDto(Account account) {
         of(account);
     }
 
@@ -39,20 +41,18 @@ public class AccountDto implements ToConverter<Account, AccountDto> {
         return Account.builder()
                 .id(this.id)
                 .pw(this.pw)
-                .cDate(this.cDate)
                 .name(this.name)
+                .cDate(
+                        DateUtil.stringToLocalDateTime(this.cDate, ApplicationStringConfig.DATE_FORMAT)
+                )
                 .build();
     }
 
     @Override
     public AccountDto of(Account account) {
-        PropertyMap<Account, AccountDto> map = new PropertyMap<Account, AccountDto>() {
-            @Override
-            protected void configure() {
 
-            }
-        };
-
-        return ModelConverter.map(map, account, AccountDto.class);
+        AccountDto dto = ModelConverter.map(account, AccountDto.class);
+        dto.setCDate(DateUtil.localDateTimeToString(account.getCDate(), ApplicationStringConfig.DATE_FORMAT));
+        return dto;
     }
 }

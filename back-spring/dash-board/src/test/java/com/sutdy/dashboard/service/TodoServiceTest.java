@@ -68,7 +68,7 @@ public class TodoServiceTest {
         String id = "testset@naver.com";
         AccountDto accountDto = new AccountDto();
         accountDto.setPw("123123213");
-        accountDto.setCDate(LocalDateTime.now());
+        accountDto.setCDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT));
         accountDto.setName("테스트 중");
         accountDto.setId(id);
 
