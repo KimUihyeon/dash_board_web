@@ -2,6 +2,7 @@ package com.sutdy.dashboard.setting;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 //import com.sutdy.dashboard.domain.todo.QTodo;
+import com.sutdy.dashboard.domain.todo.QTodo;
 import com.sutdy.dashboard.domain.todo.Todo;
 import com.sutdy.dashboard.domain.todo.TodoRepository;
 import com.sutdy.dashboard.service.TodoService;
@@ -95,12 +96,11 @@ public class QueryDslTest {
         }
 
         // then
-
         //## TODO : 20.08.03 queryDsl안됨 검색하기
-//        List<Todo> queryDslTodos = this.jpaQueryFactory.selectFrom(QTodo.todo)
-//                .where(QTodo.todo.id.in(pks))
-//                .fetch();
-        List<Todo> queryDslTodos = new ArrayList<>();
+        List<Todo> queryDslTodos = this.jpaQueryFactory.selectFrom(QTodo.todo)
+                .where(QTodo.todo.id.in(pks))
+                .fetch();
+//        List<Todo> queryDslTodos = new ArrayList<>();
 
         logger.debug("queryDslTodos size => " + jpaTodo.size());
 

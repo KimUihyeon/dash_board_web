@@ -15,6 +15,8 @@ plugins {
     id 'org.springframework.boot' version '2.2.6.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'org.asciidoctor.convert' version '1.5.8'
+    id "io.franzbecker.gradle-lombok" version "3.0.0"
+    id "com.ewerk.gradle.plugins.querydsl" version "1.0.10"
     id 'java'
 }
 
@@ -58,8 +60,9 @@ dependencies {
     compile group: 'org.modelmapper', name: 'modelmapper', version: '2.3.2'
 
     compile("com.querydsl:querydsl-jpa") // querydsl
-    compile("com.querydsl:querydsl-apt") // querydsl
-
+    compile group: 'com.querydsl', name: 'querydsl-apt', version: '4.3.1'
+//    implementation("com.querydsl:querydsl-jpa:4.3.1")
+//    annotationProcessor "com.querydsl:querydsl-apt:4.3.1:jpa"
 }
 
 test {
@@ -72,28 +75,113 @@ asciidoctor {
     dependsOn test
 }
 
+// ---------------- 테스트 1
+//apply plugin: "com.ewerk.gradle.plugins.querydsl" // Plugin 적용
+//def querydslSrcDir = 'src/main/generated' // QClass 생성 위치
+//
+//querydsl {
+//    library = "com.querydsl:querydsl-apt"
+//    jpa = true
+//    querydslSourcesDir = querydslSrcDir
+//}
+//
+//sourceSets {
+//    main {
+//        java {
+//            srcDirs = ['src/main/java', querydslSrcDir]
+//        }
+//    }
+//}
+//compileQuerydsl{
+//    options.annotationProcessorPath = configurations.querydsl
+//}
+//
+//configurations {
+//    querydsl.extendsFrom compileClasspath
+//}
+//
 
-apply plugin: "com.ewerk.gradle.plugins.querydsl" // Plugin 적용
-def querydslSrcDir = 'src/main/generated' // QClass 생성 위치
+//--------------------------- 테스트 2
+
+/** QueryDSL Class Generate Script */
+//def generatedJavaSrcDir = 'src/main/generated'
+//def queryDslOutput = file(generatedJavaSrcDir)
+//
+//sourceSets {
+//    main {
+//        java {
+//            srcDirs = ['src/main/java', generatedJavaSrcDir]
+//        }
+//    }
+//}
+//
+///** QClass 생성 */
+//task generateQueryDSL(type: JavaCompile, group: 'build') {
+//    doFirst {
+//        delete queryDslOutput
+//        queryDslOutput.mkdirs()
+//    }
+//    source = sourceSets.main.java
+//    classpath = configurations.compile
+//    destinationDir = queryDslOutput
+//    options.compilerArgs = [
+//            '-proc:only',
+////            '-processor',
+//            "-processor", 'com.querydsl.apt.jpa.JPAAnnotationProcessor,org.springframework.data.mongodb.repository.support.MongoAnnotationProcessor,lombok.launch.AnnotationProcessorHider$AnnotationProcessor'
+////            '-processor', project.querydsl.processors() + ',lombok.launch.AnnotationProcessorHider$AnnotationProcessor',
+////            'com.querydsl.apt.jpa.JPAAnnotationProcessor'
+//    ]
+//}
+//
+//
+//compileJava.dependsOn(generateQueryDSL)
+//
+///** clean 태스크 실행시 QClass 삭제 */
+//clean {
+//    delete queryDslOutput
+//}
+
+
+// ---------- 테스트 3
+
+//apply plugin: "com.ewerk.gradle.plugins.querydsl"
+//
+//def queryDslDir = "src/main/generated"
+//querydsl {
+//    library = "com.querydsl:querydsl-apt:4.3.1" // 사용할 AnnotationProcesoor 정의
+//    jpa = true
+//    querydslSourcesDir = queryDslDir
+//}
+//sourceSets {
+//    main {
+//        java {
+//            srcDir queryDslDir
+//        }
+//    }
+//}
+//
+//compileQuerydsl {
+//    options.annotationProcessorPath = configurations.querydsl
+//}
+//
+//configurations { // 손권남님이 공유해주신 팁
+//    // 아래를 지정하지 않으면
+
+def querydslDir = "$buildDir/generated/querydsl"
 
 querydsl {
-    library = "com.querydsl:querydsl-apt"
     jpa = true
-    querydslSourcesDir = querydslSrcDir
+    querydslSourcesDir = querydslDir
 }
 
 sourceSets {
-    main {
-        java {
-            srcDirs = ['src/main/java', querydslSrcDir]
-        }
-    }
-}
-compileQuerydsl{
-    options.annotationProcessorPath = configurations.querydsl
+    main.java.srcDir querydslDir
 }
 
 configurations {
     querydsl.extendsFrom compileClasspath
 }
 
+compileQuerydsl {
+    options.annotationProcessorPath = configurations.querydsl
+}
