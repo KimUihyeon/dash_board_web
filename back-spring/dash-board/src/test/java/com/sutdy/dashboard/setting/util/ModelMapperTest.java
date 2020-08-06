@@ -118,8 +118,6 @@ public class ModelMapperTest {
 
         Assert.assertEquals(todo.getTitle(), convertedDto.getTitle());
         Assert.assertEquals(todo.getId(), convertedDto.getId());
-
-        // TODO : contents, memo 프로퍼티 다른데 어떻게 맵핑되는지 알아보기.
         Assert.assertEquals(todo.getContents(), convertedDto.getMemo());
     }
 }

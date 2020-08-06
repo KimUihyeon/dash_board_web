@@ -1,7 +1,7 @@
 package com.sutdy.dashboard.dto;
 
 import com.sutdy.dashboard.domain.members.Account;
-import com.sutdy.dashboard.dto.common.ToConverter;
+import com.sutdy.dashboard.dto.convert.interfacies.ToConverter;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.DateUtil;
 import com.sutdy.dashboard.setting.util.data.ModelConverter;
@@ -9,9 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.modelmapper.PropertyMap;
-
-import java.time.LocalDateTime;
 
 /**
  * @author kuh

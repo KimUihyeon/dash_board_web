@@ -1,4 +1,4 @@
-package com.sutdy.dashboard.dto.common;
+package com.sutdy.dashboard.dto.convert.interfacies;
 
 /**
  * DTO -> Entity 변환 인터페이스

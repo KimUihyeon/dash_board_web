@@ -1,6 +1,6 @@
 package com.sutdy.dashboard.service.common;
 
-import com.sutdy.dashboard.dto.common.ToConverter;
+import com.sutdy.dashboard.dto.convert.interfacies.ToConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataAccessException;

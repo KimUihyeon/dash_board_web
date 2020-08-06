@@ -1,7 +1,7 @@
 package com.sutdy.dashboard.dto;
 
 import com.sutdy.dashboard.domain.calendars.Task;
-import com.sutdy.dashboard.dto.common.ToConverter;
+import com.sutdy.dashboard.dto.convert.interfacies.ToConverter;
 import com.sutdy.dashboard.setting.util.data.ModelConverter;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
