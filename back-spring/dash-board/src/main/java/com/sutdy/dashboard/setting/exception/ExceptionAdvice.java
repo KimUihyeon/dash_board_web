@@ -1,6 +1,7 @@
 package com.sutdy.dashboard.setting.exception;
 
 import com.sutdy.dashboard.service.SystemErrorService;
+import com.sutdy.dashboard.setting.exception.impl.JwtTimeoutException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -21,6 +22,11 @@ public class ExceptionAdvice {
 
     @Autowired
     private SystemErrorService systemErrorService;
+
+
+    public ExceptionAdvice(){
+        System.out.println("ExceptionAdvice resit");
+    }
 
     /**
      * 권한 애러 (아직 미구현 ..!)
@@ -90,6 +96,23 @@ public class ExceptionAdvice {
         systemErrorService.save(0, e);
         return ErrorResponseFactory.create(HttpStatus.BAD_REQUEST, e.getMessage());
     }
+    
+
+    /**
+     * TODO : 검증 필요
+     * JwtTimeoutException
+     * Jwt 인증시 인증서 만료 Exception을 발생하기 위함.
+     *
+     * @param e JwtTimeoutException
+     * @return
+     */
+    @ExceptionHandler(JwtTimeoutException.class)
+    public ResponseEntity<ErrorResponse> jwtTimeoutExceptionHandle(JwtTimeoutException e){
+
+        systemErrorService.save(0, e);
+        return ErrorResponseFactory.create(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+    }
+
 
     /**
      * OutOfMemoryException 외에
@@ -104,6 +127,7 @@ public class ExceptionAdvice {
         systemErrorService.save(0, e);
         return ErrorResponseFactory.create(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }
+
 
 
 }

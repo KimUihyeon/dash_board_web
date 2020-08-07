@@ -80,7 +80,7 @@ public class JWT {
             }
 
         } catch (Exception e) {
-            return AuthResponseFactory.create(AuthEnum.WrongEncounter);
+            return AuthResponseFactory.create(AuthEnum.NoAuth);
         }
     }
 }

@@ -79,6 +79,7 @@ public class TodoApiController {
 
     @GetMapping("/item/{id}")
     public TodoDto getTodoItem(@PathVariable Long id) {
+
         return todoService.findById(id);
     }
 
