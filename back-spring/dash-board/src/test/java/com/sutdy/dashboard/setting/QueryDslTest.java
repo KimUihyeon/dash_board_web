@@ -2,6 +2,7 @@ package com.sutdy.dashboard.setting;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
 //import com.sutdy.dashboard.domain.todo.QTodo;
+import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.domain.todo.QTodo;
 import com.sutdy.dashboard.domain.todo.Todo;
 import com.sutdy.dashboard.domain.todo.TodoRepository;
@@ -153,6 +154,6 @@ public class QueryDslTest {
 
         Assert.assertTrue(findTodo.size() > 0);
         Assert.assertEquals(findTodo.get(0).getTitle() , jpaTodo.get(0).getTitle());
-
     }
+
 }

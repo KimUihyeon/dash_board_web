@@ -38,7 +38,7 @@ public class TodoCategory {
     private LocalDateTime cDate;
 
     @Setter
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "userId")
     private Account account;
 
