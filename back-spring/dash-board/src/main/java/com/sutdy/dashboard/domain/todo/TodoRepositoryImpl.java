@@ -42,9 +42,9 @@ public class TodoRepositoryImpl extends QuerydslRepositorySupport implements Tod
     @Override
     public List<Todo> todoListWhereCompleteByUserId(String userId) {
         return this.jpaQueryFactory.selectFrom(QTodo.todo)
-                .innerJoin(QTodoCategory.todoCategory, QTodo.todo.todoCategory)
-                .innerJoin(QAccount.account, QTodoCategory.todoCategory.account)
-                .where(QAccount.account.name.eq(userId).and(QTodo.todo.complete.eq(true)))
+                .innerJoin(QTodo.todo.todoCategory, QTodoCategory.todoCategory)
+                .innerJoin(QTodoCategory.todoCategory.account, QAccount.account)
+                .where(QAccount.account.id.eq(userId).and(QTodo.todo.complete.eq(true)))
                 .orderBy(QTodo.todo.id.desc())
                 .fetch();
     }
@@ -52,10 +52,10 @@ public class TodoRepositoryImpl extends QuerydslRepositorySupport implements Tod
     @Override
     public List<Todo> todoListWhereTodayByUserId(String userId) {
         return this.jpaQueryFactory.selectFrom(QTodo.todo)
-                .innerJoin(QTodoCategory.todoCategory, QTodo.todo.todoCategory)
-                .innerJoin(QAccount.account, QTodoCategory.todoCategory.account)
+                .innerJoin(QTodo.todo.todoCategory, QTodoCategory.todoCategory)
+                .innerJoin(QTodoCategory.todoCategory.account, QAccount.account)
                 .where(
-                        QAccount.account.name.eq(userId)
+                        QAccount.account.id.eq(userId)
                                 .and(
                                         QTodo.todo.complete.eq(false))
                                 .and(
@@ -68,10 +68,10 @@ public class TodoRepositoryImpl extends QuerydslRepositorySupport implements Tod
     @Override
     public List<Todo> todoListWhereImportantByUserId(String userId) {
         return this.jpaQueryFactory.selectFrom(QTodo.todo)
-                .innerJoin(QTodoCategory.todoCategory, QTodo.todo.todoCategory)
-                .innerJoin(QAccount.account, QTodoCategory.todoCategory.account)
+                .innerJoin(QTodo.todo.todoCategory, QTodoCategory.todoCategory)
+                .innerJoin(QTodoCategory.todoCategory.account, QAccount.account)
                 .where(
-                        QAccount.account.name.eq(userId)
+                        QAccount.account.id.eq(userId)
                                 .and(
                                         QTodo.todo.complete.eq(false))
                                 .and(
@@ -84,10 +84,10 @@ public class TodoRepositoryImpl extends QuerydslRepositorySupport implements Tod
     @Override
     public List<Todo> todoListByUserIdAndCategoryId(String userId, long categoryId) {
         return this.jpaQueryFactory.selectFrom(QTodo.todo)
-                .innerJoin(QTodoCategory.todoCategory, QTodo.todo.todoCategory)
-                .innerJoin(QAccount.account, QTodoCategory.todoCategory.account)
+                .innerJoin(QTodo.todo.todoCategory, QTodoCategory.todoCategory)
+                .innerJoin(QTodoCategory.todoCategory.account, QAccount.account)
                 .where(
-                        QAccount.account.name.eq(userId)
+                        QAccount.account.id.eq(userId)
                                 .and(
                                         QTodo.todo.complete.eq(false))
                                 .and(

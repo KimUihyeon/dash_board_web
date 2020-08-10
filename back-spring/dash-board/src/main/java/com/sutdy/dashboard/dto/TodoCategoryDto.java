@@ -57,14 +57,8 @@ public class TodoCategoryDto implements ToConverter<TodoCategory, TodoCategoryDt
 
     @Override
     public TodoCategoryDto of(TodoCategory todoCategory) {
-        PropertyMap<TodoCategory, TodoCategoryDto> map = new PropertyMap<TodoCategory, TodoCategoryDto>() {
-            @Override
-            protected void configure() {
 
-            }
-        };
-
-        return ModelConverter.map(map, todoCategory, TodoCategoryDto.class);
+        return ModelConverter.map(todoCategory, TodoCategoryDto.class);
     }
 
 }

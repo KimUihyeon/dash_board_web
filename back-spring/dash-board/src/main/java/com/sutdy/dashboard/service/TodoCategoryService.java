@@ -61,7 +61,15 @@ public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCateg
     private void defaultCategoryInsert(String userId) {
         List<TodoCategory> entity = defaultTodoCategories(userId)
                 .stream()
-                .map(t -> t.toEntity())
+                .map(t -> {
+                    Account account = null;
+                    if(!t.getUserId().isEmpty()){
+                        account = this.accountRepository.findById(userId).orElse(null);
+                    }
+                    TodoCategory category = t.toEntity();
+                    category.setAccount(account);
+                    return category;
+                })
                 .collect(Collectors.toList());
 
         this.jpaRepository.saveAll(entity);

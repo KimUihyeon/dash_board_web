@@ -42,7 +42,7 @@ public class TodoService extends BaseCrudService<Todo, TodoDto, Long> {
         this.todoRepository = todoRepository;
         this.todoCategoryRepository = todoCategoryRepository;
 
-        tempDataFactory.createTodoDatas(); // // TODO: 2020-05-21 임시데이터 만드는로직.. ! 추후 삭제!
+//        tempDataFactory.createTodoDatas(); // // TODO: 2020-05-21 임시데이터 만드는로직.. ! 추후 삭제!
     }
 
 
@@ -79,26 +79,26 @@ public class TodoService extends BaseCrudService<Todo, TodoDto, Long> {
             case "COMPLETE": {
                 return this.todoRepository.todoListWhereCompleteByUserId(userId)
                         .stream()
-                        .map(a -> new TodoDto(a))
+                        .map(a -> new TodoDto().of(a))
                         .collect(Collectors.toList());
             }
             case "TODAY": {
                 return this.todoRepository.todoListWhereTodayByUserId(userId)
                         .stream()
-                        .map(a -> new TodoDto(a))
+                        .map(a -> new TodoDto().of(a))
                         .collect(Collectors.toList());
             }
             case "IMPORTANT": {
                 return this.todoRepository.todoListWhereImportantByUserId(userId)
                         .stream()
-                        .map(a -> new TodoDto(a))
+                        .map(a -> new TodoDto().of(a))
                         .collect(Collectors.toList());
             }
 
             case "CATEGORY": {
                 return this.todoRepository.todoListByUserIdAndCategoryId(userId, params.getId())
                         .stream()
-                        .map(a -> new TodoDto(a))
+                        .map(a -> new TodoDto().of(a))
                         .collect(Collectors.toList());
             }
             default:
