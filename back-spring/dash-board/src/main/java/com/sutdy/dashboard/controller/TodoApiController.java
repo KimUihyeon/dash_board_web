@@ -1,6 +1,5 @@
 package com.sutdy.dashboard.controller;
 
-import com.sutdy.dashboard.dto.AccountDto;
 import com.sutdy.dashboard.dto.TodoCategoryDto;
 import com.sutdy.dashboard.dto.TodoDto;
 import com.sutdy.dashboard.service.TodoCategoryService;
@@ -34,7 +33,6 @@ public class TodoApiController {
 
 
     //////////// todoList
-
     @GetMapping("/list")
     public List<TodoDto> getTodoList(String userId, String filter, Long categoryId,
                                      HttpServletResponse response, PagedResourcesAssembler assembler) throws IOException {
@@ -52,7 +50,7 @@ public class TodoApiController {
         params.setId(categoryId);
         params.getFilterDetail().put("userId", userId);
 
-        List<TodoDto> todoList = todoService.findAll(params);
+        List<TodoDto> todoList = todoService.selectTodoListByUserIdAndFlag(params);
 
         return todoList;
     }

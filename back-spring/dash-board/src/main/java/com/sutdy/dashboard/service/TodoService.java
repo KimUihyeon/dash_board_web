@@ -17,6 +17,7 @@ import org.springframework.stereotype.Service;
 import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import javax.transaction.Transactional;
+import java.rmi.AccessException;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
@@ -31,11 +32,14 @@ public class TodoService extends BaseCrudService<Todo, TodoDto, Long> {
 
     private TodoCategoryRepository todoCategoryRepository;
 
+    private TodoRepository todoRepository;
+
     @Autowired
     public TodoService(TodoRepository todoRepository,
                        TodoCategoryRepository todoCategoryRepository,
                        TempDataFactory tempDataFactory) {
         super(todoRepository);
+        this.todoRepository = todoRepository;
         this.todoCategoryRepository = todoCategoryRepository;
 
         tempDataFactory.createTodoDatas(); // // TODO: 2020-05-21 임시데이터 만드는로직.. ! 추후 삭제!
@@ -50,7 +54,7 @@ public class TodoService extends BaseCrudService<Todo, TodoDto, Long> {
         if (dto.getCategoryId() != null) {
             TodoCategory category = todoCategoryRepository
                     .findById(dto.getCategoryId())
-                    .orElseThrow(()-> new IllegalArgumentException(NOT_FIND_DATA));
+                    .orElseThrow(() -> new IllegalArgumentException(NOT_FIND_DATA));
             todo.setTodoCategory(category);
         }
 
@@ -66,48 +70,39 @@ public class TodoService extends BaseCrudService<Todo, TodoDto, Long> {
     }
 
 
-    public List<TodoDto> findAll(SearchParams params) {
+    public List<TodoDto> selectTodoListByUserIdAndFlag(SearchParams params) throws AccessException {
 
         String userId = params.getFilterDetail().get("userId").toString();
-        Stream<Todo> queryable = this.jpaRepository.findAll(Sort.by("id").descending()).stream()
-                .filter(t-> t.getTodoCategory() != null)
-                .filter(t -> t.getTodoCategory().getAccount().getId().equals(userId));
 
         switch (params.getFilter().toUpperCase()) {
+            // TODO: 2020-08-10 Vue 데이터에서 오는 스펠링 변경할것 ,!  COMPLATE 로 검색
+            case "COMPLETE": {
+                return this.todoRepository.todoListWhereCompleteByUserId(userId)
+                        .stream()
+                        .map(a -> new TodoDto(a))
+                        .collect(Collectors.toList());
+            }
             case "TODAY": {
-                return queryable
-                        .filter(t -> !t.isComplete())
-                        .filter(t -> t.isToDay())
+                return this.todoRepository.todoListWhereTodayByUserId(userId)
+                        .stream()
                         .map(a -> new TodoDto(a))
                         .collect(Collectors.toList());
             }
             case "IMPORTANT": {
-                return queryable
-                        .filter(t -> !t.isComplete())
-                        .filter(t -> t.isImportant())
+                return this.todoRepository.todoListWhereImportantByUserId(userId)
+                        .stream()
                         .map(a -> new TodoDto(a))
                         .collect(Collectors.toList());
             }
-            case "COMPLATE": {
-                return queryable
-                        .filter(t -> t.isComplete())
-                        .map(a -> new TodoDto(a))
-                        .collect(Collectors.toList());
-            }
+
             case "CATEGORY": {
-                return queryable
-                        .filter(t -> !t.isComplete())
-                        .filter(t -> t.getTodoCategory().getId() == params.getId())
+                return this.todoRepository.todoListByUserIdAndCategoryId(userId, params.getId())
+                        .stream()
                         .map(a -> new TodoDto(a))
                         .collect(Collectors.toList());
             }
-            default: {
-                return queryable
-                        .map(a -> new TodoDto(a))
-                        .collect(Collectors.toList());
-            }
+            default:
+                throw new AccessException(this.NOT_FIND_DATA);
         }
     }
-
-
 }

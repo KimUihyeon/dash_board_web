@@ -1,7 +1,5 @@
 package com.sutdy.dashboard.service;
 
-import com.sutdy.dashboard.domain.members.Account;
-import com.sutdy.dashboard.domain.todo.Todo;
 import com.sutdy.dashboard.dto.AccountDto;
 import com.sutdy.dashboard.dto.TodoCategoryDto;
 import com.sutdy.dashboard.dto.TodoDto;
@@ -97,7 +95,7 @@ public class TodoServiceTest {
 
         //when
 
-        List<TodoDto> datas = this.todoService.findAll(params);
+        List<TodoDto> datas = this.todoService.selectTodoListByUserIdAndFlag(params);
 
 
         //then
