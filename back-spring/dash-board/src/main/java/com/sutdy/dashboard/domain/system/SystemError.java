@@ -24,6 +24,8 @@ public class SystemError {
 
     private LocalDateTime cDate = LocalDateTime.now();
 
+    private String errorMessage;
+
     /**
      * error가 발생한 유저
      */

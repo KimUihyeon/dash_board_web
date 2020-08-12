@@ -20,7 +20,7 @@ public class EncrytionTest {
 
         //then
         System.out.println(securityString);
-        Assert.assertTrue(!securityString.isEmpty());
+        Assert.assertTrue(!StringUtil.isEmpty(securityString));
     }
 
 
@@ -33,7 +33,7 @@ public class EncrytionTest {
 
         //then
         System.out.println(securityString);
-        Assert.assertTrue(!securityString.isEmpty());
+        Assert.assertTrue(!StringUtil.isEmpty(securityString));
     }
 
 

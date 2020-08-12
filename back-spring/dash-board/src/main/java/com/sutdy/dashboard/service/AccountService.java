@@ -5,6 +5,7 @@ import com.sutdy.dashboard.domain.members.AccountRepository;
 import com.sutdy.dashboard.dto.AccountDto;
 import com.sutdy.dashboard.service.common.BaseCrudService;
 import com.sutdy.dashboard.setting.util.SecurityStringUtil;
+import com.sutdy.dashboard.setting.util.StringUtil;
 import com.sutdy.dashboard.setting.util.auth.AuthEnum;
 import com.sutdy.dashboard.setting.util.auth.AuthResponse;
 import com.sutdy.dashboard.setting.util.auth.AuthResponseFactory;
@@ -69,7 +70,7 @@ public class AccountService extends BaseCrudService<Account, AccountDto, String>
             AuthResponse response = JWT.auth(jwt);
 
             AccountDto dto = this.findById(response.getId());
-            if(!dto.getDDate().isEmpty()){
+            if(!StringUtil.isEmpty(dto.getDDate())){
                 response.setAuthType(AuthEnum.WrongEncounter);
             }
             return response;

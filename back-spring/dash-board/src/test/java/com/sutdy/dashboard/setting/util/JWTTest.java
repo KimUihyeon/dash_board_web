@@ -35,7 +35,7 @@ public class JWTTest {
         System.out.println(jwt);
 
 
-        Assert.assertTrue(!jwt.isEmpty());
+        Assert.assertTrue(!StringUtil.isEmpty(jwt));
     }
 
 

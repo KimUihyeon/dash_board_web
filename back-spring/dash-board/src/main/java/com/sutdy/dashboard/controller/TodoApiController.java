@@ -7,6 +7,7 @@ import com.sutdy.dashboard.service.TodoService;
 import com.sutdy.dashboard.setting.common.SearchParams;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.DateUtil;
+import com.sutdy.dashboard.setting.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.web.PagedResourcesAssembler;
 import org.springframework.web.bind.annotation.*;
@@ -42,7 +43,7 @@ public class TodoApiController {
          *
          */
 //        return todoService.findAll(userId, categoryId);
-        if (userId.isEmpty()) {
+        if (StringUtil.isEmpty(userId)) {
             response.sendError(HttpServletResponse.SC_FORBIDDEN);
         }
 
@@ -91,7 +92,7 @@ public class TodoApiController {
          * Todo : userid = 이거 널처리 할것 .. ! 널들어오면 Access Exception
          *
          */
-        if(userId.isEmpty()){
+        if(StringUtil.isEmpty(userId)){
             throw new AccessException("권한없음");
         }
         return this.todoCategoryService.findAll(userId);

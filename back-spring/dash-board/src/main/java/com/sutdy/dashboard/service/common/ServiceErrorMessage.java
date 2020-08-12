@@ -9,7 +9,7 @@ import org.springframework.context.annotation.PropertySource;
  * @since 2020.04.17
  */
 
-@PropertySource(PropertyFileManager.ERROR_MGS_PROP)
+@PropertySource(value = PropertyFileManager.ERROR_MGS_PROP, encoding = "utf-8")
 public abstract class ServiceErrorMessage {
 
     @Value("${not_find_data}")

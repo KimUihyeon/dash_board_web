@@ -10,6 +10,7 @@ import com.sutdy.dashboard.dto.TodoCategoryDto;
 import com.sutdy.dashboard.service.common.BaseCrudService;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.DateUtil;
+import com.sutdy.dashboard.setting.util.StringUtil;
 import com.sutdy.dashboard.setting.util.data.ModelConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -35,10 +36,6 @@ public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCateg
                                AccountRepository accountRepository) {
         super(todoCategoryRepository);
         this.accountRepository = accountRepository;
-
-
-        // !테스트 코드
-        defaultCategoryInsert("admin@naver.com");
     }
 
 
@@ -63,7 +60,7 @@ public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCateg
                 .stream()
                 .map(t -> {
                     Account account = null;
-                    if(!t.getUserId().isEmpty()){
+                    if(!StringUtil.isEmpty(t.getUserId())){
                         account = this.accountRepository.findById(userId).orElse(null);
                     }
                     TodoCategory category = t.toEntity();
@@ -105,6 +102,8 @@ public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCateg
     }
 
     public List<TodoCategoryDto> findAll(String userId) {
+
+//        defaultCategoryInsert(userId);
         return this.jpaRepository.findAll()
                 .stream()
                 .filter(t -> t.getAccount() != null && t.getAccount().getId().equals(userId))

@@ -9,7 +9,7 @@ import java.time.LocalDateTime;
 public class SystemErrorFactory {
 
     public static SystemError create(Exception e){
-        return  create(null , e);
+        return create(null , e);
     }
 
     public static SystemError create(String userId, Exception e){
@@ -24,6 +24,7 @@ public class SystemErrorFactory {
 
             return SystemError.builder()
                     .error(e.toString())
+                    .errorMessage(e.getMessage())
                     .declaringClass(st.getClassName())
                     .fileName(st.getFileName())
                     .lineNumber(st.getLineNumber())

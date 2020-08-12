@@ -35,7 +35,6 @@ public class ExceptionAdvice {
      */
     @ExceptionHandler(AccessException.class)
     public ResponseEntity<ErrorResponse> AccessExceptionHandle(AccessException e) {
-
         systemErrorService.save(0, e);
         return ErrorResponseFactory.create(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
     }
