@@ -44,7 +44,7 @@ public class JWTTest {
 
         // given
         String id = "admin@naver.com";
-        String name = "김의현";
+        String name = "testName";
 
 
         String jwt = JWT.createToken(id, name, 3);

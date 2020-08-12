@@ -30,7 +30,7 @@
                 <div class="button-box-close" @click="()=>{toggle = false}">
                 </div>
                 <div class="button-box">
-                    <button class="todo-detail-button el-icon-s-order"></button>
+                    <button class='todo-star-button' v-bind:class=" cloneItem.important ? 'el-icon-star-on': 'el-icon-star-off' " @click="reverseImportant()"></button>
                     <button class="todo-delete-button  el-icon-delete" @click="click_handle('delete')"></button>
                     <button class="container-close-button  el-icon-close" @click="()=>{toggle = false}"></button>
                     
@@ -49,6 +49,9 @@
 }
 .button-container .todo-detail-button{
     color: green;
+}
+.button-container .todo-star-button{
+    color: yellow ;
 }
 .button-container .todo-delete-button{
     color: red;
@@ -171,6 +174,9 @@ export default {
             if(elementType === 'delete'){
                 this.deleteTodoProcess();
             }
+            else if(elementType === 'update'){
+                this.updateTodoProcess();
+            }
             else if (elementType === 'toggleMemo'){
                 this.isMemoOpen = !this.isMemoOpen;
             }
@@ -184,10 +190,28 @@ export default {
             }
         },
         changed_handle(){
-            this.cloneItem.todoComplete = !this.cloneItem.todoComplete;
-
-            let todoItem = this.cloneItem;
+            let todoItem = {
+                ...this.cloneItem,
+                todoComplete : !this.cloneItem.todoComplete
+            };
             this.$store.dispatch('patch_todo', { todoItem }).catch(err=>{
+                alert.elMessageBox({ vueObject : this , type : 'error' , message : err });
+            });
+        },
+        updateTodoProcess(){
+            let okCallBack = () => {
+
+            }
+        },
+        reverseImportant(){
+
+            let todoItem = {
+                ...this.cloneItem,
+                important : !this.cloneItem.important
+            };
+            this.$store.dispatch('patch_todo', { todoItem }).then((res)=>{
+                this.cloneItem = !this.cloneItem.important;
+            }).catch(err=>{
                 alert.elMessageBox({ vueObject : this , type : 'error' , message : err });
             });
         },
