@@ -29,6 +29,8 @@ public class AccountDto implements ToConverter<Account, AccountDto> {
 
     private String cDate;
 
+    private String dDate;
+
     public AccountDto(Account account) {
         of(account);
     }
@@ -42,6 +44,9 @@ public class AccountDto implements ToConverter<Account, AccountDto> {
                 .cDate(
                         DateUtil.stringToLocalDateTime(this.cDate, ApplicationStringConfig.DATE_FORMAT)
                 )
+                .dDate(
+                        DateUtil.stringToLocalDateTime(this.dDate, ApplicationStringConfig.DATE_FORMAT)
+                )
                 .build();
     }
 
@@ -50,6 +55,7 @@ public class AccountDto implements ToConverter<Account, AccountDto> {
 
         AccountDto dto = ModelConverter.map(account, AccountDto.class);
         dto.setCDate(DateUtil.localDateTimeToString(account.getCDate(), ApplicationStringConfig.DATE_FORMAT));
+        dto.setDDate(DateUtil.localDateTimeToString(account.getDDate(), ApplicationStringConfig.DATE_FORMAT));
         return dto;
     }
 }

@@ -100,7 +100,7 @@ public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCateg
     public List<TodoCategoryDto> findAll() {
         return this.jpaRepository.findAll()
                 .stream()
-                .map(t -> new TodoCategoryDto(t))
+                .map(t -> new TodoCategoryDto(t).of(t))
                 .collect(Collectors.toList());
     }
 
@@ -108,7 +108,7 @@ public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCateg
         return this.jpaRepository.findAll()
                 .stream()
                 .filter(t -> t.getAccount() != null && t.getAccount().getId().equals(userId))
-                .map(t -> new TodoCategoryDto(t))
+                .map(t -> new TodoCategoryDto().of(t))
                 .collect(Collectors.toList());
     }
 }

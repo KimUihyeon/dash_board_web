@@ -19,7 +19,14 @@ import java.util.Map;
  */
 public class JWT {
 
-    private final static String TOKENT_PREFIX = "bearer";
+    private final static String USER_NAME_PROPERTY = "useName";
+    private final static String USER_ID_PROPERTY = "userId";
+
+    private final static String TOKEN_SHELF_LIFE_PROPERTY = "exp";
+    private final static String TOKEN_ISS_PROPERTY = "iss";
+
+    private final static String TOKEN_PREFIX = "bearer";
+
 
     public static String createToken(String userId, String userName, int lifeDate) {
 
@@ -28,24 +35,24 @@ public class JWT {
         header.put("alg", "HS256");
 
         Map<String, Object> claim = new HashMap<>();
-        claim.put("iss", ApplicationStringConfig.WEB_URL);
-        claim.put("exp", String.valueOf(calcTokenLifeTime(lifeDate)));
-        claim.put("userId", userId);
-        claim.put("useName", userName);
+        claim.put(TOKEN_ISS_PROPERTY, ApplicationStringConfig.WEB_URL);
+        claim.put(TOKEN_SHELF_LIFE_PROPERTY, String.valueOf(getTokenLifeTime(lifeDate)));
+        claim.put(USER_ID_PROPERTY, userId);
+        claim.put(USER_NAME_PROPERTY, userName);
 
-        return TOKENT_PREFIX + " " + Jwts.builder()
+        return TOKEN_PREFIX + " " + Jwts.builder()
                 .setHeader(header)
                 .setClaims(claim)
                 .signWith(SignatureAlgorithm.HS256, ApplicationStringConfig.JWT_ENCRYPTION_KEY)
                 .compact();
     }
 
-    private static Long calcTokenLifeTime(int lifeDate){
+    private static Long getTokenLifeTime(int lifeDate) {
         Calendar cal = Calendar.getInstance();
         cal.setTime(new Date());
         cal.add(Calendar.DATE, lifeDate);
         Date date = cal.getTime();
-        return date .getTime();
+        return date.getTime();
     }
 
 
@@ -53,21 +60,21 @@ public class JWT {
         Long currentTimeStep = new Date().getTime();
 
         try {
-            jwt= jwt.replaceAll(TOKENT_PREFIX+" ","");
+            jwt = jwt.replaceAll(TOKEN_PREFIX + " ", "");
             Jwt claims = Jwts.parser()
                     .setSigningKey(ApplicationStringConfig.JWT_ENCRYPTION_KEY)
                     .parse(jwt);
 
             Map<String, String> payload = (Map<String, String>) claims.getBody(); // claim
 
-            Long tokenExp = Long.parseLong(payload.get("exp"));
+            Long tokenExp = Long.parseLong(payload.get(TOKEN_SHELF_LIFE_PROPERTY));
 
             AuthResponse response = AuthResponseFactory.create(
-                    payload.get("userId") , payload.get("userName"),
-                    null, jwt, tokenExp );
+                    payload.get(USER_ID_PROPERTY), payload.get(USER_NAME_PROPERTY),
+                    null, jwt, tokenExp);
 
             if (tokenExp > currentTimeStep) {
-                if (ApplicationStringConfig.WEB_URL.equals(payload.get("iss")) ) {
+                if (ApplicationStringConfig.WEB_URL.equals(payload.get("iss"))) {
                     response.setAuthType(AuthEnum.Auth);
                     return response;
                 } else {

@@ -5,6 +5,10 @@ import com.sutdy.dashboard.domain.members.AccountRepository;
 import com.sutdy.dashboard.dto.AccountDto;
 import com.sutdy.dashboard.service.common.BaseCrudService;
 import com.sutdy.dashboard.setting.util.SecurityStringUtil;
+import com.sutdy.dashboard.setting.util.auth.AuthEnum;
+import com.sutdy.dashboard.setting.util.auth.AuthResponse;
+import com.sutdy.dashboard.setting.util.auth.AuthResponseFactory;
+import com.sutdy.dashboard.setting.util.auth.jwt.JWT;
 import com.sutdy.dashboard.setting.util.data.ModelConverter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -53,10 +57,24 @@ public class AccountService extends BaseCrudService<Account, AccountDto, String>
         Account account = this.jpaRepository
                 .findById(id).orElse(null);
 
-        if (account != null && pw.equals(encryptPw)) {
-            return new AccountDto(account);
+        if (account != null && encryptPw.equals(encryptPw)) {
+            return new AccountDto().of(account);
         } else {
             return null;
+        }
+    }
+
+    public AuthResponse auth(String jwt) {
+        try {
+            AuthResponse response = JWT.auth(jwt);
+
+            AccountDto dto = this.findById(response.getId());
+            if(!dto.getDDate().isEmpty()){
+                response.setAuthType(AuthEnum.WrongEncounter);
+            }
+            return response;
+        } catch (Exception e) {
+            return AuthResponseFactory.create(AuthEnum.NoAuth);
         }
     }
 }

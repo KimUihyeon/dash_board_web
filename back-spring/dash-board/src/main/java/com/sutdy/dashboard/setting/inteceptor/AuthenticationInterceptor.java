@@ -47,50 +47,52 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
-        Enumeration datas = request.getHeaderNames();
-
-        while (datas.hasMoreElements()) {
-            String key = datas.nextElement().toString();
-            String value = request.getHeader(key);
-            logger.info("key : " + key + "\t||\tvalue: " + value);
-        }
-
-        System.out.println(request.getRequestURI());
-        System.out.println("authentication");
-
-        String jwt2 = request.getHeader("authentication");
-        try {
-
-            AuthResponse jwtState = JWT.auth(jwt2);
-
-            switch (jwtState.getAuthType()) {
-                case Auth: {
-                    try {
-                        AccountDto findMember = accountService.findById(jwtState.getId());
-
-                        if (findMember != null) {
-                            return super.preHandle(request, response, handler);
-                        } else {
-                            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-                            return false;
-                        }
-                    } catch (Exception e) {
-                        response.sendError(HttpServletResponse.SC_FORBIDDEN);
-                        return false;
-                    }
-                }
-                case WrongEncounter:
-                case NoAuth:
-                case TimeOut: {
-                    response.sendError(HttpServletResponse.SC_FORBIDDEN);
-                    return false;
-                }
-            }
-        } catch (Exception e) {
-            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-        }
-
         return super.preHandle(request, response, handler);
+
+//        Enumeration datas = request.getHeaderNames();
+//
+//        while (datas.hasMoreElements()) {
+//            String key = datas.nextElement().toString();
+//            String value = request.getHeader(key);
+//            logger.info("key : " + key + "\t||\tvalue: " + value);
+//        }
+//
+//        System.out.println(request.getRequestURI());
+//        System.out.println("authentication");
+//
+//        String jwt2 = request.getHeader("authentication");
+//        try {
+//
+//            AuthResponse jwtState = JWT.auth(jwt2);
+//
+//            switch (jwtState.getAuthType()) {
+//                case Auth: {
+//                    try {
+//                        AccountDto findMember = accountService.findById(jwtState.getId());
+//
+//                        if (findMember != null) {
+//                            return super.preHandle(request, response, handler);
+//                        } else {
+//                            response.sendError(HttpServletResponse.SC_FORBIDDEN);
+//                            return false;
+//                        }
+//                    } catch (Exception e) {
+//                        response.sendError(HttpServletResponse.SC_FORBIDDEN);
+//                        return false;
+//                    }
+//                }
+//                case WrongEncounter:
+//                case NoAuth:
+//                case TimeOut: {
+//                    response.sendError(HttpServletResponse.SC_FORBIDDEN);
+//                    return false;
+//                }
+//            }
+//        } catch (Exception e) {
+//            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
+//        }
+//
+//        return super.preHandle(request, response, handler);
 
     }
 

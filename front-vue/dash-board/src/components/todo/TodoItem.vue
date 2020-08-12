@@ -19,7 +19,7 @@
                 </span>
                 <span class="todo-title-box" @click="click_handle('toggleMemo')">
                     <span class="todo-center" 
-                    v-bind:class="cloneItem.todoComplete ? 'complate-todo' : ''" >{{cloneItem.title}}</span>
+                    v-bind:class="cloneItem.todoComplete ? 'complete-todo' : ''" >{{cloneItem.title}}</span>
                 </span>
             </div>
             <div class="todo-right">
@@ -222,7 +222,7 @@ export default {
 
 
 <style scoped>
-.complate-todo {
+.complete-todo {
     text-decoration: line-through !important;
 }
 .fade-effect-tartget{

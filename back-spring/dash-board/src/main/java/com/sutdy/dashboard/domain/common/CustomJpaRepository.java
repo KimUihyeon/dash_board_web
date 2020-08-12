@@ -19,6 +19,7 @@ import java.util.stream.Collectors;
  * @author kuh
  * @since 2020.05.06
  */
+@Deprecated
 public abstract class CustomJpaRepository<Entity, Dto extends ToConverter<Entity, Dto>>
         extends ServiceErrorMessage implements JpaRepository<Entity , Long>{
 

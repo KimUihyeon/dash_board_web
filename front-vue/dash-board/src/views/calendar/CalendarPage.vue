@@ -62,31 +62,35 @@ export default {
             this.updateCalcendar({start : this.start , end : this.end});
         },
         updateCalcendar({ start, end }) {
+
+
             this.start = start;
             this.end = end;
+
+            // 업데이트 로직
             this.events = [
                 {
                     color: 'indigo',
-                    start: '2020-6-28',
-                    end: '2020-6-29',
+                    start: '2020-8-28',
+                    end: '2020-8-29',
                     name: 'Meeting',
                 },
                 {
                     color: 'indigo',
-                    start: '2020-6-28',
-                    end: '2020-6-29',
+                    start: '2020-8-28',
+                    end: '2020-8-29',
                     name: 'Meeting',
                 },
                 {
                     color: 'indigo',
-                    start: '2020-6-28',
-                    end: '2020-6-29',
+                    start: '2020-8-28',
+                    end: '2020-8-29',
                     name: 'Meeting',
                 },
                 {
                     color: 'indigo',
-                    start: '2020-6-28',
-                    end: '2020-6-29',
+                    start: '2020-8-28',
+                    end: '2020-8-29',
                     name: 'Meeting',
                 },
             ];

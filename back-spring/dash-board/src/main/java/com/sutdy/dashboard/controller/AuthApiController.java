@@ -1,5 +1,6 @@
 package com.sutdy.dashboard.controller;
 
+import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.dto.AccountDto;
 import com.sutdy.dashboard.service.AccountService;
 import com.sutdy.dashboard.setting.util.auth.AuthRequest;
@@ -35,8 +36,8 @@ public class AuthApiController {
     @PostMapping()
     public AuthResponse auth(@RequestBody AuthRequest authRequest){
         // // TODO: 2020-05-14 : 나중에 해더 로직으로 변경할것 ..!
-        AuthResponse response = JWT.auth(authRequest.getToken());
-        return response;
+
+        return this.accountService.auth(authRequest.getToken());
     }
 
 

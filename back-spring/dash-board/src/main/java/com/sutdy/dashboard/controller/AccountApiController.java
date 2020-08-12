@@ -2,6 +2,8 @@ package com.sutdy.dashboard.controller;
 
 import com.sutdy.dashboard.dto.AccountDto;
 import com.sutdy.dashboard.service.AccountService;
+import com.sutdy.dashboard.setting.ApplicationStringConfig;
+import com.sutdy.dashboard.setting.util.DateUtil;
 import com.sutdy.dashboard.setting.util.auth.AuthEnum;
 import com.sutdy.dashboard.setting.util.auth.AuthResponse;
 import com.sutdy.dashboard.setting.util.auth.AuthResponseFactory;
@@ -10,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 
 /**
  * 계정 관련 !
@@ -65,6 +68,7 @@ public class AccountApiController {
      */
     @PostMapping("/signup")
     public AccountDto signup(@RequestBody AccountDto accountRequest) throws NoSuchAlgorithmException {
+        accountRequest.setCDate(DateUtil.localDateTimeToString(LocalDateTime.now() , ApplicationStringConfig.DATE_FORMAT));
         return this.accountService.save(accountRequest);
     }
 

@@ -77,7 +77,7 @@ public class CalendarServiceTest {
     }
 
     @After
-    public void cleanup(){
+    public void cleanup() {
         this.accountService.delete(loginId);
         this.taskTagRepository.deleteById(tempTaskTagId);
     }
@@ -85,7 +85,7 @@ public class CalendarServiceTest {
 
     @Test
     @Transactional
-    public void tagSaveTest() throws NoSuchAlgorithmException {
+    public void tag_저장_테스트() throws NoSuchAlgorithmException {
         //given
         Account account = this.accountService.findById(loginId).toEntity();
         TaskTagDto dto = TaskTagDto.builder()
@@ -107,7 +107,7 @@ public class CalendarServiceTest {
 
     @Test
     @Transactional
-    public void tagListTest() throws NoSuchAlgorithmException {
+    public void tag_리스트_불러오기_테스트() throws NoSuchAlgorithmException {
         //given
         Account account = this.accountService.findById(loginId).toEntity();
         List<TaskTagDto> taskTags = new ArrayList<>();
@@ -161,7 +161,7 @@ public class CalendarServiceTest {
 
     @Test
     @Transactional
-    public void tagDeleteTest() throws NoSuchAlgorithmException {
+    public void tag_삭제하기_테스트() throws NoSuchAlgorithmException {
         //given
         Account account = this.accountService.findById(loginId).toEntity();
         TaskTagDto dto = TaskTagDto.builder()
@@ -186,7 +186,7 @@ public class CalendarServiceTest {
 
     @Test
     @Transactional
-    public void tagUpdateTest() throws NoSuchAlgorithmException {
+    public void tag_수정하기_테스트() throws NoSuchAlgorithmException {
         // given
         Account account = this.accountService.findById(loginId).toEntity();
         TaskTagDto dto = TaskTagDto.builder()

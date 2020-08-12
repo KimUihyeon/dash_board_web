@@ -16,8 +16,8 @@ const duplicateCheck = (id) =>{
     return rest.post( base_url + '/existence ', { id });
 }
 
-const signup = (id, pw) =>{
-    return rest.post( base_url + '/signup' , { id , pw });
+const signup = (id, pw, name) =>{
+    return rest.post( base_url + '/signup' , { id , pw , name});
 }
 
 const logout = () =>{

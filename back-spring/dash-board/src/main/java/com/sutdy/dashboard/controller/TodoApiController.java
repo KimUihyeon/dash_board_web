@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.rmi.AccessException;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -85,11 +86,14 @@ public class TodoApiController {
     //////////// todoCategory
 
     @GetMapping("/categories/{userId}")
-    public List<TodoCategoryDto> getTodoCategories(@PathVariable String userId) {
+    public List<TodoCategoryDto> getTodoCategories(@PathVariable String userId) throws AccessException {
         /**
          * Todo : userid = 이거 널처리 할것 .. ! 널들어오면 Access Exception
          *
          */
+        if(userId.isEmpty()){
+            throw new AccessException("권한없음");
+        }
         return this.todoCategoryService.findAll(userId);
     }
 

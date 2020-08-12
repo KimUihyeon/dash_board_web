@@ -139,7 +139,6 @@ export default {
             this.close();
 
             setTimeout(()=>{
-                this.alert('error', '아이디 중복확인을 해주세요');
                 this.submitAfterHandle(this.cloneTask);
             },10)
 

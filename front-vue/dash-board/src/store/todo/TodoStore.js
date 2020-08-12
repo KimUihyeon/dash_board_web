@@ -37,7 +37,7 @@ const getters = {
         return [
             { id : -3 , title : '중요' , icon : 'el-icon-star-off', canModify : false , iconColor : 'yellow', fontColor : 'yellow' , param : 'important'},
             { id : -2 , title : '오늘 할일' , icon : 'el-icon-s-opportunity', canModify : false  , iconColor : 'white', fontColor : 'white', param : 'today'},
-            { id : -1 , title : '완료된 할일' , icon : 'el-icon-s-release' , canModify : false , iconColor : '#ffb8b8', fontColor : '#ffb8b8' , param : 'complate'}
+            { id : -1 , title : '완료된 할일' , icon : 'el-icon-s-release' , canModify : false , iconColor : '#ffb8b8', fontColor : '#ffb8b8' , param : 'complete'}
         ]
     }
 }
@@ -132,6 +132,7 @@ const actions = {
                     //     }
                     // })
                     const categories = data;
+                    console.log(categories);
                     context.commit('SET_TODO_CATEGORIES' , { todoCategories : categories }); 
                     resolve(categories);
                 })

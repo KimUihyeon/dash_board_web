@@ -149,7 +149,11 @@ public abstract class BaseCrudService<Entity, Dto extends ToConverter<Entity, Dt
 
     @Override
     public Dto findById(ID pk) {
-        return getDtoInstance(findEntityById(pk));
+        try{
+            return getDtoInstance(findEntityById(pk));
+        }catch (Exception e){
+            return null;
+        }
     }
 
 

@@ -34,11 +34,15 @@ public class Account {
 
     private LocalDateTime cDate;
 
-    private boolean deleteUser;
+    private LocalDateTime dDate;
 
     public void patch(AccountDto dto) {
         if (dto.getCDate() != null && !DateUtil.dateTimeCompare(dto.getCDate(), this.cDate, ApplicationStringConfig.DATE_FORMAT)) {
             this.cDate = DateUtil.stringToLocalDateTime(dto.getCDate(), ApplicationStringConfig.DATE_FORMAT);
+        }
+
+        if (dto.getDDate() != null && !DateUtil.dateTimeCompare(dto.getDDate(), this.dDate, ApplicationStringConfig.DATE_FORMAT)) {
+            this.dDate = DateUtil.stringToLocalDateTime(dto.getDDate(), ApplicationStringConfig.DATE_FORMAT);
         }
 
         if (!dto.getName().equals(this.name)) {

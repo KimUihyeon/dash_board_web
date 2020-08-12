@@ -158,7 +158,7 @@ export default {
             }
 
             accountService
-                .signup(this.id, this.pw)
+                .signup(this.id, this.pw, this.name)
                 .then((res) => {
                     setTimeout(() => {
                         this.show = false;

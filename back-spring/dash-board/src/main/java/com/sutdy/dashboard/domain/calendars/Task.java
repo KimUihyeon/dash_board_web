@@ -35,7 +35,7 @@ public class Task {
     private LocalDateTime eDate; // 종료일
 
     @ManyToOne
-    @JoinColumn(name = "taskId")
+    @JoinColumn(name = "taskTagId")
     private TaskTag taskTag;
 
     public void patch(TaskDto dto) {

@@ -26,7 +26,7 @@ public class TaskDto implements ToConverter<Task, TaskDto> {
 
     private String title;
     private String description;
-    private String color; // HexColor 예)#fff
+//    private String color; // HexColor 예)#fff
     private LocalDateTime cDate;
 
     public TaskDto(Task entity){
