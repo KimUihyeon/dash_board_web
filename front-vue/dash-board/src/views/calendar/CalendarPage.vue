@@ -1,28 +1,32 @@
 <template>
-    <div>
-        <div>{{ start.month }} // {{ end.year }}</div>
-        <el-button @click="()=>{$refs.calendar.prev()}"> 이전 </el-button>
-        <el-button @click="()=>{$refs.calendar.next()}"> 다음 </el-button>
-        <el-button @click="reg">+</el-button>
-        <v-sheet height="600">
-            <v-calendar
-                ref="calendar"
-                v-model="value"
-                color="primary"
-                locale='ko'
-                :day-format="(e)=>e.day"
-                :show-month-on-first='false'
-                :weekdays="weekday"
-                :type="type"
-                :events="events"
-                :event-overlap-mode="mode"
-                :event-overlap-threshold="30"
-                :event-color="(e)=>e.color"
-                @click:more="showEvent"
-                @click:event="showEvent"
-                @change="updateCalcendar"
-            ></v-calendar>
-        </v-sheet>
+    <div class="calendar-container">
+        <div class="calendar-header">
+            <span @click="()=>{$refs.calendar.prev()}">＜</span>
+            <span><b>{{ end.year }}. {{ start.month }}</b></span>
+            <span @click="()=>{$refs.calendar.next()}">＞</span>
+            <el-button @click="reg">+</el-button>
+        </div>
+        <div class="calendar-body">
+            <v-sheet height="600">
+                <v-calendar
+                    ref="calendar"
+                    v-model="value"
+                    color="primary"
+                    locale='ko'
+                    :day-format="(e)=>e.day"
+                    :show-month-on-first='false'
+                    :weekdays="weekday"
+                    :type="type"
+                    :events="events"
+                    :event-overlap-mode="mode"
+                    :event-overlap-threshold="30"
+                    :event-color="(e)=>e.color"
+                    @click:more="showEvent"
+                    @click:event="showEvent"
+                    @change="updateCalcendar"
+                ></v-calendar>
+            </v-sheet>
+        </div>
         <TaskFrom 
             :submitAfterHandle='formSubmit'
             :showModal='showFormModal'>
@@ -102,3 +106,24 @@ export default {
     },
 };
 </script>
+
+
+<style scoped>
+.calendar-container{
+    margin: 10px;
+    border: 1px solid #fff;
+}
+.calendar-header{
+    text-align: left;
+    font-size: 23px;
+}
+.calendar-body{
+    margin: 10px;
+    padding: 5px;
+}
+</style>
+<style>
+.v-calendar-weekly__day-label{
+    text-align: left !important;
+}
+</style>

@@ -6,6 +6,8 @@
   font-family: 'Nanum Gothic', sans-serif;
 }
 html{
+  overflow-x: auto !important;
+  overflow-x: hidden !important;
 }
 
 #app {
