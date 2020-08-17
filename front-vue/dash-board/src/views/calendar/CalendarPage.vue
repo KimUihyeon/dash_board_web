@@ -2,7 +2,7 @@
     <div class="calendar-container">
         <div class="calendar-header">
             <span @click="()=>{$refs.calendar.prev()}">＜</span>
-            <span><b>{{ end.year }}. {{ start.month }}</b></span>
+            <span class="calendar-yymm"><b>{{ end.year | yearFormat }}. {{ start.month | monthFormat }}</b></span>
             <span @click="()=>{$refs.calendar.next()}">＞</span>
             <el-button @click="reg">+</el-button>
         </div>
@@ -37,6 +37,7 @@
 <script>
 import Calendar from '../../components/calendar/Calendar';
 import TaskFrom from '../../components/calendar/TaskForm';
+import {data } from '../../util'
 
 const name = 'CalendarPage';
 const components = { Calendar ,TaskFrom };
@@ -55,6 +56,34 @@ export default {
         end: '',
         showFormModal : false,
     }),
+    filters: {
+        yearFormat: (value) => {
+            if(data.isNull(value)){
+                return;
+            }
+            if(value < 10){
+                return '000' + value
+            }
+            else if(value < 100) {
+                return '00' + value
+            }
+            else if(value < 1000){
+                return '0' + value
+            }
+            else {
+                return value
+            }
+        },
+        monthFormat: (value) => {
+            if(data.isNull(value)){
+                return;
+            }
+            if(value < 10) {
+                return '0' + value;
+            }
+            return value;
+        }
+    },
     methods: {
         reg(){
             this.showFormModal = false;
@@ -109,13 +138,21 @@ export default {
 
 
 <style scoped>
+.calendar-yymm{
+    margin-left: 10px;
+    margin-right: 10px;
+}
 .calendar-container{
+    max-width: 1060px;
     margin: 10px;
+    margin: 0 auto;
     border: 1px solid #fff;
 }
 .calendar-header{
     text-align: left;
     font-size: 23px;
+    margin: 10px;
+    padding: 5px;
 }
 .calendar-body{
     margin: 10px;
