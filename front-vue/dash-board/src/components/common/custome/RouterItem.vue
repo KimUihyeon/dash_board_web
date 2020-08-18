@@ -1,16 +1,17 @@
-
 <template>
     <router-link v-bind:to=to>
-        <span class="item-space">
-            <el-badge :value=value class="item" v-if='value !== 0'>
-                <!-- <i v-bind:Class="icon + ' icon-custom'" ></i> -->
-                <span class="name">{{name}}</span>
-            </el-badge>
-            <el-badge class="item" v-else>
-                <!-- <i v-bind:Class="icon + ' icon-custom'" ></i> -->
-                <span class="name">{{name}}</span>
-            </el-badge>
-        </span>
+        <el-tooltip class="item" effect="dark" :content="tooltip" placement="bottom">
+            <span class="item-space">
+                <el-badge v-if='alert !== 0' :value='alert' class="item" >
+                    <i v-bind:Class="icon + ' icon-custom'" ></i>
+                    <span class="name">{{name}}</span>
+                </el-badge>
+                <el-badge class="item" v-else>
+                    <i v-bind:Class="icon + ' icon-custom'" ></i>
+                    <span class="name">{{name}}</span>
+                </el-badge>
+            </span>
+        </el-tooltip>
     </router-link>
 </template>
 
@@ -23,8 +24,9 @@ export default {
         icon : String,
         to : String,
         name : String,
-        value : Number,
-        padding : Number
+        alert : Number,
+        padding : Number,
+        tooltip : String,
     }
     
 }

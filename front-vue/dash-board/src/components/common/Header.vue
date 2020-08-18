@@ -5,7 +5,7 @@
       </span>
       <HeaderWeather/>
 
-      <el-dropdown trigger="click" @command="route" class="nav-color-white">
+      <!-- <el-dropdown trigger="click" @command="route" class="nav-color-white">
         <span class="el-dropdown-link">Menu<i class="el-icon-s-unfold el-icon--right"></i>
         </span>
         <el-dropdown-menu slot="dropdown">
@@ -15,9 +15,17 @@
           <el-dropdown-item v-show="isLogin" icon="el-icon-lock" divided command='/logout'>logout</el-dropdown-item>
           <el-dropdown-item v-show="!isLogin" icon="el-icon-user-solid" divided command='/signup'>sign Up</el-dropdown-item>
         </el-dropdown-menu>
-      </el-dropdown>
+      </el-dropdown> -->
 
-      <Signup :submitHandle="()=>{}" :showModal='showSignup' />
+      <span>
+          <RouterItem v-show='isLogin' icon="el-icon-s-home" to='/home' name='home'>Home</RouterItem>
+          <RouterItem v-show='isLogin' icon="el-icon-circle-check" to='/todoCategory' name='todo'>todoList</RouterItem>
+          <RouterItem v-show='isLogin' icon="el-icon-date" to='/cal' name='calendar' >calendar</RouterItem>
+          <RouterItem v-show="isLogin" icon="el-icon-lock" to='/logout' name='logout'>logout</RouterItem>
+          <RouterItem v-show="!isLogin" icon="el-icon-user-solid" to='/signup' name="sign Up" tooltip='회원 가입'/>
+      </span>
+
+      <Signup :submitHandle="()=>{}" :showModal='showSignup' /> 
     </div>
 </template>
 
@@ -29,12 +37,14 @@ import { data , rest } from '../../util'
 import HeaderWeather from '../weather/HeaderWeather';
 import Signup from '../account/Signup';
 import Timer from '../timer/Time'
+import RouterItem from './custome/RouterItem'
 
 const name = 'Header';
 const components = {
   Timer,
   HeaderWeather,
-  Signup
+  Signup,
+  RouterItem
 }
 
 export default Vue.extend({
@@ -56,6 +66,9 @@ export default Vue.extend({
         }else{
           this.$router.push({path});
         }
+      },
+      move(path){
+        this.$router.push({path});
       },
       showSignupModal (){
           this.showSignup = false;
