@@ -3,12 +3,20 @@
         <el-tooltip class="item" effect="dark" :content="tooltip" placement="bottom">
             <span class="item-space">
                 <el-badge v-if='alert !== 0' :value='alert' class="item" >
-                    <i v-bind:Class="icon + ' icon-custom'" ></i>
-                    <span class="name">{{name}}</span>
+                    <div class="icon-box">
+                        <i v-bind:Class="icon + ' icon-custom'" ></i>
+                    </div>
+                    <div>
+                        <!-- <span class="name">{{name}}</span> -->
+                    </div>
                 </el-badge>
                 <el-badge class="item" v-else>
-                    <i v-bind:Class="icon + ' icon-custom'" ></i>
-                    <span class="name">{{name}}</span>
+                    <div class="icon-box">
+                        <!-- <i v-bind:Class="icon + ' icon-custom'" ></i> -->
+                    </div>
+                    <div>
+                        <!-- <span class="name">{{name}}</span> -->
+                    </div>
                 </el-badge>
             </span>
         </el-tooltip>
@@ -34,13 +42,21 @@ export default {
 
 
 <style scoped>
+.icon-box{
+    text-align: center;
+}
 .name {
+    font-size: 16px;
 }
 .item-space{
-    padding: 5px;
+    padding: 10px;
 }
 .icon-custom{
   color: #fff;
   font-size: 26px;
 }
+.icon-custom{
+    color: inherit;
+}
+
 </style>

@@ -59,7 +59,7 @@ public class AuthApiControllerTest {
 
     @Test
     public void auth_Jwt_null_전송_테스트() throws Exception {
-        MvcResult result = mockMvc.perform(get("/api/v1/todo/item/1").header("authentication", ""))
+        MvcResult result = this.mockMvc.perform(get("/api/v1/todo/item/1").header("authentication", ""))
                 .andDo(print())
                 .andReturn();
 
