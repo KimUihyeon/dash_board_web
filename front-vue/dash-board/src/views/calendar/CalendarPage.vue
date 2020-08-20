@@ -143,7 +143,7 @@ export default {
     margin-right: 10px;
 }
 .calendar-container{
-    max-width: 1060px;
+    width: 100%;
     margin: 10px;
     margin: 0 auto;
     border: 1px solid #fff;
