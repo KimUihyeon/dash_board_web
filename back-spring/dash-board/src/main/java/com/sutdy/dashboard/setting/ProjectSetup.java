@@ -26,6 +26,8 @@ public class ProjectSetup implements ApplicationListener<ApplicationReadyEvent> 
     @Autowired
     private AccountService accountService;
 
+    private static short pipelineNumber = 0 ;
+
     @Override
     public void onApplicationEvent(ApplicationReadyEvent event) {
 
@@ -33,6 +35,7 @@ public class ProjectSetup implements ApplicationListener<ApplicationReadyEvent> 
         logger.info("---------------------------------------------");
         logger.info("-------------- Application Ready ------------");
         logger.info("* setup Pipeline");
+
 
         accountDefaultData();
 
@@ -47,7 +50,8 @@ public class ProjectSetup implements ApplicationListener<ApplicationReadyEvent> 
      * Account AdminData
      */
     private void accountDefaultData(){
-        logger.info("\t 1. Account default data");
+        pipelineNumber++;
+        logger.info("\t"+ pipelineNumber +". Account default data");
 
         AccountDto account = AccountDto.builder()
                 .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
@@ -70,15 +74,4 @@ public class ProjectSetup implements ApplicationListener<ApplicationReadyEvent> 
     }
 
 
-    /**
-     * Application ready Message
-     * @return
-     */
-    private String applicationReadyMessage() {
-        StringBuilder message = new StringBuilder();
-        message.append("-------------- Application Ready ------------");
-        message.append("* setup Pipeline");
-        message.append("\t 1. Account default data");
-        return message.toString();
-    }
 }
