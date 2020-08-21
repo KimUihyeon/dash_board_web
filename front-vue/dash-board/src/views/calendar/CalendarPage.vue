@@ -6,26 +6,38 @@
             <span @click="()=>{$refs.calendar.next()}">＞</span>
             <el-button @click="reg">+</el-button>
         </div>
+        
         <div class="calendar-body">
-            <v-sheet height="600">
-                <v-calendar
-                    ref="calendar"
-                    v-model="value"
-                    color="primary"
-                    locale='ko'
-                    :day-format="(e)=>e.day"
-                    :show-month-on-first='false'
-                    :weekdays="weekday"
-                    :type="type"
-                    :events="events"
-                    :event-overlap-mode="mode"
-                    :event-overlap-threshold="30"
-                    :event-color="(e)=>e.color"
-                    @click:more="showEvent"
-                    @click:event="showEvent"
-                    @change="updateCalcendar"
-                ></v-calendar>
-            </v-sheet>
+            <div class="calendar-left">
+                <ul>
+                    <li>tag1</li>
+                    <li>tag1</li>
+                    <li>tag1</li>
+                    <li>tag1</li>
+                </ul>
+            </div>
+            <div class="calendar-right">
+                <v-sheet height="600">
+                    <v-calendar
+                        ref="calendar"
+                        v-model="value"
+                        color="primary"
+                        locale='ko'
+                        :day-format="(e)=>e.day"
+                        :show-month-on-first='false'
+                        :weekdays="weekday"
+                        :type="type"
+                        :events="events"
+                        :event-overlap-mode="mode"
+                        :event-overlap-threshold="30"
+                        :event-color="(e)=>e.color"
+                        @click:more="showEvent"
+                        @click:event="showEvent"
+                        @change="updateCalcendar"
+                    ></v-calendar>
+                </v-sheet>
+
+            </div>
         </div>
         <TaskFrom 
             :submitAfterHandle='formSubmit'
@@ -138,12 +150,19 @@ export default {
 
 
 <style scoped>
+.calendar-left{
+    width: 100%;
+    max-width: 230px;
+}
+.calendar-right{
+    flex: 1;
+}
 .calendar-yymm{
     margin-left: 10px;
     margin-right: 10px;
 }
 .calendar-container{
-    max-width: 1060px;
+    width: 100%;
     margin: 10px;
     margin: 0 auto;
     border: 1px solid #fff;
@@ -157,6 +176,7 @@ export default {
 .calendar-body{
     margin: 10px;
     padding: 5px;
+    display: flex;
 }
 </style>
 <style>
