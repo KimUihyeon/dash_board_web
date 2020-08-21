@@ -53,7 +53,7 @@ public class AuthApiControllerTest {
 
     public AuthApiControllerTest(){
 //                .standaloneSetup(TodoApiController.class)
-//                .setControllerAdvice(new ExceptionAdvice())
+//                .setControllerAdvice(new Exce ptionAdvice())
 //                .build();
     }
 
