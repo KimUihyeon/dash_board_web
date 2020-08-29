@@ -9,12 +9,12 @@
         
         <div class="calendar-body">
             <div class="calendar-left">
-                <ul>
-                    <li>tag1</li>
-                    <li>tag1</li>
-                    <li>tag1</li>
-                    <li>tag1</li>
-                </ul>
+                <div class="calendar-tags">
+                    <div class="calendar-tag-item" v-for="(data, index) in tags" v-bind:key="index">
+                        <input type="checkbox"  v-bind:value="data.id" v-bind:id="'calendar-tag-item-' + data.id"/>
+                        <label v-bind:for="'calendar-tag-item-' + data.id">{{data.id}}</label>
+                    </div>
+                </div>
             </div>
             <div class="calendar-right">
                 <v-sheet height="600">
@@ -58,6 +58,13 @@ export default {
     name,
     components,
     data: () => ({
+        tags : [
+            { id : 1 , name : 'value1' , isChecked : false},
+            { id : 2 , name : 'value2' , isChecked : false},
+            { id : 3 , name : 'value3' , isChecked : false},
+            { id : 4 , name : 'value4' , isChecked : false},
+            { id : 5 , name : 'value5' , isChecked : false},
+        ],
         type: 'month',
         mode: 'stack',
         weekday: [0, 1, 2, 3, 4, 5, 6],
@@ -182,5 +189,10 @@ export default {
 <style>
 .v-calendar-weekly__day-label{
     text-align: left !important;
+}
+
+.calendar-tag-item{
+    text-align: left;
+
 }
 </style>
