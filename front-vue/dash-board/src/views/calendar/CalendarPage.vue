@@ -10,9 +10,8 @@
         <div class="calendar-body">
             <div class="calendar-left">
                 <div class="calendar-tags">
-                    <div class="calendar-tag-item" v-for="(data, index) in tags" v-bind:key="index">
-                        <input type="checkbox"  v-bind:value="data.id" v-bind:id="'calendar-tag-item-' + data.id"/>
-                        <label v-bind:for="'calendar-tag-item-' + data.id">{{data.id}}</label>
+                    <div class="calendar-tag-item" v-for="(data, index) in tags" v-bind:key="index" >
+                        <el-checkbox  :label="'calendar-tag-item-' + data.id"  >{{data.id}}</el-checkbox>
                     </div>
                 </div>
             </div>
@@ -157,6 +156,11 @@ export default {
 
 
 <style scoped>
+.calendar-tag-item{
+    display: flex;
+    padding: 5px;
+}
+.calendar-tag-item > label { flex: 1; display: block;}
 .calendar-left{
     width: 100%;
     max-width: 230px;
