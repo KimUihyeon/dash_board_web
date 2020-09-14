@@ -14,7 +14,7 @@
             <div></div>
         </span>
     </span>
-</template>
+</template> 
 
 <script>
 import { weatherService } from '../../services';
