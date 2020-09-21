@@ -1,12 +1,6 @@
 <template>
     <div class="calendar-container">
-        <div class="calendar-header">
-            <span @click="()=>{$refs.calendar.prev()}">＜</span>
-            <span class="calendar-yymm"><b>{{ end.year | yearFormat }}. {{ start.month | monthFormat }}</b></span>
-            <span @click="()=>{$refs.calendar.next()}">＞</span>
-            <el-button @click="reg">+</el-button>
-        </div>
-        
+
         <div class="calendar-body">
             <div class="calendar-left">
                 <div class="calendar-tags">
@@ -16,6 +10,15 @@
                 </div>
             </div>
             <div class="calendar-right">
+                <div class="calendar-header">
+                    
+                    <el-button  size="mini" @click="()=>{$refs.calendar.prev()}" icon="el-icon-arrow-left" circle></el-button>
+                    <span class="calendar-yymm"><b>{{ end.year | yearFormat }}. {{ start.month | monthFormat }}</b></span>
+                    
+                    <el-button  size="mini" @click="()=>{$refs.calendar.next()}" icon="el-icon-arrow-right" circle></el-button>
+                    
+                    <el-button size="mini" @click="reg" type="primary" round>새 이벤트 +</el-button>
+                </div>
                 <v-sheet height="600">
                     <v-calendar
                         ref="calendar"
