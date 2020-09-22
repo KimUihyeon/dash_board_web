@@ -1,0 +1,82 @@
+/* 높이 , 길이, 마진, display 관련 글로벌 css */
+
+.margin-b-5{margin-bottom: 5px;}
+.margin-b-10{margin-bottom: 10px;}
+.margin-b-15{margin-bottom: 15px;}
+
+.margin-t-5{margin-top: 5px;}
+.margin-t-10{margin-top: 10px;}
+.margin-t-15{margin-top: 15px;}
+
+
+.margin-r-5{margin-right: 5px;}
+.margin-r-10{margin-right: 10px;}
+.margin-r-15{margin-right: 15px;}
+
+.margin-l-5{margin-left: 5px;}
+.margin-l-10{margin-left: 10px;}
+.margin-l-15{margin-left: 15px;}
+
+.margin-5{margin: 10px;}
+.margin-10{margin: 10px;}
+.margin-15{margin: 15px;}
+
+.margin-0-auto{margin: 0 auto;}
+
+
+
+
+.padding-b-5{padding-bottom: 5px;}
+.padding-b-10{padding-bottom: 10px;}
+.padding-b-15{padding-bottom: 15px;}
+
+.padding-t-5{padding-top: 5px;}
+.padding-t-10{padding-top: 10px;}
+.padding-t-15{padding-top: 15px;}
+
+
+.padding-r-5{padding-right: 5px;}
+.padding-r-10{padding-right: 10px;}
+.padding-r-15{padding-right: 15px;}
+
+.padding-l-5{padding-left: 5px;}
+.padding-l-10{padding-left: 10px;}
+.padding-l-15{padding-left: 15px;}
+
+.padding-5{padding: 5;}
+.padding-10{padding: 10px;}
+.padding-15{padding: 15px;}
+
+
+
+.display-ib{display: inline-block;}
+.display-i{display: inline;}
+.display-b{display: block;}
+.display-f{display: flex;}
+.display-h-f{display: flex; flex-direction: column;}
+.display-v-f{display: flex; flex-direction: row;}
+
+.flex-1{flex: 1;}
+.width-full{width: 100%;}
+
+.text-align-l{ text-align: left;}
+.text-align-r{ text-align: right;}
+.text-align-c{ text-align: center;}
+
+
+.text-bold{ font-weight: bold;}
+
+.font-size-11{font-size: 11px;}
+.font-size-12{font-size: 12px;}
+.font-size-13{font-size: 13px;}
+.font-size-14{font-size: 14px;}
+.font-size-15{font-size: 15px;}
+.font-size-16{font-size: 16px;}
+.font-size-17{font-size: 17px;}
+.font-size-18{font-size: 18px;}
+.font-size-19{font-size: 19px;}
+.font-size-20{font-size: 20px;}
+.font-size-21{font-size: 21px;}
+.font-size-22{font-size: 22px;}
+.font-size-23{font-size: 23px;}
+.font-size-24{font-size: 24px;}
