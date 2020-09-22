@@ -1,6 +1,6 @@
 <template>
     <div class="calendar-container">
-
+        
         <div class="calendar-body">
             <div class="calendar-left">
                 <div class="calendar-tags">
@@ -8,13 +8,27 @@
                         <el-checkbox  :label="'calendar-tag-item-' + data.id"  >{{data.id}}</el-checkbox>
                     </div>
                 </div>
+                <div class="add-area">
+                    <ItmeAdd
+                        width="100%"
+                        height="100%"
+                        placeholder="캘린더 태그 추가"
+                        marginTop="5px"
+                        iconColor="#ACFFCF"
+                        backgroundColor="#ffffff61"
+                        fontColor="#fff"
+                        fontSize="12px"
+                        iconSize="17px"
+                        :inputEnterKeyPress_handle="addTodoCategory"
+                    />
+                </div>
             </div>
             <div class="calendar-right">
                 <div class="calendar-header">
-                    
+
                     <el-button  size="mini" @click="()=>{$refs.calendar.prev()}" icon="el-icon-arrow-left" circle></el-button>
                     <span class="calendar-yymm"><b>{{ end.year | yearFormat }}. {{ start.month | monthFormat }}</b></span>
-                    
+
                     <el-button  size="mini" @click="()=>{$refs.calendar.next()}" icon="el-icon-arrow-right" circle></el-button>
                     
                     <el-button size="mini" @click="reg" type="primary" round>새 이벤트 +</el-button>
@@ -51,10 +65,11 @@
 <script>
 import Calendar from '../../components/calendar/Calendar';
 import TaskFrom from '../../components/calendar/TaskForm';
+import ItmeAdd  from '../../components/todo/ItmeAdd';
 import {data } from '../../util'
 
 const name = 'CalendarPage';
-const components = { Calendar ,TaskFrom };
+const components = { Calendar ,TaskFrom, ItmeAdd };
 
 export default {
     name,
@@ -115,6 +130,10 @@ export default {
         formSubmit(task){
             this.updateCalcendar({start : this.start , end : this.end});
         },
+        addTagHandle(v){
+            console.log(v);
+
+        },
         updateCalcendar({ start, end }) {
 
 
@@ -164,9 +183,19 @@ export default {
     padding: 5px;
 }
 .calendar-tag-item > label { flex: 1; display: block;}
+.calendar-tags{
+    flex: 1;
+    overflow: auto;
+}
 .calendar-left{
     width: 100%;
+    padding-right: 15px;
     max-width: 230px;
+    display: flex;
+    flex-direction: column;
+}
+.add-area{
+    height: 50px;
 }
 .calendar-right{
     flex: 1;
