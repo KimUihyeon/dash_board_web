@@ -4,12 +4,14 @@ import router from './router'
 import store from './store'
 
 
+import '@/assets/css/global.css';
+import '@/assets/css/default.css';
+
 /** element UI */
 import ElementUI from 'element-ui'
 import 'element-ui/lib/theme-chalk/index.css';
 import '@/assets/css/codepen-bg-blurbox.css';
 import '@/assets/css/element-ui-custom.css';
-import '@/assets/css/default.css';
 import '@/assets/css/nav.css';
 import locale from 'element-ui/lib/locale/lang/ko'
 Vue.use(ElementUI,{ locale });
