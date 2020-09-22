@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        title="일정 등록하기"
+        :title="title"
         :visible.sync="show"
         :close-on-click-modal="false"
     >
@@ -17,8 +17,8 @@
                                     }
                                 "
                                 placeholder="일정을 적어주세요."
-                                ref="task"
-                                v-model="cloneTask.title"
+                                ref="event"
+                                v-model="cloneEvnet.title"
                                 size="small"
                             >
                             </el-input>
@@ -33,7 +33,7 @@
                             <el-date-picker
                                 v-model="startEndDate"
                                 type="daterange"
-                                align="center"
+                                align="cePnter"
                                 ref="start"
                                 unlink-panels
                                 range-separator="To"
@@ -69,9 +69,8 @@
                             :rows="5" 
                             ref='memo'
                             placeholder="메모"
-                            v-model="cloneTask.memo"
+                            v-model="cloneEvnet.memo"
                             size="small">
-                        </el-input>
                         </el-input>
                     </el-form-item>
                 </div>
@@ -86,8 +85,7 @@
                         size="small"
                         type="danger"
                         @click="close"
-                        round
-                        >나가기</el-button
+                        round>나가기</el-button
                     >
                 </div>
             </el-form>
@@ -99,14 +97,15 @@
 import { data, alert, rest, date } from '../../util';
 import { accountService } from '../../services';
 
-const name = 'TaskForm';
+const name = 'EventFormModal';
 const props = { 
+    title : String,
     showModal: Boolean , 
     submitAfterHandle : { 
         type : Function , 
         default :  () => {}
     },
-    task : Object
+    event : Object
 };
 
 export default {
@@ -114,7 +113,7 @@ export default {
     props,
     data() {
         return {
-            cloneTask: {
+            cloneEvnet: {
                 title: '',
                 start: '',
                 end: '',
@@ -127,7 +126,7 @@ export default {
     },
     methods: {
         init() {
-            this.cloneTask = {
+            this.cloneEvnet = {
                 title: '',
                 start: '',
                 end: '',
@@ -139,7 +138,7 @@ export default {
             this.close();
 
             setTimeout(()=>{
-                this.submitAfterHandle(this.cloneTask);
+                this.submitAfterHandle(this.cloneEvnet);
             },10)
 
             // accountService
@@ -184,8 +183,8 @@ export default {
             let start = date.format(v[0], format);
             let end = date.format(v[1], format);
 
-            this.cloneTask.start = start;
-            this.cloneTask.end = end;
+            this.cloneEvnet.start = start;
+            this.cloneEvnet.end = end;
         },
     },
 };
