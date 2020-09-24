@@ -3,7 +3,11 @@
         <div class="calendar-tag-item" v-for="(d, i) in tags" v-bind:key="i" >
             <CalendarTagItem 
                 :label="'calendar-tag-item-' + d.id"
-                :value='d.name'/>
+                :value='d.name'
+                :id="d.id"
+                :deleteClickHandle='deleteClickHandle'
+                :updateSubmitHandle='updateSubmitHandle'
+                />
         </div>
     </div>
 </template>
@@ -15,10 +19,18 @@ import CalendarTagItem from './CalendarTagItem';
 let components = { CalendarTagItem };
 let props = {
     tags : Array,
+    deleteClickHandle : { 
+        type :  Function,
+        default : (a)=>{}
+    },
+    updateSubmitHandle : { 
+        type :  Function,
+        default : (a)=>{}
+    },
 }
 
 export default {
     components,
-    props
+    props,
 }
 </script>

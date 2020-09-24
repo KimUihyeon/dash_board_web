@@ -1,10 +1,16 @@
 <template>
-    <div class="calendar-container margin-10 width-full">
+    <div class="calendar-container margin-10 flex-1">
 
         <div class="calendar-body display-f margin-10 padding-5">
             <div class="calendar-left display-h-f width-full padding-r-15">
-                <div class="calendar-tags flex-1 padding-5 text-align-l">
-                    <CalendarTagList :tags='tags'/>
+                <div class="flex-1 padding-5 text-align-l">
+                    <div class="calendar-tags">    
+                        <CalendarTagList 
+                            :deleteClickHandle='tagDeleteHandle'
+                            :updateSubmitHandle='tagUpdateHandle'
+                            :tags='tags'/>`
+
+                    </div>
                 </div>
                 <div class="add-area">
                     <ItmeAdd
@@ -92,7 +98,35 @@ export default {
             { id : 2 , name : 'value2' , isChecked : false},
             { id : 3 , name : 'value3' , isChecked : false},
             { id : 4 , name : 'value4' , isChecked : false},
-            { id : 5 , name : 'value5' , isChecked : false}
+            { id : 5 , name : 'value5' , isChecked : false},
+            
+            { id : 2 , name : 'value2' , isChecked : false},
+            { id : 3 , name : 'value3' , isChecked : false},
+            { id : 4 , name : 'value4' , isChecked : false},
+            { id : 2 , name : 'value2' , isChecked : false},
+            { id : 3 , name : 'value3' , isChecked : false},
+            { id : 4 , name : 'value4' , isChecked : false},
+            { id : 2 , name : 'value2' , isChecked : false},
+            { id : 3 , name : 'value3' , isChecked : false},
+            { id : 4 , name : 'value4' , isChecked : false},
+            { id : 2 , name : 'value2' , isChecked : false},
+            { id : 3 , name : 'value3' , isChecked : false},
+            { id : 4 , name : 'value4' , isChecked : false},
+            { id : 2 , name : 'value2' , isChecked : false},
+            { id : 3 , name : 'value3' , isChecked : false},
+            { id : 4 , name : 'value4' , isChecked : false},
+            { id : 2 , name : 'value2' , isChecked : false},
+            { id : 3 , name : 'value3' , isChecked : false},
+            { id : 4 , name : 'value4' , isChecked : false},
+            { id : 2 , name : 'value2' , isChecked : false},
+            { id : 3 , name : 'value3' , isChecked : false},
+            { id : 4 , name : 'value4' , isChecked : false},
+            { id : 2 , name : 'value2' , isChecked : false},
+            { id : 3 , name : 'value3' , isChecked : false},
+            { id : 4 , name : 'value4' , isChecked : false},
+            { id : 2 , name : 'value2' , isChecked : false},
+            { id : 3 , name : 'value3' , isChecked : false},
+            { id : 4 , name : 'value4' , isChecked : false},
         ]
     },
     filters: {
@@ -120,6 +154,13 @@ export default {
 
             // 업데이트 로직
             this.calendar.events = this.test_getEventService();
+        },
+        tagUpdateHandle({id, name}){
+            console.log(id);
+            console.log(name);
+        },
+        tagDeleteHandle({id}){
+            console.log(id + '삭제됨');
         },
         showEvent(e,t) {
             console.log(e);
@@ -162,6 +203,7 @@ export default {
 <style scoped>
 .calendar-tags{
     overflow: auto;
+    max-height: 600px;
 }
 .calendar-left{
     max-width: 230px;
