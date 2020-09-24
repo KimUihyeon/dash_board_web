@@ -1,22 +1,26 @@
 /* 높이 , 길이, 마진, display 관련 글로벌 css */
 
+.margin-b-3{margin-bottom: 3px;}
 .margin-b-5{margin-bottom: 5px;}
 .margin-b-10{margin-bottom: 10px;}
 .margin-b-15{margin-bottom: 15px;}
 
+.margin-t-3{margin-top: 3px;}
 .margin-t-5{margin-top: 5px;}
 .margin-t-10{margin-top: 10px;}
 .margin-t-15{margin-top: 15px;}
 
-
+.margin-r-3{margin-right: 3px;}
 .margin-r-5{margin-right: 5px;}
 .margin-r-10{margin-right: 10px;}
 .margin-r-15{margin-right: 15px;}
 
+.margin-l-3{margin-left: 3px;}
 .margin-l-5{margin-left: 5px;}
 .margin-l-10{margin-left: 10px;}
 .margin-l-15{margin-left: 15px;}
 
+.margin-3{margin: 3px;}
 .margin-5{margin: 10px;}
 .margin-10{margin: 10px;}
 .margin-15{margin: 15px;}
@@ -26,24 +30,28 @@
 
 
 
+.padding-b-3{padding-bottom: 3px;}
 .padding-b-5{padding-bottom: 5px;}
 .padding-b-10{padding-bottom: 10px;}
 .padding-b-15{padding-bottom: 15px;}
 
+.padding-t-3{padding-top: 3px;}
 .padding-t-5{padding-top: 5px;}
 .padding-t-10{padding-top: 10px;}
 .padding-t-15{padding-top: 15px;}
 
-
+.padding-r-3{padding-right: 3px;}
 .padding-r-5{padding-right: 5px;}
 .padding-r-10{padding-right: 10px;}
 .padding-r-15{padding-right: 15px;}
 
+.padding-l-3{padding-left: 3px;}
 .padding-l-5{padding-left: 5px;}
 .padding-l-10{padding-left: 10px;}
 .padding-l-15{padding-left: 15px;}
 
-.padding-5{padding: 5;}
+.padding-3{padding: 3px;}
+.padding-5{padding: 5px;}
 .padding-10{padding: 10px;}
 .padding-15{padding: 15px;}
 

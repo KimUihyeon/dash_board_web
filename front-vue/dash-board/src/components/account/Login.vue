@@ -28,10 +28,11 @@ import { accountService } from '../../services';
 import Signup from './Signup';
 
 const name = 'Login';
+const components = { Signup };
 
 export default {
     name,
-    components: { Signup },
+    components,
     props: {
         showSiugnupHandle: {
             type: Function,

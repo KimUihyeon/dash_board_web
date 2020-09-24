@@ -1,35 +1,31 @@
 <template>
     <div>
-        <div
-            v-for="(item) in items" 
-            v-bind:key="item.id"
-            class="todo-space">
-            <TodoItem v-bind:item="item"></TodoItem>
+        <div v-for="(item) in items"  v-bind:key="item.id" 
+            class="todo-space padding-5">
+            <TodoItem v-bind:item="item"/>
         </div>
     </div>
 </template>
 
-<style scoped>
-.todo-space{
-    padding: 5px;
-}
-</style>
-
 <script>
 import TodoItem from "./TodoItem";
+
+const name = 'TodoList';
+const components = { TodoItem };
+const props = {
+    items : Array
+}
+
 export default {
-    name : 'TodoList',
+    name,
+    components,
+    props,
+
     data(){
         return {
             todoTitle : '',
             todoMemo : '',
         }
-    },
-    props :{
-        items : Array
-    },
-    components : {
-        TodoItem,
-    },
+    }
 }
 </script>

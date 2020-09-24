@@ -145,6 +145,19 @@
 .todo-right .continer-open-button{
     padding: 12px;
 }
+
+
+.complete-todo {
+    text-decoration: line-through !important;
+}
+.fade-effect-tartget{
+    transition: all 1s;
+    opacity: 0;
+}
+.fade-effect-active{
+    opacity: 1;
+}
+
 </style>
 
 <script>
@@ -194,7 +207,9 @@ export default {
                 ...this.cloneItem,
                 todoComplete : !this.cloneItem.todoComplete
             };
-            this.$store.dispatch('patch_todo', { todoItem }).catch(err=>{
+            this.$store.dispatch('patch_todo', { todoItem }).then((res)=>{
+                this.cloneItem.todoComplete = !this.cloneItem.todoComplete;
+            }).catch(err=>{
                 alert.elMessageBox({ vueObject : this , type : 'error' , message : err });
             });
         },
@@ -210,7 +225,7 @@ export default {
                 important : !this.cloneItem.important
             };
             this.$store.dispatch('patch_todo', { todoItem }).then((res)=>{
-                this.cloneItem = !this.cloneItem.important;
+                this.cloneItem.important = !this.cloneItem.important;
             }).catch(err=>{
                 alert.elMessageBox({ vueObject : this , type : 'error' , message : err });
             });
@@ -243,17 +258,3 @@ export default {
     
 }
 </script>
-
-
-<style scoped>
-.complete-todo {
-    text-decoration: line-through !important;
-}
-.fade-effect-tartget{
-    transition: all 1s;
-    opacity: 0;
-}
-.fade-effect-active{
-    opacity: 1;
-}
-</style>

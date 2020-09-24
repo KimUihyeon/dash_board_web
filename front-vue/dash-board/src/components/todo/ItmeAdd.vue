@@ -1,9 +1,9 @@
 <template>
-    <div class="folder-add-container" :style="continerStyle">
-        <div class="folder-puls-button">
+    <div class="folder-add-container display-f" :style="continerStyle">
+        <div class="folder-puls-button display-lb text-align-c">
             <i class='el-icon-plus icon' :style="iconStyle"></i>
         </div>
-        <div class="folder-add-input">
+        <div class="folder-add-input flex-1">
             <input type="txt" 
                 v-model="keyWord" 
                 :style='inputStyle'
@@ -20,17 +20,11 @@
 <style scoped>
 .folder-add-container{
     position: relative;
-    display: flex;
 }
 .folder-puls-button{
-    display: inline-block;
     width: 30px;
     height: 30px;
-    text-align: center;
     align-self: center;
-}
-.folder-add-input{
-    flex: 1;
 }
 .folder-add-input input {
     width: 100%;

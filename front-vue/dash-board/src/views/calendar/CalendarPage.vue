@@ -17,8 +17,8 @@
                         fontColor="#fff"
                         fontSize="12px"
                         iconSize="17px"
-                        :inputEnterKeyPress_handle="addTagInputHandle"
-                    />
+                        :inputEnterKeyPress_handle="addTagInputHandle"/>
+                    
                 </div>
             </div>
             <div class="calendar-right flex-1">
@@ -73,13 +73,7 @@ export default {
     name,
     components,
     data: () => ({
-        tags : [
-            { id : 1 , name : 'value1' , isChecked : false},
-            { id : 2 , name : 'value2' , isChecked : false},
-            { id : 3 , name : 'value3' , isChecked : false},
-            { id : 4 , name : 'value4' , isChecked : false},
-            { id : 5 , name : 'value5' , isChecked : false},
-        ],
+        tags : [],
         calendar : {
             value: '',
             events: [],
@@ -92,6 +86,15 @@ export default {
             title : '',
         },
     }),
+    mounted(){
+        this.tags = [
+            { id : 1 , name : 'value1' , isChecked : false},
+            { id : 2 , name : 'value2' , isChecked : false},
+            { id : 3 , name : 'value3' , isChecked : false},
+            { id : 4 , name : 'value4' , isChecked : false},
+            { id : 5 , name : 'value5' , isChecked : false}
+        ]
+    },
     filters: {
         monthFormat: (value) => {
             if(value < 10) {

@@ -1,5 +1,5 @@
 <template>
-    <div class="folder-item" >
+    <div class="folder-item padding-5 font-size-14" >
         <span class="cursor-pointer" @click="()=>{handleClick(cloneFolder)}">
             <span :style="'color : ' + cloneFolder.iconColor">
                 <i v-bind:class='cloneFolder.icon'></i>
@@ -11,13 +11,6 @@
     </div>
 </template>
 
-
-<style scoped>
-.folder-item{
-    padding: 4px;
-    font-size: 14px;
-}
-</style>
 
 <script>
 
