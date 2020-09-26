@@ -1,33 +1,40 @@
 <template>
-    <div class="margin-5">
-        <div class="tag-item-container">
+    <div class="margin-r-5 margin-t-5">
+        <div class="tag-item-container padding-5" :class="isEditMode ? 'edit-mode-container': ''">
             <span v-show="isEditMode">
-                <input/>
-            </span>
-            <span v-show="!isEditMode">
-                <el-checkbox :label="lable" >{{value}}</el-checkbox>
-            </span>
-            <div class="tag-item-button-box">
-                <span v-show="isEditMode">
+                <div class="edit-title-area tag-name-color display-f margin-b-3 padding-b-5" >
+                    <el-input class="font-size-14 margin-l-3 margin-r-3" maxlength="10" size="mini" v-model="edit.name"></el-input>
+                    
+                    <span class="color-picker">
+                        <el-color-picker v-model="edit.color" size="mini"></el-color-picker>
+                    </span>
+                </div>
+                <div class="tag-item-button-box text-align-r">
+                    
+                    <el-tooltip class="item" effect="dark" :content="'삭제'">
+                        <span class="el-icon-delete color-red margin-r-5" @click="()=> { deleteClickHandle({ id : id }); }"></span>
+                    </el-tooltip>
                     
                     <el-tooltip class="item" :content="'저장'">
                         <span class="el-icon-check color-green" @click="()=> { updateSubmitHandle({id : id, name : value}); }"></span>
                     </el-tooltip>
                     
+                    
                     <el-tooltip class="item" effect="dark" :content="'닫기'">
                         <span class="el-icon-close color-red" @click="readMode"></span>
                     </el-tooltip>
+                </div>
+            </span>
+            <span v-show="!isEditMode"  class="tag-name-color display-f">
+                <span class="display-b width-full display-f">
+                    <el-checkbox   size="medium"></el-checkbox>
+                    <span class="text-dot-dot-dot font-size-14 margin-l-5 margin-r-5" @dblclick="editMode">{{value}}</span>
                 </span>
-
+                
+                <el-color-picker v-model="color" size="mini" @change="colorChange"></el-color-picker>
+            </span>
+            <div class="tag-item-button-box">
                 <span v-show="!isEditMode">
-                    
-                    <el-tooltip class="item" effect="dark" :content="'수정'" >
-                        <span class="el-icon-edit color-green" @click="editMode"></span>
-                    </el-tooltip>
-                    
-                    <el-tooltip class="item" effect="dark" :content="'삭제'">
-                        <span class="el-icon-delete color-red" @click="()=> { deleteClickHandle({ id : id }); }"></span>
-                    </el-tooltip>
                 </span>
             </div>
         </div>
@@ -38,8 +45,11 @@
 let name = 'CalendarTagItem';
 let props = { 
     id : Number,
-    lable : String, 
     value : String,
+    color : {
+        type : String, 
+        default : '#fff'
+    },
     deleteClickHandle : { 
         type :  Function,
         default : (a)=>{}
@@ -55,12 +65,17 @@ export default {
     data()  {
         return {
             isEditMode : false,
-            test : '123'
+            edit:{
+                name : '',
+                color : '',
+            }
         }
     },
     methods : {
-        editMode() { this.isEditMode = true; },
-        readMode() { this.isEditMode = false; },
+        propertySync (){ this.edit.color = this.color; this.edit.name = this.value; },
+        editMode() { this.propertySync(); this.isEditMode = true; },
+        readMode() { this.propertySync(); this.isEditMode = false; },
+        colorChange(c){ console.log(c)}
     }
 }
 </script>
@@ -68,6 +83,24 @@ export default {
 <style  scoped>
 .tag-item-container{
     position: relative;
+    border-radius: 10px;
+    box-sizing: border-box;
+}
+.edit-mode-container{
+    border: 1px solid #00000073;
+    background: #fff;
+}
+.text-dot-dot-dot{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 100px;
+    flex: 1;
+    overflow: hidden;
+    display: block;
+}
+.edit-title-area{
+    border-bottom: 1px solid #000;
 }
 .item{
     padding-right: 3px;
@@ -76,9 +109,20 @@ export default {
     margin-left: 3px;
 }
 .tag-item-button-box{
-    position: absolute;
     top: 0;
     right: 0;
     height: 100%;
 }
+.tag-name-color{
+    align-items: center;
+}
+.tag-name-color > div { flex: 1;}
+.color-picker, .color-picker > span{ height: 30px;}
+</style>
+
+<style>
+.el-color-picker__mask{
+    cursor: pointer !important;
+}
+.is-disabled  > .el-color-picker__mask { background-color : rgba(255,255,255,.0) !important ; }
 </style>
