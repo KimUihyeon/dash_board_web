@@ -1,10 +1,7 @@
 package com.sutdy.dashboard.domain.calendars;
 
 import com.sutdy.dashboard.dto.TaskDto;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -34,6 +31,7 @@ public class Event {
     private LocalDateTime sDate; // 시작일
     private LocalDateTime eDate; // 종료일
 
+    @Setter
     @ManyToOne
     @JoinColumn(name = "calendarId")
     private Calendar calendar;
