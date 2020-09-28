@@ -26,6 +26,7 @@ public class Event {
     private Long id;
 
     private String title;
+    private String icon;
     private String context;
 
     private LocalDateTime cDate; // 생성
