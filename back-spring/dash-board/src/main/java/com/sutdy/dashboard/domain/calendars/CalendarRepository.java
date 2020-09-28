@@ -6,5 +6,5 @@ import org.springframework.data.jpa.repository.JpaRepository;
  * @author kuh
  * @since 2020.06.11
  */
-public interface TaskTagRepository extends JpaRepository<TaskTag, Long> , TaskTagCustomRepository {
+public interface CalendarRepository extends JpaRepository<Calendar, Long> , CalendarCustomRepository {
 }

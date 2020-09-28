@@ -1,6 +1,6 @@
 package com.sutdy.dashboard.dto;
 
-import com.sutdy.dashboard.domain.calendars.TaskTag;
+import com.sutdy.dashboard.domain.calendars.Calendar;
 import com.sutdy.dashboard.dto.convert.interfacies.ToConverter;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.DateUtil;
@@ -20,7 +20,7 @@ import org.modelmapper.PropertyMap;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaskTagDto implements ToConverter<TaskTag, TaskTagDto> {
+public class TaskTagDto implements ToConverter<Calendar, TaskTagDto> {
 
     private Long id;
     private String title;
@@ -32,8 +32,8 @@ public class TaskTagDto implements ToConverter<TaskTag, TaskTagDto> {
 
 
     @Override
-    public TaskTag toEntity() {
-        return TaskTag.builder()
+    public Calendar toEntity() {
+        return Calendar.builder()
                 .color(this.color)
                 .cDate(DateUtil.stringToLocalDateTime(this.cDate, ApplicationStringConfig.DATE_FORMAT))
                 .description(this.description)
@@ -42,19 +42,19 @@ public class TaskTagDto implements ToConverter<TaskTag, TaskTagDto> {
 
     }
 
-    public TaskTagDto(TaskTag entity){
+    public TaskTagDto(Calendar entity){
         of(entity);
     }
 
     @Override
-    public TaskTagDto of(TaskTag taskTag) {
-        PropertyMap<TaskTag, TaskTagDto> map = new PropertyMap<TaskTag, TaskTagDto>() {
+    public TaskTagDto of(Calendar calendar) {
+        PropertyMap<Calendar, TaskTagDto> map = new PropertyMap<Calendar, TaskTagDto>() {
             @Override
             protected void configure() {
 
             }
         };
 
-        return ModelConverter.map(map, taskTag, TaskTagDto.class);
+        return ModelConverter.map(map, calendar, TaskTagDto.class);
     }
 }

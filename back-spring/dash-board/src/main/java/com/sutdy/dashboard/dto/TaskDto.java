@@ -1,6 +1,6 @@
 package com.sutdy.dashboard.dto;
 
-import com.sutdy.dashboard.domain.calendars.Task;
+import com.sutdy.dashboard.domain.calendars.Event;
 import com.sutdy.dashboard.dto.convert.interfacies.ToConverter;
 import com.sutdy.dashboard.setting.util.data.ModelConverter;
 import lombok.AllArgsConstructor;
@@ -20,7 +20,7 @@ import java.time.LocalDateTime;
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class TaskDto implements ToConverter<Task, TaskDto> {
+public class TaskDto implements ToConverter<Event, TaskDto> {
 
     private Long id;
 
@@ -29,13 +29,13 @@ public class TaskDto implements ToConverter<Task, TaskDto> {
 //    private String color; // HexColor 예)#fff
     private LocalDateTime cDate;
 
-    public TaskDto(Task entity){
+    public TaskDto(Event entity){
         of(entity);
     }
 
     @Override
-    public Task toEntity() {
-        return Task.builder()
+    public Event toEntity() {
+        return Event.builder()
                 .cDate(cDate)
                 .context(description)
                 .title(title)
@@ -43,8 +43,8 @@ public class TaskDto implements ToConverter<Task, TaskDto> {
     }
 
     @Override
-    public TaskDto of(Task task) {
-        PropertyMap<Task, TaskDto> map = new PropertyMap<Task, TaskDto>() {
+    public TaskDto of(Event task) {
+        PropertyMap<Event, TaskDto> map = new PropertyMap<Event, TaskDto>() {
             @Override
             protected void configure() {
 

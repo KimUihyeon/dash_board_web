@@ -1,24 +1,18 @@
 package com.sutdy.dashboard.service;
 
-import com.sutdy.dashboard.domain.calendars.Task;
-import com.sutdy.dashboard.domain.calendars.TaskRepository;
-import com.sutdy.dashboard.domain.calendars.TaskTag;
-import com.sutdy.dashboard.domain.calendars.TaskTagRepository;
+import com.sutdy.dashboard.domain.calendars.Calendar;
+import com.sutdy.dashboard.domain.calendars.Event;
+import com.sutdy.dashboard.domain.calendars.EventRepository;
+import com.sutdy.dashboard.domain.calendars.CalendarRepository;
 import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.domain.members.AccountRepository;
 import com.sutdy.dashboard.dto.TaskDto;
 import com.sutdy.dashboard.dto.TaskTagDto;
 import com.sutdy.dashboard.service.common.BaseCrudService;
-import com.sutdy.dashboard.setting.common.SearchParams;
-import com.sutdy.dashboard.setting.util.data.ModelConverter;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.security.NoSuchAlgorithmException;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -27,15 +21,15 @@ import java.util.stream.Collectors;
  * @since 2020.06.11
  */
 @Service("calendarService")
-public class CalendarService extends BaseCrudService<Task, TaskDto, Long> {
+public class CalendarService extends BaseCrudService<Event, TaskDto, Long> {
 
-    private TaskTagRepository taskTagRepository;
+    private CalendarRepository taskTagRepository;
     private AccountRepository accountRepository;
 
     @Autowired
-    public CalendarService(TaskRepository taskRepository,
+    public CalendarService(EventRepository taskRepository,
                            AccountRepository accountRepository,
-                           TaskTagRepository taskTagRepository) {
+                           CalendarRepository taskTagRepository) {
         super(taskRepository);
         this.taskTagRepository = taskTagRepository;
         this.accountRepository = accountRepository;
@@ -43,14 +37,14 @@ public class CalendarService extends BaseCrudService<Task, TaskDto, Long> {
 
     @Override
     public TaskDto update(Long pk, TaskDto dto) {
-        Task entity = this.findEntityById(pk);
+        Event entity = this.findEntityById(pk);
         entity.patch(dto);
         return new TaskDto(entity);
     }
 
     @Transactional
     public TaskTagDto tagUpdate(TaskTagDto dto) {
-        TaskTag origin = this.taskTagRepository.findById(dto.getId())
+        Calendar origin = this.taskTagRepository.findById(dto.getId())
                 .orElseThrow(() -> new IllegalArgumentException(NOT_FIND_DATA));
 
         origin.patch(dto);
@@ -74,7 +68,7 @@ public class CalendarService extends BaseCrudService<Task, TaskDto, Long> {
 
     @Transactional
     public TaskTagDto tagSave(TaskTagDto dto) {
-        TaskTag entity = dto.toEntity();
+        Calendar entity = dto.toEntity();
 
         if(dto.getUserId() != null){
             Account account = this.accountRepository.findById(dto.getUserId())
@@ -86,7 +80,7 @@ public class CalendarService extends BaseCrudService<Task, TaskDto, Long> {
     }
 
     public TaskTagDto tagFindById(Long id) {
-        TaskTag task = this.taskTagRepository.findById(id)
+        Calendar task = this.taskTagRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(NOT_FIND_DATA));
         return new TaskTagDto(task);
     }

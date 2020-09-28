@@ -1,10 +1,9 @@
 package com.sutdy.dashboard.service;
 
-import com.sutdy.dashboard.domain.calendars.TaskTag;
-import com.sutdy.dashboard.domain.calendars.TaskTagRepository;
+import com.sutdy.dashboard.domain.calendars.Calendar;
+import com.sutdy.dashboard.domain.calendars.CalendarRepository;
 import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.dto.AccountDto;
-import com.sutdy.dashboard.dto.AccountDtoTest;
 import com.sutdy.dashboard.dto.TaskTagDto;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.DateUtil;
@@ -36,7 +35,7 @@ public class CalendarServiceTest {
     private CalendarService calendarService;
 
     @Autowired
-    private TaskTagRepository taskTagRepository;
+    private CalendarRepository taskTagRepository;
 
     @Autowired
     private AccountService accountService;
@@ -175,7 +174,7 @@ public class CalendarServiceTest {
         TaskTagDto deletedTag = this.calendarService.tagDelete(savedTag.getId());
 
         //when
-        TaskTag findTag = this.taskTagRepository.findById(deletedTag.getId()).orElse(null);
+        Calendar findTag = this.taskTagRepository.findById(deletedTag.getId()).orElse(null);
 
 
         //then

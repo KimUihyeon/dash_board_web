@@ -13,7 +13,7 @@ import org.springframework.test.context.junit4.SpringRunner;
  */
 @SpringBootTest
 @RunWith(SpringRunner.class)
-public class TaskDtoTest {
+public class EventDtoTest {
 
     @Test
     public void TodoDto_엔티티_컨버팅_테스트(){

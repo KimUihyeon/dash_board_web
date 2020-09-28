@@ -19,8 +19,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "task")
-public class Task {
+public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,8 +34,8 @@ public class Task {
     private LocalDateTime eDate; // 종료일
 
     @ManyToOne
-    @JoinColumn(name = "taskTagId")
-    private TaskTag taskTag;
+    @JoinColumn(name = "calendarId")
+    private Calendar calendar;
 
     public void patch(TaskDto dto) {
 

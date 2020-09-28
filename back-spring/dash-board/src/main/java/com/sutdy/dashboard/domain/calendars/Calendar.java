@@ -18,8 +18,7 @@ import java.util.List;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
-@Table(name = "taskTag")
-public class TaskTag {
+public class Calendar {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -36,9 +35,9 @@ public class TaskTag {
     private Account account;
 
     @Setter
-    @OneToMany(mappedBy = "taskTag")
-    private List<Task> task;
-
+    @OneToMany
+    @JoinColumn(name = "eventId")
+    private List<Event> event;
 
     public void patch(TaskTagDto dto) {
         if (dto.getTitle() != null && !dto.getTitle().equals(this.title)) {
