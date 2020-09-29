@@ -4,6 +4,7 @@ import com.sutdy.dashboard.domain.calendars.Calendar;
 import com.sutdy.dashboard.dto.convert.interfacies.ToConverter;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.DateUtil;
+import com.sutdy.dashboard.setting.util.data.ModelConverter;
 import lombok.*;
 
 import java.time.LocalDateTime;
@@ -39,13 +40,16 @@ public class CalendarDto implements ToConverter<Calendar, CalendarDto> {
 
     @Override
     public CalendarDto of(Calendar calendar) {
-        CalendarDto dto =  CalendarDto.builder()
-                .id(calendar.getId())
-                .title(calendar.getTitle())
-                .description(calendar.getDescription())
-                .color(calendar.getColor())
-                .cDate(DateUtil.localDateTimeToString(calendar.getCDate(), ApplicationStringConfig.DATE_FORMAT))
-                .build();
+//        CalendarDto dto =  CalendarDto.builder()
+//                .id(calendar.getId())
+//                .title(calendar.getTitle())
+//                .description(calendar.getDescription())
+//                .color(calendar.getColor())
+//                .cDate(DateUtil.localDateTimeToString(calendar.getCDate(), ApplicationStringConfig.DATE_FORMAT))
+//                .build();
+        CalendarDto dto = ModelConverter.map(calendar, CalendarDto.class);
+        dto.setCDate(DateUtil.localDateTimeToString(calendar.getCDate(), ApplicationStringConfig.DATE_FORMAT));
         return dto;
+//        return dto;
     }
 }
