@@ -42,9 +42,6 @@ public class TaskTagDto implements ToConverter<Calendar, TaskTagDto> {
 
     }
 
-    public TaskTagDto(Calendar entity){
-        of(entity);
-    }
 
     @Override
     public TaskTagDto of(Calendar calendar) {

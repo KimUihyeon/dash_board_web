@@ -1,7 +1,7 @@
 package com.sutdy.dashboard.domain.calendars;
 
 import com.sutdy.dashboard.domain.members.Account;
-import com.sutdy.dashboard.dto.TaskTagDto;
+import com.sutdy.dashboard.dto.CalendarDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -39,7 +39,7 @@ public class Calendar {
     @JoinColumn(name = "eventId")
     private List<Event> event;
 
-    public void patch(TaskTagDto dto) {
+    public void patch(CalendarDto dto) {
         if (dto.getTitle() != null && !dto.getTitle().equals(this.title)) {
             this.title = dto.getTitle();
         }

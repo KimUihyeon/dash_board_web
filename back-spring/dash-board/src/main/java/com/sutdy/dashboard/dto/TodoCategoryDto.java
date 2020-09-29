@@ -51,14 +51,12 @@ public class TodoCategoryDto implements ToConverter<TodoCategory, TodoCategoryDt
                 .build();
     }
 
-    public TodoCategoryDto(TodoCategory entity) {
-        of(entity);
-    }
 
     @Override
     public TodoCategoryDto of(TodoCategory todoCategory) {
-
-        return ModelConverter.map(todoCategory, TodoCategoryDto.class);
+        TodoCategoryDto categoryDto = ModelConverter.map(todoCategory, TodoCategoryDto.class);
+        categoryDto.setCDate(DateUtil.localDateTimeToString(todoCategory.getCDate(), ApplicationStringConfig.DATE_FORMAT));
+        return categoryDto;
     }
 
 }

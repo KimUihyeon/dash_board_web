@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
@@ -143,6 +144,8 @@ public class JpaRepositoryTest {
 
 
     @Test
+    @Transactional
+    @Rollback(true)
     public void jpa_조인_타이밍_테스트() {
         String accountId = "조인타이밍테스트@테스트.com";
         deleteAccount(accountId);
@@ -188,7 +191,9 @@ public class JpaRepositoryTest {
          *  Account todoRelation = savedTodoCategory.getAccount().getClass(); 해야 해당 객체를 얻을수 있다.
          *
          */
+
         Account todoRelation = savedTodoCategory.getAccount();
+        todoRelation.getCDate();
         AccountDto dto = new AccountDto().of(todoRelation);
         System.out.println(dto.toString());
         logger.info("----------- getAccount이후");

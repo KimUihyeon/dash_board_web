@@ -6,13 +6,14 @@ import com.sutdy.dashboard.domain.calendars.EventRepository;
 import com.sutdy.dashboard.domain.calendars.CalendarRepository;
 import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.domain.members.AccountRepository;
-import com.sutdy.dashboard.dto.TaskDto;
-import com.sutdy.dashboard.dto.TaskTagDto;
+import com.sutdy.dashboard.dto.EventDto;
+import com.sutdy.dashboard.dto.CalendarDto;
 import com.sutdy.dashboard.service.common.BaseCrudService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -21,67 +22,74 @@ import java.util.stream.Collectors;
  * @since 2020.06.11
  */
 @Service("calendarService")
-public class CalendarService extends BaseCrudService<Event, TaskDto, Long> {
+public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long> {
 
-    private CalendarRepository taskTagRepository;
+    private EventRepository eventRepository;
+    private CalendarRepository calendarRepository;
     private AccountRepository accountRepository;
 
     @Autowired
-    public CalendarService(EventRepository taskRepository,
+    public CalendarService(EventRepository eventRepository,
                            AccountRepository accountRepository,
-                           CalendarRepository taskTagRepository) {
-        super(taskRepository);
-        this.taskTagRepository = taskTagRepository;
+                           CalendarRepository calendarRepository) {
+        super(calendarRepository);
+        this.eventRepository = eventRepository;
         this.accountRepository = accountRepository;
+        this.calendarRepository = calendarRepository;
     }
 
     @Override
-    public TaskDto update(Long pk, TaskDto dto) {
-        Event entity = this.findEntityById(pk);
+    public CalendarDto update(Long pk, CalendarDto dto) {
+        Calendar entity = this.findEntityById(pk);
         entity.patch(dto);
-        return new TaskDto(entity);
+        return new CalendarDto().of(entity);
+    }
+
+    @Override
+    public CalendarDto save(CalendarDto dto) throws NoSuchAlgorithmException {
+        Calendar entity = dto.toEntity();
+        if(dto.getAccountId() != null){
+            Account account = this.accountRepository.findById(dto.getAccountId())
+                    .orElseThrow(()-> new IllegalArgumentException(NOT_FIND_DATA));
+
+            entity.setAccount(account);
+        }
+        return new CalendarDto().of(this.calendarRepository.save(entity));
     }
 
     @Transactional
-    public TaskTagDto tagUpdate(TaskTagDto dto) {
-        Calendar origin = this.taskTagRepository.findById(dto.getId())
+    public EventDto eventUpdate(EventDto dto) {
+        Event origin = this.eventRepository.findById(dto.getId())
                 .orElseThrow(() -> new IllegalArgumentException(NOT_FIND_DATA));
 
         origin.patch(dto);
-        return new TaskTagDto(origin);
+        return new EventDto().of(origin);
     }
 
-    public List<TaskTagDto> tagFindAllById(Iterable<Long> ids) {
-        return this.taskTagRepository.findAllById(ids)
+    public List<EventDto> eventFindAllById(Iterable<Long> ids) {
+        return this.eventRepository.findAllById(ids)
                 .stream()
-                .map(t-> new TaskTagDto(t))
+                .map(t-> new EventDto().of(t))
                 .collect(Collectors.toList());
     }
 
     @Transactional
-    public TaskTagDto tagDelete(Long pk) {
-        TaskTagDto dto = this.tagFindById(pk);
-        this.taskTagRepository.deleteById(pk);
+    public EventDto eventDelete(Long pk) {
+        EventDto dto = this.eventFindById(pk);
+        this.eventRepository.deleteById(pk);
         return dto;
     }
 
 
     @Transactional
-    public TaskTagDto tagSave(TaskTagDto dto) {
-        Calendar entity = dto.toEntity();
-
-        if(dto.getUserId() != null){
-            Account account = this.accountRepository.findById(dto.getUserId())
-                    .orElseThrow(()-> new IllegalArgumentException(NOT_FIND_DATA));
-
-            entity.setAccount(account);
-        }
-        return new TaskTagDto(entity);
+    public EventDto eventSave(EventDto dto) {
+        Event entity = dto.toEntity();
+        return new EventDto().of(entity);
     }
 
-    public TaskTagDto tagFindById(Long id) {
-        Calendar task = this.taskTagRepository.findById(id)
+    public EventDto eventFindById(Long id) {
+        Event event = this.eventRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(NOT_FIND_DATA));
-        return new TaskTagDto(task);
+        return new EventDto().of(event);
     }
 }

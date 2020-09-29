@@ -164,6 +164,7 @@ public abstract class BaseCrudService<Entity, Dto extends ToConverter<Entity, Dt
 
     @Override
     public List<Dto> findAllById(Iterable<ID> ids) {
-        return null;
+        return this.jpaRepository.findAllById(ids)
+                .stream().map(t-> getDtoInstance(t).of(t)).collect(Collectors.toList());
     }
 }

@@ -28,12 +28,20 @@ public class TodoCategoryServiceTest {
     private TodoCategoryService todoCategoryService;
 
     @Test
+    @Rollback(true)
+    @Transactional
     public void todoCategory_리스트_불러오기() {
         //given
+        for (int i = 0; i < 10; i++) {
+            TodoCategoryDto categoryDto = new TodoCategoryDto();
+            categoryDto.setCDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT));
+            this.todoCategoryService.save(categoryDto);
+        }
+
         //when
         List<TodoCategoryDto> categories = this.todoCategoryService.findAll();
-        //then
 
+        //then
         categories.forEach((t) -> {
             System.out.println(t.toString());
         });
@@ -43,8 +51,8 @@ public class TodoCategoryServiceTest {
 
 
     @Test
-    @Transactional
     @Rollback(true)
+    @Transactional
     public void todoCategory_저장_테스트() {
         //given
         TodoCategoryDto category = TodoCategoryDto.builder()

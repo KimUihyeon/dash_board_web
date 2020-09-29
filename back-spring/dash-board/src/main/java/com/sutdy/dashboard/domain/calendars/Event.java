@@ -1,6 +1,6 @@
 package com.sutdy.dashboard.domain.calendars;
 
-import com.sutdy.dashboard.dto.TaskDto;
+import com.sutdy.dashboard.dto.EventDto;
 import lombok.*;
 
 import javax.persistence.*;
@@ -36,7 +36,7 @@ public class Event {
     @JoinColumn(name = "calendarId")
     private Calendar calendar;
 
-    public void patch(TaskDto dto) {
+    public void patch(EventDto dto) {
 
     }
 }

@@ -47,10 +47,6 @@ public class TodoDto implements ToConverter<Todo, TodoDto> {
     private String categoryName;
 
 
-    public TodoDto(Todo todo){
-        of(todo);
-    }
-
     @Override
     public Todo toEntity() {
         String dateFormat = ApplicationStringConfig.DATE_FORMAT;

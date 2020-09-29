@@ -29,9 +29,6 @@ public class TaskDto implements ToConverter<Event, TaskDto> {
 //    private String color; // HexColor 예)#fff
     private LocalDateTime cDate;
 
-    public TaskDto(Event entity){
-        of(entity);
-    }
 
     @Override
     public Event toEntity() {

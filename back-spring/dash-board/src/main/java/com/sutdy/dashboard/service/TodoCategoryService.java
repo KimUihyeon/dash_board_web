@@ -90,14 +90,14 @@ public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCateg
     public TodoCategoryDto update(Long pk, TodoCategoryDto dto) {
         TodoCategory entity = this.findEntityById(pk);
         entity.patch(dto);
-        return new TodoCategoryDto(entity);
+        return new TodoCategoryDto().of(entity);
     }
 
 
     public List<TodoCategoryDto> findAll() {
         return this.jpaRepository.findAll()
                 .stream()
-                .map(t -> new TodoCategoryDto(t).of(t))
+                .map(t -> new TodoCategoryDto().of(t))
                 .collect(Collectors.toList());
     }
 

@@ -1,5 +1,6 @@
 package com.sutdy.dashboard.dto;
 
+import com.sutdy.dashboard.domain.calendars.Calendar;
 import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.dto.convert.interfacies.ToConverter;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
@@ -9,6 +10,10 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.modelmapper.PropertyMap;
+
+import javax.persistence.Id;
+import java.time.LocalDateTime;
 
 /**
  * @author kuh
@@ -31,10 +36,6 @@ public class AccountDto implements ToConverter<Account, AccountDto> {
 
     private String dDate;
 
-    public AccountDto(Account account) {
-        of(account);
-    }
-
     @Override
     public Account toEntity() {
         return Account.builder()
@@ -53,7 +54,22 @@ public class AccountDto implements ToConverter<Account, AccountDto> {
     @Override
     public AccountDto of(Account account) {
 
-        AccountDto dto = ModelConverter.map(account, AccountDto.class);
+        PropertyMap<Account, AccountDto> map = new PropertyMap<Account, AccountDto>() {
+            @Override
+            protected void configure() {
+                map().setPw(source.getPw());
+                map().setId(source.getId());
+                map().setName(source.getName());
+                if(source.getCDate() != null){
+                    map().setCDate(DateUtil.localDateTimeToString(source.getCDate(), ApplicationStringConfig.DATE_FORMAT));
+                }
+                if(source.getDDate() != null){
+                    map().setDDate(DateUtil.localDateTimeToString(source.getDDate(), ApplicationStringConfig.DATE_FORMAT));
+                }
+            }
+        };
+
+        AccountDto dto = ModelConverter.map(map, account, AccountDto.class);
         dto.setCDate(DateUtil.localDateTimeToString(account.getCDate(), ApplicationStringConfig.DATE_FORMAT));
         dto.setDDate(DateUtil.localDateTimeToString(account.getDDate(), ApplicationStringConfig.DATE_FORMAT));
         return dto;

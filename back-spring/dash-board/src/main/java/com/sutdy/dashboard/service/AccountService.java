@@ -48,7 +48,7 @@ public class AccountService extends BaseCrudService<Account, AccountDto, String>
     public AccountDto update(String pk, AccountDto dto) {
         Account entity = this.findEntityById(pk);
         entity.patch(dto);
-        return new AccountDto(entity);
+        return new AccountDto().of(entity);
     }
 
 
