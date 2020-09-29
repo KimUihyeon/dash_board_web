@@ -50,13 +50,14 @@ public class ModelMapperTest {
 
         //when
         AccountDto dto = modelMapper.map(account, AccountDto.class);
+        dto.setCDate(DateUtil.localDateTimeToString(account.getCDate(), ApplicationStringConfig.DATE_FORMAT));
 
         //then
 
         Assert.assertEquals(dto.getName(), account.getName());
         Assert.assertEquals(dto.getId(), account.getId());
         Assert.assertEquals(dto.getPw(), account.getPw());
-        Assert.assertEquals(dto.getCDate(), account.getCDate());
+        Assert.assertEquals(dto.getCDate(), DateUtil.localDateTimeToString(account.getCDate(), ApplicationStringConfig.DATE_FORMAT));
     }
 
 
