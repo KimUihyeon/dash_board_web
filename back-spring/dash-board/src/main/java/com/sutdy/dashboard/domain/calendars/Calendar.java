@@ -7,6 +7,7 @@ import lombok.*;
 import javax.persistence.*;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 /**
  * @author kuh
@@ -30,13 +31,13 @@ public class Calendar {
     private LocalDateTime cDate;
 
     @Setter
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "accountId")
     private Account account;
 
     @Setter
-    @OneToMany
-    @JoinColumn(name = "eventId")
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "calendar", cascade = CascadeType.ALL)
+//    @JoinColumn(name = "eventId")
     private List<Event> event;
 
     public void patch(CalendarDto dto) {

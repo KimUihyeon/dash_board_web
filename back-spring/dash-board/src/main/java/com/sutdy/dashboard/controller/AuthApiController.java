@@ -36,15 +36,11 @@ public class AuthApiController {
     @PostMapping()
     public AuthResponse auth(@RequestBody AuthRequest authRequest){
         // // TODO: 2020-05-14 : 나중에 해더 로직으로 변경할것 ..!
-
         return this.accountService.auth(authRequest.getToken());
     }
 
-
-
     @PostMapping("/logout")
     public AccountDto logout(){
-
         return new AccountDto();
     }
 

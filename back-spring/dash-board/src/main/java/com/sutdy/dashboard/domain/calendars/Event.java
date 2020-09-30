@@ -32,7 +32,7 @@ public class Event {
     private LocalDateTime eDate; // 종료일
 
     @Setter
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "calendarId")
     private Calendar calendar;
 

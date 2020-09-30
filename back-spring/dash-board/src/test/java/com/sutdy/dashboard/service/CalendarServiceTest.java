@@ -2,10 +2,13 @@ package com.sutdy.dashboard.service;
 
 import com.sutdy.dashboard.domain.calendars.Calendar;
 import com.sutdy.dashboard.domain.calendars.CalendarRepository;
+import com.sutdy.dashboard.domain.calendars.Event;
+import com.sutdy.dashboard.domain.calendars.EventRepository;
 import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.dto.AccountDto;
 import com.sutdy.dashboard.dto.CalendarDto;
 import com.sutdy.dashboard.dto.CalendarDto;
+import com.sutdy.dashboard.dto.EventDto;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.DateUtil;
 import org.junit.After;
@@ -13,14 +16,19 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
+import sun.rmi.runtime.Log;
 
 import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,11 +40,16 @@ import java.util.stream.Collectors;
 @RunWith(SpringRunner.class)
 public class CalendarServiceTest {
 
+    private Logger logger = LoggerFactory.getLogger(CalendarServiceTest.class);
+
     @Autowired
     private CalendarService calendarService;
 
     @Autowired
     private CalendarRepository calendarRepository;
+
+    @Autowired
+    private EventRepository eventRepository;
 
     @Autowired
     private AccountService accountService;
@@ -82,6 +95,80 @@ public class CalendarServiceTest {
         this.calendarRepository.deleteById(tempCalendarId);
     }
 
+
+    @Test
+    @Transactional
+    public void calendar_event_리스트_불러오기_테스트() {
+
+        //given
+        short calCount = 3;
+        short eventCount = 7;
+
+        List<CalendarDto> originCalendars = new ArrayList();
+        List<Long> savedEvents = new ArrayList<>();
+
+        for (int j = 0; j < calCount; j++) {
+            CalendarDto cal = CalendarDto.builder()
+                    .title(j + "title 테스트")
+                    .color("#f0f")
+                    .description("테스트 설명")
+                    .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                    .build();
+
+            Calendar savedCalendar = this.calendarRepository.save(cal.toEntity());
+            CalendarDto savedCalendarDto = new CalendarDto().of(savedCalendar);
+            savedCalendarDto.setEvents(new ArrayList<>());
+
+
+            for (int i = 0; i < eventCount; i++) {
+                Event creatEvent = Event.builder()
+                        .title(j + "" + i + " 테스트 이벤트")
+                        .cDate(LocalDateTime.now())
+                        .calendar(savedCalendar)
+                        .build();
+                this.eventRepository.save(creatEvent);
+                savedCalendarDto.getEvents().add(new EventDto().of(creatEvent));
+            }
+            savedEvents.add(savedCalendar.getId());
+            originCalendars.add(savedCalendarDto);
+        }
+        Collections.reverse(originCalendars);
+        for (CalendarDto cal : originCalendars) {
+        }
+
+
+        //whene
+        List<CalendarDto> calendars = this.calendarService.calendarFindByIds(savedEvents.toArray(new Long[savedEvents.size()]));
+
+
+        //then
+        for (int i = 0; i < calCount; i++) {
+            CalendarDto originCal = originCalendars.get(i);
+            CalendarDto targetCal = calendars.get(i);
+
+            for (int j = 0; j < eventCount; j++) {
+                logger.info("i -> " + i + "\t j -> " + j);
+                EventDto originEvent = originCalendars.get(i).getEvents().get(j);
+                EventDto targetEvent = calendars.get(i).getEvents().get(j);
+
+                Assert.assertEquals(originEvent.getId(), targetEvent.getId());
+                Assert.assertEquals(originEvent.getIcon(), targetEvent.getIcon());
+                Assert.assertEquals(originEvent.getTitle(), targetEvent.getTitle());
+                Assert.assertEquals(originEvent.getCDate(), targetEvent.getCDate());
+                Assert.assertEquals(originEvent.getEDate(), targetEvent.getEDate());
+                Assert.assertEquals(originEvent.getSDate(), targetEvent.getSDate());
+                Assert.assertEquals(originEvent.getUDate(), targetEvent.getUDate());
+                Assert.assertEquals(originEvent.getTitle(), targetEvent.getTitle());
+                Assert.assertEquals(originEvent.getContext(), targetEvent.getContext());
+            }
+
+            Assert.assertEquals(originCal.getId(), targetCal.getId());
+            Assert.assertEquals(originCal.getTitle(), targetCal.getTitle());
+            Assert.assertEquals(originCal.getColor(), targetCal.getColor());
+            Assert.assertEquals(originCal.getAccountId(), targetCal.getAccountId());
+            Assert.assertEquals(originCal.getDescription(), targetCal.getDescription());
+        }
+    }
 
     @Test
     @Transactional

@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -48,9 +49,10 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
     @Override
     public CalendarDto save(CalendarDto dto) throws NoSuchAlgorithmException {
         Calendar entity = dto.toEntity();
-        if(dto.getAccountId() != null){
+        if (dto.getAccountId() != null) {
             Account account = this.accountRepository.findById(dto.getAccountId())
-                    .orElseThrow(()-> new IllegalArgumentException(NOT_FIND_DATA));
+                    .orElseThrow(() -> new IllegalArgumentException(NOT_FIND_DATA));
+
 
             entity.setAccount(account);
         }
@@ -69,7 +71,7 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
     public List<EventDto> eventFindAllById(Iterable<Long> ids) {
         return this.eventRepository.findAllById(ids)
                 .stream()
-                .map(t-> new EventDto().of(t))
+                .map(t -> new EventDto().of(t))
                 .collect(Collectors.toList());
     }
 
@@ -84,6 +86,9 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
     @Transactional
     public EventDto eventSave(EventDto dto) {
         Event entity = dto.toEntity();
+        if(dto.getCalendarId() != null && dto.getCalendarId() > 0){
+            entity.setCalendar(this.calendarRepository.findById(dto.getCalendarId()).orElse(null));
+        }
         return new EventDto().of(entity);
     }
 
@@ -91,5 +96,19 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
         Event event = this.eventRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(NOT_FIND_DATA));
         return new EventDto().of(event);
+    }
+
+    public List<CalendarDto> calendarFindByIds(Long[] ids) {
+        return this.calendarRepository.calendarFindByIds(ids).stream().map(c -> {
+            CalendarDto dto = new CalendarDto().of(c);
+
+            if (c.getEvent() != null && c.getEvent().size() > 0) {
+                List<EventDto> eventDtos = c.getEvent() // Cast Event List
+                        .stream()
+                        .map(e -> new EventDto().of(e)).collect(Collectors.toList());
+                dto.setEvents(eventDtos);
+            }
+            return dto;
+        }).collect(Collectors.toList());
     }
 }
