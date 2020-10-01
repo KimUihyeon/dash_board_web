@@ -1,6 +1,8 @@
 package com.sutdy.dashboard.domain.calendars;
 
 import com.sutdy.dashboard.dto.EventDto;
+import com.sutdy.dashboard.setting.ApplicationStringConfig;
+import com.sutdy.dashboard.setting.util.DateUtil;
 import lombok.*;
 
 import javax.persistence.*;
@@ -37,6 +39,21 @@ public class Event {
     private Calendar calendar;
 
     public void patch(EventDto dto) {
-
+        if (!this.title.equals(dto.getTitle())) {
+            this.title = dto.getTitle();
+        }
+        if (!this.icon.equals(dto.getIcon())) {
+            this.title = dto.getIcon();
+        }
+        if (!this.context.equals(dto.getContext())) {
+            this.context = dto.getContext();
+        }
+        if (!DateUtil.dateTimeCompare(dto.getSDate(), this.sDate, ApplicationStringConfig.DATE_FORMAT)) {
+            this.sDate = DateUtil.stringToLocalDateTime(dto.getSDate(), ApplicationStringConfig.DATE_FORMAT);
+        }
+        if (!DateUtil.dateTimeCompare(dto.getEDate(), this.sDate, ApplicationStringConfig.DATE_FORMAT)) {
+            this.eDate = DateUtil.stringToLocalDateTime(dto.getEDate(), ApplicationStringConfig.DATE_FORMAT);
+        }
+        this.uDate = DateUtil.now();
     }
 }

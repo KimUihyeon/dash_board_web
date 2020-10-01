@@ -23,6 +23,26 @@ public class CalendarRepositoryImpl extends QuerydslRepositorySupport implements
         this.jpaQueryFactory = jpaQueryFactory;
     }
 
+
+    @Override
+    public void deleteCalendar(Long id) {
+        this.jpaQueryFactory.delete(QEvent.event.calendar)
+                .where(QEvent.event.calendar.id.eq(id))
+                .execute();
+
+        this.jpaQueryFactory
+                .delete(QCalendar.calendar)
+                .where(QCalendar.calendar.id.eq(id))
+                .execute();
+    }
+
+    @Override
+    public List<Calendar> calendarsFindByUserId(String userId) {
+        return this.jpaQueryFactory.select(QCalendar.calendar)
+                .where(QCalendar.calendar.account.id.eq(userId))
+                .fetch();
+    }
+
     @Override
     public List<Calendar> calendarFindByIds(Long[] ids) {
         // TODO User아이디로 앞 단에서 못들어오게 체크할것.

@@ -216,7 +216,8 @@ public class CalendarServiceTest {
 
 
         //whene
-        List<CalendarDto> calendars = this.calendarService.eventsFindByCalendarIdsWhereMonth(savedEvents.toArray(new Long[savedEvents.size()]), year, month);
+        List<CalendarDto> calendars = this.calendarService
+                .eventsFindByCalendarIdsWhereMonth(savedEvents.toArray(new Long[savedEvents.size()]), year, month);
         Collections.sort(calendars, (o1, o2) ->
                 o2.getId().compareTo(o1.getId())
         );

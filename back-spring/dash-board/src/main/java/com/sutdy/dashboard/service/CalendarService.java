@@ -42,6 +42,7 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
     }
 
     @Override
+    @Transactional
     public CalendarDto update(Long pk, CalendarDto dto) {
         Calendar entity = this.findEntityById(pk);
         entity.patch(dto);
@@ -49,12 +50,20 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
     }
 
     @Override
+    @Transactional
+    public CalendarDto delete(Long pk) {
+        CalendarDto calendarDto = this.findById(pk);
+        this.calendarRepository.deleteCalendar(pk);
+        return calendarDto;
+    }
+
+    @Override
+    @Transactional
     public CalendarDto save(CalendarDto dto) throws NoSuchAlgorithmException {
         Calendar entity = dto.toEntity();
         if (dto.getAccountId() != null) {
             Account account = this.accountRepository.findById(dto.getAccountId())
                     .orElseThrow(() -> new IllegalArgumentException(NOT_FIND_DATA));
-
 
             entity.setAccount(account);
         }
@@ -143,9 +152,11 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
         }
     }
 
-    @Deprecated
     public List<CalendarDto> calendarsFindByUserId(String userId) {
-        return null;
+        return this.calendarRepository.calendarsFindByUserId(userId)
+                .stream()
+                .map(c -> new CalendarDto().of(c))
+                .collect(Collectors.toList());
     }
 
     ;

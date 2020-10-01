@@ -39,19 +39,15 @@ public class CalendarApiController {
 
     @PatchMapping("/{id}")
     public CalendarDto updateCalendar(@PathVariable Long id, @RequestBody CalendarDto calendarDto) {
+        // patch 로직 짜야함
         return this.calendarService.update(id, calendarDto);
     }
 
 
     @DeleteMapping("/{id}")
     public CalendarDto deleteCalendar(@PathVariable Long id) {
-        /**
-         * 지울때 해당이벤트도 지우도록 변경
-         *  CASCADE 사용 금지.
-         */
-        return this.deleteCalendar(id);
+        return this.calendarService.delete(id);
     }
-
 
     // --------------------------------------
     // --------------------------------------
@@ -68,6 +64,7 @@ public class CalendarApiController {
 
     @PatchMapping("/event")
     public EventDto updateEvent(@RequestBody EventDto eventDto) {
+        // patch 로직 짜야함
         return  this.calendarService.eventUpdate(eventDto);
     }
 

@@ -9,6 +9,11 @@ import java.util.List;
  */
 public interface CalendarCustomRepository {
 
+
+    public void deleteCalendar(Long id);
+
+    public List<Calendar> calendarsFindByUserId(String userId);
+
     public List<Calendar> calendarFindByIds(Long[] ids);
 
     public List<Calendar> calendarFindByIdsWhereDateRange(Long[] ids, LocalDateTime startDate, LocalDateTime endDate);
