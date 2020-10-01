@@ -89,7 +89,9 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
     public EventDto eventSave(EventDto dto) {
         Event entity = dto.toEntity();
         if (dto.getCalendarId() != null && dto.getCalendarId() > 0) {
-            entity.setCalendar(this.calendarRepository.findById(dto.getCalendarId()).orElse(null));
+            entity.setCalendar(this.calendarRepository
+                    .findById(dto.getCalendarId())
+                    .orElseThrow(() -> new IllegalArgumentException("calendarId 값이 올바르지 않습니다.")));
         }
         return new EventDto().of(entity);
     }
@@ -116,7 +118,7 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
                 }).collect(Collectors.toList());
     }
 
-    public List<CalendarDto> calendarFindByIdsWhereMonth(Long[] ids, String year, String month) {
+    public List<CalendarDto> eventsFindByCalendarIdsWhereMonth(Long[] ids, String year, String month) {
         try {
             int yearTemp = Integer.parseInt(year);
             int monthTemp = Integer.parseInt(month);
@@ -139,6 +141,11 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
         } catch (Exception e) {
             throw new IllegalArgumentException("year, month를 정상적으로 입력해주세요");
         }
+    }
+
+    @Deprecated
+    public List<CalendarDto> calendarsFindByUserId(String userId) {
+        return null;
     }
 
     ;

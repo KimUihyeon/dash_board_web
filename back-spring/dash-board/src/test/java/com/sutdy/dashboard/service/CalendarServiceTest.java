@@ -7,7 +7,6 @@ import com.sutdy.dashboard.domain.calendars.EventRepository;
 import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.dto.AccountDto;
 import com.sutdy.dashboard.dto.CalendarDto;
-import com.sutdy.dashboard.dto.CalendarDto;
 import com.sutdy.dashboard.dto.EventDto;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.DateUtil;
@@ -21,13 +20,11 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import sun.rmi.runtime.Log;
 
 import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -219,7 +216,7 @@ public class CalendarServiceTest {
 
 
         //whene
-        List<CalendarDto> calendars = this.calendarService.calendarFindByIdsWhereMonth(savedEvents.toArray(new Long[savedEvents.size()]), year, month);
+        List<CalendarDto> calendars = this.calendarService.eventsFindByCalendarIdsWhereMonth(savedEvents.toArray(new Long[savedEvents.size()]), year, month);
         Collections.sort(calendars, (o1, o2) ->
                 o2.getId().compareTo(o1.getId())
         );
