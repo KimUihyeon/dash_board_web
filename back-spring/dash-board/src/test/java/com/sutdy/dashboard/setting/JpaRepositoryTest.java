@@ -51,7 +51,7 @@ public class JpaRepositoryTest {
         List<Account> accountList = new ArrayList<>();
         for (int i = 0; i < testCase; i++) {
             Account account = Account.builder()
-                    .cDate(LocalDateTime.now())
+                    .cDate(DateUtil.now())
                     .id("insertTest id_ " + i)
                     .pw("insertTest Pw _ " + i)
                     .name("insertTest Name_")
@@ -80,14 +80,14 @@ public class JpaRepositoryTest {
         deleteAccount(accountId);
 
         Account account = Account.builder()
-                .cDate(LocalDateTime.now())
+                .cDate(DateUtil.now())
                 .id(accountId)
                 .pw("insertTest Pw _")
                 .name("insertTest Name_")
                 .build();
 
         TodoCategory todoCategory = TodoCategory.builder()
-                .cDate(LocalDateTime.now())
+                .cDate(DateUtil.now())
                 .title("test Title")
                 .iconColor("test Color")
                 .account(account)
@@ -151,14 +151,14 @@ public class JpaRepositoryTest {
         deleteAccount(accountId);
 
         Account account = Account.builder()
-                .cDate(LocalDateTime.now())
+                .cDate(DateUtil.now())
                 .id(accountId)
                 .pw("insertTest Pw _")
                 .name("insertTest Name_")
                 .build();
 
         TodoCategory todoCategory = TodoCategory.builder()
-                .cDate(LocalDateTime.now())
+                .cDate(DateUtil.now())
                 .title("test Title")
                 .iconColor("test Color")
                 .account(account)

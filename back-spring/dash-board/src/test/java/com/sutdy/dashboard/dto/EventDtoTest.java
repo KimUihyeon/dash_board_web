@@ -28,7 +28,7 @@ public class EventDtoTest {
         EventDto dto = EventDto.builder()
                 .icon("icon")
                 .context("테스트 내용")
-                .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                 .title("Test title")
                 .build();
 
@@ -51,7 +51,7 @@ public class EventDtoTest {
         Event event = Event.builder()
                 .icon("icon")
                 .context("테스트 내용")
-                .cDate(LocalDateTime.now())
+                .cDate(DateUtil.now())
                 .title("Test title")
                 .calendar(c)
                 .build();
@@ -78,7 +78,7 @@ public class EventDtoTest {
         Event event = Event.builder()
                 .icon("icon")
                 .context("테스트 내용")
-                .cDate(LocalDateTime.now())
+                .cDate(DateUtil.now())
                 .title("Test title")
                 .build();
 

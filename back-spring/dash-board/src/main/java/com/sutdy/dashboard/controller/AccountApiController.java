@@ -66,7 +66,7 @@ public class AccountApiController {
      */
     @PostMapping("/signup")
     public AccountDto signup(@RequestBody AccountDto accountRequest) throws NoSuchAlgorithmException {
-        accountRequest.setCDate(DateUtil.localDateTimeToString(LocalDateTime.now() , ApplicationStringConfig.DATE_FORMAT));
+        accountRequest.setCDate(DateUtil.localDateTimeToString(DateUtil.now() , ApplicationStringConfig.DATE_FORMAT));
         return this.accountService.save(accountRequest);
     }
 

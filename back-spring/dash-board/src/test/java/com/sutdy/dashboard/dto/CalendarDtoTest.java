@@ -36,7 +36,7 @@ public class CalendarDtoTest {
 
         //given
         String pw = "";
-        String cDate = DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT);
+        String cDate = DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT);
         logger.info(cDate);
         try {
             pw = SecurityStringUtil.encryptMD5("123123");
@@ -54,7 +54,7 @@ public class CalendarDtoTest {
 
         Calendar calendar = Calendar.builder()
                 .title("1")
-                .cDate(LocalDateTime.now())
+                .cDate(DateUtil.now())
                 .color("#fff")
                 .account(accountDto.toEntity())
                 .description("테스트 설명")
@@ -80,7 +80,7 @@ public class CalendarDtoTest {
 
         //given
         String pw = "";
-        String cDate = DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT);
+        String cDate = DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT);
         logger.info(cDate);
         try {
             pw = SecurityStringUtil.encryptMD5("123123");
@@ -98,7 +98,7 @@ public class CalendarDtoTest {
 
         CalendarDto calendarDto = CalendarDto.builder()
                 .title("1")
-                .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                 .color("#fff")
                 .accountId(accountDto.toEntity().getId())
                 .description("테스트 설명")
@@ -118,7 +118,7 @@ public class CalendarDtoTest {
 
         //given
         String pw = "";
-        String cDate = DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT);
+        String cDate = DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT);
         logger.info(cDate);
         try {
             pw = SecurityStringUtil.encryptMD5("123123");
@@ -136,7 +136,7 @@ public class CalendarDtoTest {
 
         Calendar calendar = Calendar.builder()
                 .title("1")
-                .cDate(LocalDateTime.now())
+                .cDate(DateUtil.now())
                 .color("#fff")
                 .account(accountDto.toEntity())
                 .description("테스트 설명")

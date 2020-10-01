@@ -44,7 +44,7 @@ public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCateg
         List<TodoCategoryDto> defaultData = new ArrayList<>();
         defaultData.add(TodoCategoryDto.builder()
                 .canModify(false)
-                .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                 .title("기본 디렉토리")
                 .icon("el-icon-folder-delete")
                 .iconColor("white")

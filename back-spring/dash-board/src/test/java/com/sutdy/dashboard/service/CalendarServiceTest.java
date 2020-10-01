@@ -71,7 +71,7 @@ public class CalendarServiceTest {
             AccountDto dto = new AccountDto().of(Account.builder()
                     .id(loginId)
                     .name("userName")
-                    .cDate(LocalDateTime.now())
+                    .cDate(DateUtil.now())
                     .build());
             dto.setPw("123123123");
 
@@ -80,7 +80,7 @@ public class CalendarServiceTest {
 
         CalendarDto dto = CalendarDto.builder()
                 .accountId(accountDto.getId())
-                .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                 .color("#fff")
                 .description("test Data")
                 .title("테스트 캘린더 테그 생성")
@@ -112,7 +112,7 @@ public class CalendarServiceTest {
                     .title(j + "title 테스트")
                     .color("#f0f")
                     .description("테스트 설명")
-                    .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                    .cDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                     .build();
 
             Calendar savedCalendar = this.calendarRepository.save(cal.toEntity());
@@ -123,7 +123,7 @@ public class CalendarServiceTest {
             for (int i = 0; i < eventCount; i++) {
                 Event creatEvent = Event.builder()
                         .title(j + "" + i + " 테스트 이벤트")
-                        .cDate(LocalDateTime.now())
+                        .cDate(DateUtil.now())
                         .calendar(savedCalendar)
                         .build();
                 this.eventRepository.save(creatEvent);
@@ -177,7 +177,7 @@ public class CalendarServiceTest {
         Account account = this.accountService.findById(loginId).toEntity();
         CalendarDto dto = CalendarDto.builder()
                 .accountId(account.getId())
-                .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                 .color("#fff")
                 .description("test Data")
                 .title("테스트 캘린더 테그 생성")
@@ -202,7 +202,7 @@ public class CalendarServiceTest {
 
             CalendarDto dto = CalendarDto.builder()
                     .accountId(account.getId())
-                    .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                    .cDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                     .color("#fff")
                     .description("test Data " + i)
                     .title("테스트 캘린더 테그 생성 " + i)
@@ -253,7 +253,7 @@ public class CalendarServiceTest {
         Account account = this.accountService.findById(loginId).toEntity();
         CalendarDto dto = CalendarDto.builder()
                 .accountId(account.getId())
-                .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                 .color("#fff")
                 .description("test Data")
                 .title("테스트 캘린더 생성")
@@ -278,7 +278,7 @@ public class CalendarServiceTest {
         Account account = this.accountService.findById(loginId).toEntity();
         CalendarDto dto = CalendarDto.builder()
                 .accountId(account.getId())
-                .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                 .color("#fff")
                 .description("test Data")
                 .title("테스트 캘린더 생성")

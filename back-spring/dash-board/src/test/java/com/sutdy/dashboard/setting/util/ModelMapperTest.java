@@ -42,7 +42,7 @@ public class ModelMapperTest {
         Account account = Account.builder()
                 .name("테스트 네임")
                 .pw("123123123")
-                .cDate(LocalDateTime.now())
+                .cDate(DateUtil.now())
                 .id("test@naver.com")
                 .build();
         ModelMapper modelMapper = new ModelMapper();
@@ -85,7 +85,7 @@ public class ModelMapperTest {
 //        AccountDto dto = new AccountDto();
 //        dto.setName("테스트 네임");
 //        dto.setPw("123123123");
-//        dto.setCDate(LocalDateTime.now());
+//        dto.setCDate(DateUtil.now());
 //        dto.setId("test@naver.com");
 //        ModelMapper modelMapper = new ModelMapper();
 
@@ -105,7 +105,7 @@ public class ModelMapperTest {
     public void modelConverter_기본맵핑_테스트(){
 
         TodoDto dto = TodoDto.builder()
-                .date(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                .date(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                 .memo("memo test Logic")
                 .title("title test Logic")
                 .build();

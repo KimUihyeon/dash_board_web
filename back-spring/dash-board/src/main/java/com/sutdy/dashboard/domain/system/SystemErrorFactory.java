@@ -30,7 +30,7 @@ public class SystemErrorFactory {
                     .lineNumber(st.getLineNumber())
                     .methodName(st.getMethodName())
                     .userId(userId)
-                    .cDate(LocalDateTime.now())
+                    .cDate(DateUtil.now())
                     .build();
         }catch (Exception processException){
 
@@ -41,7 +41,7 @@ public class SystemErrorFactory {
                     .fileName(st.getFileName())
                     .lineNumber(st.getLineNumber())
                     .methodName(st.getMethodName())
-                    .cDate(LocalDateTime.now())
+                    .cDate(DateUtil.now())
                     .build();
         }
     }

@@ -25,7 +25,7 @@ public class ErrorResponse {
 
 
     public ErrorResponse(){
-        LocalDateTime now = LocalDateTime.now();
+        LocalDateTime now = DateUtil.now();
         this.date = DateUtil.localDateTimeToString(now , ApplicationStringConfig.DATE_FORMAT);
     }
 }

@@ -52,7 +52,7 @@ public class TodoServiceTest {
     public void todo_저장_테스트() {
         //given
         TodoDto dto = TodoDto.builder()
-                .date(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                .date(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                 .memo("memo test Logic")
                 .title("title test Logic")
                 .build();
@@ -77,7 +77,7 @@ public class TodoServiceTest {
         String id = "testset@naver.com";
         AccountDto accountDto = new AccountDto();
         accountDto.setPw("123123213");
-        accountDto.setCDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT));
+        accountDto.setCDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT));
         accountDto.setName("테스트 중");
         accountDto.setId(id);
 
@@ -103,7 +103,7 @@ public class TodoServiceTest {
 
             for(int j = 0 ; j < 4; j ++){
                 TodoDto dto = TodoDto.builder()
-                        .date(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                        .date(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                         .memo("memo test Logic")
                         .title("title test Logic " + k)
                         .categoryId(savedCategoryDto.getId())
@@ -144,7 +144,7 @@ public class TodoServiceTest {
         String id = "testset@naver.com";
         AccountDto accountDto = new AccountDto();
         accountDto.setPw("123123213");
-        accountDto.setCDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT));
+        accountDto.setCDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT));
         accountDto.setName("테스트 중");
         accountDto.setId(id);
 
@@ -170,7 +170,7 @@ public class TodoServiceTest {
 
             for(int j = 0 ; j < 4; j ++){
                 TodoDto dto = TodoDto.builder()
-                        .date(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                        .date(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                         .memo("memo test Logic")
                         .title("title test Logic " + k)
                         .categoryId(savedCategoryDto.getId())
@@ -210,7 +210,7 @@ public class TodoServiceTest {
         String id = "testset@naver.com";
         AccountDto accountDto = new AccountDto();
         accountDto.setPw("123123213");
-        accountDto.setCDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT));
+        accountDto.setCDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT));
         accountDto.setName("테스트 중");
         accountDto.setId(id);
 
@@ -236,7 +236,7 @@ public class TodoServiceTest {
 
             for(int j = 0 ; j < 4; j ++){
                 TodoDto dto = TodoDto.builder()
-                        .date(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                        .date(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                         .memo("memo test Logic")
                         .title("title test Logic " + k)
                         .categoryId(savedCategoryDto.getId())
@@ -277,7 +277,7 @@ public class TodoServiceTest {
         String id = "testset@naver.com";
         AccountDto accountDto = new AccountDto();
         accountDto.setPw("123123213");
-        accountDto.setCDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT));
+        accountDto.setCDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT));
         accountDto.setName("테스트 중");
         accountDto.setId(id);
 
@@ -303,7 +303,7 @@ public class TodoServiceTest {
 
             for(int j = 0 ; j < 4; j ++){
                 TodoDto dto = TodoDto.builder()
-                        .date(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                        .date(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                         .memo("memo test Logic")
                         .title("title test Logic " + k)
                         .categoryId(savedCategoryDto.getId())
@@ -347,7 +347,7 @@ public class TodoServiceTest {
 //        String id = "testset@naver.com";
 //        AccountDto accountDto = new AccountDto();
 //        accountDto.setPw("123123213");
-//        accountDto.setCDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT));
+//        accountDto.setCDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT));
 //        accountDto.setName("테스트 중");
 //        accountDto.setId(id);
 //
@@ -373,7 +373,7 @@ public class TodoServiceTest {
 //
 //            for(int j = 0 ; j < 4; j ++){
 //                TodoDto dto = TodoDto.builder()
-//                        .date(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+//                        .date(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
 //                        .memo("memo test Logic")
 //                        .title("title test Logic " + k)
 //                        .categoryId(savedCategoryDto.getId())
@@ -465,7 +465,7 @@ public class TodoServiceTest {
     public void todo_삭제_테스트() {
         //given
         TodoDto dto = TodoDto.builder()
-                .date(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                .date(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                 .memo("memo test Logic")
                 .title("title test Logic")
                 .todoComplete(true)
@@ -492,7 +492,7 @@ public class TodoServiceTest {
         //given
 
         TodoDto todo = TodoDto.builder()
-                .date(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                .date(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                 .memo("memo test Logic")
                 .title("update Test")
                 .build();

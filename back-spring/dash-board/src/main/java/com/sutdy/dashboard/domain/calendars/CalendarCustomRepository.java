@@ -1,5 +1,6 @@
 package com.sutdy.dashboard.domain.calendars;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -9,4 +10,6 @@ import java.util.List;
 public interface CalendarCustomRepository {
 
     public List<Calendar> calendarFindByIds(Long[] ids);
+
+    public List<Calendar> calendarFindByIdsWhereDate(Long[] ids, LocalDateTime date);
 }

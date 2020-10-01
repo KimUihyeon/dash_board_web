@@ -54,7 +54,7 @@ public class ProjectSetup implements ApplicationListener<ApplicationReadyEvent> 
         logger.info("\t"+ pipelineNumber +". Account default data");
 
         AccountDto account = AccountDto.builder()
-                .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                 .id("admin@admin.com")
                 .pw("12341234")
                 .name("운영자")

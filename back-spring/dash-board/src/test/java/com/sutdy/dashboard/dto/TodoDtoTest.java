@@ -64,9 +64,9 @@ public class TodoDtoTest {
                 .toDay(true)
                 .contents(" 테스트 내용")
                 .title("테스트 제목")
-                .cDate(LocalDateTime.now())
-                .eDate(LocalDateTime.now())
-                .sDate(LocalDateTime.now())
+                .cDate(DateUtil.now())
+                .eDate(DateUtil.now())
+                .sDate(DateUtil.now())
                 .build();
 
         //when

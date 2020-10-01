@@ -22,7 +22,7 @@ public class SystemError {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime cDate = LocalDateTime.now();
+    private LocalDateTime cDate = DateUtil.now();
 
     private String errorMessage;
 

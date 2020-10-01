@@ -50,7 +50,7 @@ public class TempDataFactory {
 
         TodoCategoryDto categoryDto = TodoCategoryDto.builder()
                 .canModify(false)
-                .cDate(DateUtil.localDateTimeToString(LocalDateTime.now(), ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                 .title("테스트 디렉토리 2")
                 .icon("el-icon-folder-delete")
                 .iconColor("white")
@@ -70,7 +70,7 @@ public class TempDataFactory {
             }
 
             Todo todo = Todo.builder()
-                    .cDate(LocalDateTime.now())
+                    .cDate(DateUtil.now())
                     .id(Long.parseLong(String.valueOf(i)))
                     .title("제목 _" + i)
                     .contents("메모 _ " + i)

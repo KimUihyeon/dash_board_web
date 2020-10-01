@@ -52,7 +52,7 @@ public class QueryDslTest {
 
             Todo todo = Todo.builder()
                     .title("테스트 타이틀 " + i)
-                    .cDate(LocalDateTime.now())
+                    .cDate(DateUtil.now())
                     .contents("테스트 내용__" + i + "\n" + "HibernateTest 에서 생성됨.")
                     .build();
             tempDatas.add(todo);
