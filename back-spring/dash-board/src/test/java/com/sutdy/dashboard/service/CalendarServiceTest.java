@@ -172,6 +172,91 @@ public class CalendarServiceTest {
 
     @Test
     @Transactional
+    public void calendar_event_범위_리스트_불러오기_테스트() {
+
+        //given
+        short calCount = 3;
+        short eventCount = 7;
+
+        List<CalendarDto> originCalendars = new ArrayList();
+        List<Long> savedEvents = new ArrayList<>();
+
+        for (int j = 0; j < calCount; j++) {
+            CalendarDto cal = CalendarDto.builder()
+                    .title(j + "title 테스트")
+                    .color("#f0f")
+                    .description("테스트 설명")
+                    .cDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
+                    .build();
+
+            Calendar savedCalendar = this.calendarRepository.save(cal.toEntity());
+            CalendarDto savedCalendarDto = new CalendarDto().of(savedCalendar);
+            savedCalendarDto.setEvents(new ArrayList<>());
+
+
+            for (int i = 0; i < eventCount; i++) {
+                LocalDateTime cDate = null;
+                if (i % 2 == 0) {
+                    cDate = DateUtil.now();
+                }
+                Event creatEvent = Event.builder()
+                        .title(j + "" + i + " 테스트 이벤트")
+                        .cDate(cDate)
+                        .calendar(savedCalendar)
+                        .build();
+                this.eventRepository.save(creatEvent);
+                if (cDate != null) {
+                    savedCalendarDto.getEvents().add(new EventDto().of(creatEvent));
+                }
+            }
+            savedEvents.add(savedCalendar.getId());
+            originCalendars.add(savedCalendarDto);
+        }
+        Collections.reverse(originCalendars);
+
+        String year = String.valueOf(DateUtil.now().getYear());
+        String month = String.valueOf(DateUtil.now().getMonthValue());
+
+
+        //whene
+        List<CalendarDto> calendars = this.calendarService.calendarFindByIdsWhereMonth(savedEvents.toArray(new Long[savedEvents.size()]), year, month);
+        Collections.sort(calendars, (o1, o2) ->
+                o2.getId().compareTo(o1.getId())
+        );
+
+
+        //then
+        for (int i = 0; i < calCount; i++) {
+            CalendarDto originCal = originCalendars.get(i);
+            CalendarDto targetCal = calendars.get(i);
+
+            for (int j = 0; j < originCal.getEvents().size(); j++) {
+                logger.info("i -> " + i + "\t j -> " + j);
+                EventDto originEvent = originCalendars.get(i).getEvents().get(j);
+                EventDto targetEvent = calendars.get(i).getEvents().get(j);
+
+                Assert.assertEquals(originEvent.getId(), targetEvent.getId());
+                Assert.assertEquals(originEvent.getIcon(), targetEvent.getIcon());
+                Assert.assertEquals(originEvent.getTitle(), targetEvent.getTitle());
+                Assert.assertEquals(originEvent.getCDate(), targetEvent.getCDate());
+                Assert.assertEquals(originEvent.getEDate(), targetEvent.getEDate());
+                Assert.assertEquals(originEvent.getSDate(), targetEvent.getSDate());
+                Assert.assertEquals(originEvent.getUDate(), targetEvent.getUDate());
+                Assert.assertEquals(originEvent.getTitle(), targetEvent.getTitle());
+                Assert.assertEquals(originEvent.getContext(), targetEvent.getContext());
+            }
+
+            Assert.assertEquals(originCal.getId(), targetCal.getId());
+            Assert.assertEquals(originCal.getTitle(), targetCal.getTitle());
+            Assert.assertEquals(originCal.getColor(), targetCal.getColor());
+            Assert.assertEquals(originCal.getAccountId(), targetCal.getAccountId());
+            Assert.assertEquals(originCal.getDescription(), targetCal.getDescription());
+        }
+    }
+
+
+    @Test
+    @Transactional
     public void calendar_저장_테스트() throws NoSuchAlgorithmException {
         //given
         Account account = this.accountService.findById(loginId).toEntity();

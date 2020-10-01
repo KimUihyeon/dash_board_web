@@ -6,6 +6,7 @@ import com.sutdy.dashboard.domain.todo.Todo;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 /**
@@ -61,5 +62,28 @@ public class CalendarRepositoryImpl extends QuerydslRepositorySupport implements
          .fetch();
          *
          */
+    }
+
+    @Override
+    public List<Calendar> calendarFindByIdsWhereDateRange(Long[] ids, LocalDateTime startDate, LocalDateTime endDate) {
+        // TODO User아이디로 앞 단에서 못들어오게 체크할것.
+
+        List<Event> events = this.jpaQueryFactory.selectFrom(QEvent.event)
+                .rightJoin(QEvent.event.calendar, QCalendar.calendar)
+                .where(QCalendar.calendar.id.in(ids).and(QEvent.event.cDate.goe(startDate)).and(QEvent.event.cDate.loe(endDate)))
+                .orderBy(QCalendar.calendar.id.desc())
+                .fetch();
+
+        Set<Calendar> cals = new HashSet<>();
+        for (Event event : events) {
+            Calendar currentCal = event.getCalendar();
+            if (!cals.contains(currentCal)) {
+                cals.add(currentCal);
+                currentCal.setEvent(new ArrayList());
+            }
+            currentCal.getEvent().add(event);
+            event.setCalendar(null);
+        }
+        return new ArrayList<>(cals);
     }
 }

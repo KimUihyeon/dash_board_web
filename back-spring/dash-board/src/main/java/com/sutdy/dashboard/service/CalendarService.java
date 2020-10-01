@@ -9,11 +9,13 @@ import com.sutdy.dashboard.domain.members.AccountRepository;
 import com.sutdy.dashboard.dto.EventDto;
 import com.sutdy.dashboard.dto.CalendarDto;
 import com.sutdy.dashboard.service.common.BaseCrudService;
+import com.sutdy.dashboard.setting.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -86,7 +88,7 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
     @Transactional
     public EventDto eventSave(EventDto dto) {
         Event entity = dto.toEntity();
-        if(dto.getCalendarId() != null && dto.getCalendarId() > 0){
+        if (dto.getCalendarId() != null && dto.getCalendarId() > 0) {
             entity.setCalendar(this.calendarRepository.findById(dto.getCalendarId()).orElse(null));
         }
         return new EventDto().of(entity);
@@ -99,16 +101,45 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
     }
 
     public List<CalendarDto> calendarFindByIds(Long[] ids) {
-        return this.calendarRepository.calendarFindByIds(ids).stream().map(c -> {
-            CalendarDto dto = new CalendarDto().of(c);
+        return this.calendarRepository.calendarFindByIds(ids)
+                .stream()
+                .map(c -> {
+                    CalendarDto dto = new CalendarDto().of(c);
 
-            if (c.getEvent() != null && c.getEvent().size() > 0) {
-                List<EventDto> eventDtos = c.getEvent() // Cast Event List
-                        .stream()
-                        .map(e -> new EventDto().of(e)).collect(Collectors.toList());
-                dto.setEvents(eventDtos);
-            }
-            return dto;
-        }).collect(Collectors.toList());
+                    if (c.getEvent() != null && c.getEvent().size() > 0) {
+                        List<EventDto> eventDtos = c.getEvent() // Cast Event List
+                                .stream()
+                                .map(e -> new EventDto().of(e)).collect(Collectors.toList());
+                        dto.setEvents(eventDtos);
+                    }
+                    return dto;
+                }).collect(Collectors.toList());
     }
+
+    public List<CalendarDto> calendarFindByIdsWhereMonth(Long[] ids, String year, String month) {
+        try {
+            int yearTemp = Integer.parseInt(year);
+            int monthTemp = Integer.parseInt(month);
+
+            LocalDateTime startDate = DateUtil.firstDayOfMonth(yearTemp, monthTemp, DateUtil.Time.start);
+            LocalDateTime endDate = DateUtil.lastDayOfMonth(yearTemp, monthTemp, DateUtil.Time.end);
+            return this.calendarRepository.calendarFindByIdsWhereDateRange(ids, startDate, endDate)
+                    .stream()
+                    .map(c -> {
+                        CalendarDto dto = new CalendarDto().of(c);
+
+                        if (c.getEvent() != null && c.getEvent().size() > 0) {
+                            List<EventDto> eventDtos = c.getEvent() // Cast Event List
+                                    .stream()
+                                    .map(e -> new EventDto().of(e)).collect(Collectors.toList());
+                            dto.setEvents(eventDtos);
+                        }
+                        return dto;
+                    }).collect(Collectors.toList());
+        } catch (Exception e) {
+            throw new IllegalArgumentException("year, month를 정상적으로 입력해주세요");
+        }
+    }
+
+    ;
 }

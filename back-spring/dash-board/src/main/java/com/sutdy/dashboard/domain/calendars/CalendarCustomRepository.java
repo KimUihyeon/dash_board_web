@@ -11,5 +11,5 @@ public interface CalendarCustomRepository {
 
     public List<Calendar> calendarFindByIds(Long[] ids);
 
-    public List<Calendar> calendarFindByIdsWhereDate(Long[] ids, LocalDateTime date);
+    public List<Calendar> calendarFindByIdsWhereDateRange(Long[] ids, LocalDateTime startDate, LocalDateTime endDate);
 }
