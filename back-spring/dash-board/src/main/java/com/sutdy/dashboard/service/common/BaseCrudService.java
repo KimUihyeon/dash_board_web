@@ -128,21 +128,25 @@ public abstract class BaseCrudService<Entity, Dto extends ToConverter<Entity, Dt
     }
 
     @Override
+    @Transactional
     public Dto update(ID pk, Dto dto) {
         throw new NotImplementedException();
     }
 
     @Override
+    @Transactional
     public Dto save(Dto dto) throws NoSuchAlgorithmException {
         return saveEntity(dto.toEntity());
     }
 
     @Override
+    @Transactional
     public Dto delete(ID pk) {
         return deleteEntity(pk);
     }
 
     @Override
+    @Transactional
     public List<Dto> deleteAll(Iterable<ID> ids) {
         return deleteAll(ids);
     }
