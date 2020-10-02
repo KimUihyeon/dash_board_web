@@ -102,23 +102,23 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
                     .findById(dto.getCalendarId())
                     .orElseThrow(() -> new IllegalArgumentException("calendarId 값이 올바르지 않습니다.")));
         }
-        return new EventDto().of(entity);
+        return new EventDto().of(this.eventRepository.save(entity));
     }
 
     public EventDto eventFindById(Long id) {
         Event event = this.eventRepository.findById(id)
                 .orElseThrow(() -> new IllegalArgumentException(NOT_FIND_DATA));
-        return new EventDto().of(event);
-    }
+                        return new EventDto().of(event);
+                    }
 
-    public List<CalendarDto> calendarFindByIds(Long[] ids) {
-        return this.calendarRepository.calendarFindByIds(ids)
-                .stream()
-                .map(c -> {
-                    CalendarDto dto = new CalendarDto().of(c);
+                    public List<CalendarDto> calendarFindByIds(Long[] ids) {
+                        return this.calendarRepository.calendarFindByIds(ids)
+                                .stream()
+                                .map(c -> {
+                                    CalendarDto dto = new CalendarDto().of(c);
 
-                    if (c.getEvent() != null && c.getEvent().size() > 0) {
-                        List<EventDto> eventDtos = c.getEvent() // Cast Event List
+                                    if (c.getEvent() != null && c.getEvent().size() > 0) {
+                                        List<EventDto> eventDtos = c.getEvent() // Cast Event List
                                 .stream()
                                 .map(e -> new EventDto().of(e)).collect(Collectors.toList());
                         dto.setEvents(eventDtos);

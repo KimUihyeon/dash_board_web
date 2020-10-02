@@ -50,26 +50,6 @@ public class EventDto implements ToConverter<Event, EventDto> {
 
     @Override
     public EventDto of(Event event) {
-//
-//        return EventDto.builder()
-//                .id(event.getId())
-//                .title(event.getTitle())
-//                .icon(event.getIcon())
-//                .context(event.getContext())
-//                .cDate(DateUtil.localDateTimeToString(event.getCDate() , ApplicationStringConfig.DATE_FORMAT))
-//                .uDate(DateUtil.localDateTimeToString(event.getUDate() , ApplicationStringConfig.DATE_FORMAT))
-//                .sDate(DateUtil.localDateTimeToString(event.getSDate() , ApplicationStringConfig.DATE_FORMAT))
-//                .eDate(DateUtil.localDateTimeToString(event.getEDate() , ApplicationStringConfig.DATE_FORMAT))
-//                .build();
-
-//        PropertyMap<Event, EventDto> map = new PropertyMap<Event, EventDto>() {
-//            @Override
-//            protected void configure() {
-//
-//            }
-//        };
-
-//        return ModelConverter.map(map, event, EventDto.class);
         EventDto eventDto = ModelConverter.map(event, EventDto.class);
         eventDto.setCDate(DateUtil.localDateTimeToString(event.getCDate(), ApplicationStringConfig.DATE_FORMAT));
         eventDto.setUDate(DateUtil.localDateTimeToString(event.getUDate(), ApplicationStringConfig.DATE_FORMAT));

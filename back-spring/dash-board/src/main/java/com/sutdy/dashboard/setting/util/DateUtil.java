@@ -71,7 +71,7 @@ public class DateUtil {
         switch (time) {
             case start: {
                 return LocalDateTime.of(year, month, 1,
-                        0, 0, 0, 0);
+                        0, 0, 0 );
             }
             case end:
             default: {

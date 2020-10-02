@@ -90,7 +90,13 @@ public class CalendarRepositoryImpl extends QuerydslRepositorySupport implements
 
         List<Event> events = this.jpaQueryFactory.selectFrom(QEvent.event)
                 .rightJoin(QEvent.event.calendar, QCalendar.calendar)
-                .where(QCalendar.calendar.id.in(ids).and(QEvent.event.cDate.goe(startDate)).and(QEvent.event.cDate.loe(endDate)))
+                .where(QCalendar.calendar.id.in(ids)
+                        .and(
+                                
+                                //TODO :  내일 여기부터
+                                QEvent.event.sDate.goe(startDate.withNano(0)).and(QEvent.event.sDate.loe(endDate.withNano(0)))
+                                        .or(QEvent.event.eDate.goe(startDate.withNano(0)).and(QEvent.event.eDate.loe(endDate.withNano(0)))
+                                        )))
                 .orderBy(QCalendar.calendar.id.desc())
                 .fetch();
 

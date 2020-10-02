@@ -199,6 +199,8 @@ public class CalendarServiceTest {
                 Event creatEvent = Event.builder()
                         .title(j + "" + i + " 테스트 이벤트")
                         .cDate(cDate)
+                        .sDate(cDate)
+                        .eDate(cDate)
                         .calendar(savedCalendar)
                         .build();
                 this.eventRepository.save(creatEvent);

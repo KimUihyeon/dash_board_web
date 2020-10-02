@@ -3,6 +3,8 @@ package com.sutdy.dashboard.controller;
 import com.sutdy.dashboard.dto.CalendarDto;
 import com.sutdy.dashboard.dto.EventDto;
 import com.sutdy.dashboard.service.CalendarService;
+import com.sutdy.dashboard.setting.ApplicationStringConfig;
+import com.sutdy.dashboard.setting.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -33,6 +35,7 @@ public class CalendarApiController {
 
     @PostMapping("/")
     public CalendarDto saveCalendar(@RequestBody CalendarDto calendarDto) throws NoSuchAlgorithmException {
+        calendarDto.setCDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT));
         return this.calendarService.save(calendarDto);
     }
 
@@ -59,18 +62,19 @@ public class CalendarApiController {
 
     @PostMapping("/event")
     public EventDto saveEvent(@RequestBody EventDto eventDto) {
+        eventDto.setCDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT));
         return this.calendarService.eventSave(eventDto);
     }
 
     @PatchMapping("/event")
     public EventDto updateEvent(@RequestBody EventDto eventDto) {
         // patch 로직 짜야함
-        return  this.calendarService.eventUpdate(eventDto);
+        return this.calendarService.eventUpdate(eventDto);
     }
 
     @DeleteMapping("/event/{id}")
     public EventDto deleteEvent(@PathVariable Long id) {
-        return  this.calendarService.eventDelete(id);
+        return this.calendarService.eventDelete(id);
     }
 
 }
