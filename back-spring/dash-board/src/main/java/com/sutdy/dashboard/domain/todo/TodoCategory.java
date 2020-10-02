@@ -7,7 +7,8 @@ import com.sutdy.dashboard.setting.util.DateUtil;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+
 
 /**
  * @author kuh
@@ -35,7 +36,7 @@ public class TodoCategory {
 
     private String fontColor;
 
-    private LocalDateTime cDate;
+    private Timestamp cDate;
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
@@ -57,7 +58,7 @@ public class TodoCategory {
             this.iconColor = dto.getIconColor();
         }
         if (!dto.getCDate().equals(this.cDate)) {
-            this.cDate = DateUtil.stringToLocalDateTime(dto.getCDate(), ApplicationStringConfig.DATE_FORMAT);
+            this.cDate = DateUtil.toTimeStamp(dto.getCDate(), ApplicationStringConfig.DATE_FORMAT);
         }
         if (dto.isCanModify() != this.canModify) {
             this.canModify = dto.isCanModify();

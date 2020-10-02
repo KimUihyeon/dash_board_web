@@ -12,7 +12,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
-import java.time.LocalDateTime;
 
 /**
  * 계정 관련 !
@@ -66,7 +65,7 @@ public class AccountApiController {
      */
     @PostMapping("/signup")
     public AccountDto signup(@RequestBody AccountDto accountRequest) throws NoSuchAlgorithmException {
-        accountRequest.setCDate(DateUtil.localDateTimeToString(DateUtil.now() , ApplicationStringConfig.DATE_FORMAT));
+        accountRequest.setCDate(DateUtil.toString(DateUtil.now() , ApplicationStringConfig.DATE_FORMAT));
         return this.accountService.save(accountRequest);
     }
 

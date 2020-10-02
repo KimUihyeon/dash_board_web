@@ -1,13 +1,13 @@
 package com.sutdy.dashboard.domain.todo;
 
-import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.dto.TodoDto;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.DateUtil;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+
 
 /**
  * @author kuh
@@ -30,7 +30,7 @@ public class Todo {
 
     private String contents;
 
-    private LocalDateTime cDate;
+    private Timestamp cDate;
 
     private boolean complete; // 완료 유무
 
@@ -38,9 +38,9 @@ public class Todo {
 
     private boolean isImportant; // 중요
 
-    private LocalDateTime sDate;
+    private Timestamp sDate;
 
-    private LocalDateTime eDate;
+    private Timestamp eDate;
 
     @Setter
     @ManyToOne
@@ -67,16 +67,16 @@ public class Todo {
             this.toDay = dto.isToDay();
         }
 
-        if(dto.getDate() != null && !DateUtil.dateTimeCompare(dto.getDate(), this.cDate , dateFormat)){
-            this.cDate = DateUtil.stringToLocalDateTime(dto.getDate(), dateFormat);
+        if(dto.getCDate() != null && !DateUtil.compare(dto.getCDate(), this.cDate , dateFormat)){
+            this.cDate = DateUtil.toTimeStamp(dto.getCDate(), dateFormat);
         }
 
-        if(dto.getEDate() != null && !DateUtil.dateTimeCompare(dto.getEDate(), this.eDate , dateFormat)){
-            this.eDate = DateUtil.stringToLocalDateTime(dto.getEDate(), dateFormat);
+        if(dto.getEDate() != null && !DateUtil.compare(dto.getEDate(), this.eDate , dateFormat)){
+            this.eDate = DateUtil.toTimeStamp(dto.getEDate(), dateFormat);
         }
 
-        if(dto.getSDate() != null && !DateUtil.dateTimeCompare(dto.getSDate(), this.sDate , dateFormat)){
-            this.sDate = DateUtil.stringToLocalDateTime(dto.getSDate(), dateFormat);
+        if(dto.getSDate() != null && !DateUtil.compare(dto.getSDate(), this.sDate , dateFormat)){
+            this.sDate = DateUtil.toTimeStamp(dto.getSDate(), dateFormat);
         }
     }
 }

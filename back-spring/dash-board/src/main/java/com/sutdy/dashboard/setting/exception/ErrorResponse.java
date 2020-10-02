@@ -4,7 +4,6 @@ import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.DateUtil;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.NoArgsConstructor;
 
 import java.time.LocalDateTime;
 
@@ -25,7 +24,6 @@ public class ErrorResponse {
 
 
     public ErrorResponse(){
-        LocalDateTime now = DateUtil.now();
-        this.date = DateUtil.localDateTimeToString(now , ApplicationStringConfig.DATE_FORMAT);
+        this.date = DateUtil.now(ApplicationStringConfig.DATE_FORMAT);
     }
 }

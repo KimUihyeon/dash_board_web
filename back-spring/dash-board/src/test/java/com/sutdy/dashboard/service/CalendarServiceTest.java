@@ -23,7 +23,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -77,7 +77,7 @@ public class CalendarServiceTest {
 
         CalendarDto dto = CalendarDto.builder()
                 .accountId(accountDto.getId())
-                .cDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                 .color("#fff")
                 .description("test Data")
                 .title("테스트 캘린더 테그 생성")
@@ -109,7 +109,7 @@ public class CalendarServiceTest {
                     .title(j + "title 테스트")
                     .color("#f0f")
                     .description("테스트 설명")
-                    .cDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
+                    .cDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                     .build();
 
             Calendar savedCalendar = this.calendarRepository.save(cal.toEntity());
@@ -129,13 +129,17 @@ public class CalendarServiceTest {
             savedEvents.add(savedCalendar.getId());
             originCalendars.add(savedCalendarDto);
         }
-        Collections.reverse(originCalendars);
-        for (CalendarDto cal : originCalendars) {
-        }
-
 
         //whene
         List<CalendarDto> calendars = this.calendarService.calendarFindByIds(savedEvents.toArray(new Long[savedEvents.size()]));
+
+        Collections.sort(originCalendars, (o1, o2) ->
+                o2.getId().compareTo(o1.getId())
+        );
+
+        Collections.sort(calendars, (o1, o2) ->
+                o2.getId().compareTo(o1.getId())
+        );
 
 
         //then
@@ -183,7 +187,7 @@ public class CalendarServiceTest {
                     .title(j + "title 테스트")
                     .color("#f0f")
                     .description("테스트 설명")
-                    .cDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
+                    .cDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                     .build();
 
             Calendar savedCalendar = this.calendarRepository.save(cal.toEntity());
@@ -192,7 +196,7 @@ public class CalendarServiceTest {
 
 
             for (int i = 0; i < eventCount; i++) {
-                LocalDateTime cDate = null;
+                Timestamp cDate = null;
                 if (i % 2 == 0) {
                     cDate = DateUtil.now();
                 }
@@ -213,13 +217,18 @@ public class CalendarServiceTest {
         }
         Collections.reverse(originCalendars);
 
-        String year = String.valueOf(DateUtil.now().getYear());
-        String month = String.valueOf(DateUtil.now().getMonthValue());
+        String year = String.valueOf(DateUtil.now().toLocalDateTime().getMonthValue());
+        String month = String.valueOf(DateUtil.now().toLocalDateTime().getMonthValue());
 
 
         //whene
         List<CalendarDto> calendars = this.calendarService
                 .eventsFindByCalendarIdsWhereMonth(savedEvents.toArray(new Long[savedEvents.size()]), year, month);
+
+        Collections.sort(originCalendars, (o1, o2) ->
+                o2.getId().compareTo(o1.getId())
+        );
+
         Collections.sort(calendars, (o1, o2) ->
                 o2.getId().compareTo(o1.getId())
         );
@@ -262,7 +271,7 @@ public class CalendarServiceTest {
         Account account = this.accountService.findById(loginId).toEntity();
         CalendarDto dto = CalendarDto.builder()
                 .accountId(account.getId())
-                .cDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                 .color("#fff")
                 .description("test Data")
                 .title("테스트 캘린더 테그 생성")
@@ -287,7 +296,7 @@ public class CalendarServiceTest {
 
             CalendarDto dto = CalendarDto.builder()
                     .accountId(account.getId())
-                    .cDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
+                    .cDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                     .color("#fff")
                     .description("test Data " + i)
                     .title("테스트 캘린더 테그 생성 " + i)
@@ -338,7 +347,7 @@ public class CalendarServiceTest {
         Account account = this.accountService.findById(loginId).toEntity();
         CalendarDto dto = CalendarDto.builder()
                 .accountId(account.getId())
-                .cDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                 .color("#fff")
                 .description("test Data")
                 .title("테스트 캘린더 생성")
@@ -363,7 +372,7 @@ public class CalendarServiceTest {
         Account account = this.accountService.findById(loginId).toEntity();
         CalendarDto dto = CalendarDto.builder()
                 .accountId(account.getId())
-                .cDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                 .color("#fff")
                 .description("test Data")
                 .title("테스트 캘린더 생성")

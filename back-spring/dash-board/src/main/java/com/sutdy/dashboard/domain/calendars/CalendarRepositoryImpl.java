@@ -6,7 +6,8 @@ import com.sutdy.dashboard.domain.todo.Todo;
 import org.springframework.data.jpa.repository.support.QuerydslRepositorySupport;
 import org.springframework.stereotype.Repository;
 
-import java.time.LocalDateTime;
+
+import java.sql.Timestamp;
 import java.util.*;
 
 /**
@@ -26,7 +27,7 @@ public class CalendarRepositoryImpl extends QuerydslRepositorySupport implements
 
     @Override
     public void deleteCalendar(Long id) {
-        this.jpaQueryFactory.delete(QEvent.event.calendar)
+        this.jpaQueryFactory.delete(QEvent.event)
                 .where(QEvent.event.calendar.id.eq(id))
                 .execute();
 
@@ -85,18 +86,18 @@ public class CalendarRepositoryImpl extends QuerydslRepositorySupport implements
     }
 
     @Override
-    public List<Calendar> calendarFindByIdsWhereDateRange(Long[] ids, LocalDateTime startDate, LocalDateTime endDate) {
+    public List<Calendar> calendarFindByIdsWhereDateRange(Long[] ids, Timestamp startDate, Timestamp endDate) {
         // TODO User아이디로 앞 단에서 못들어오게 체크할것.
 
         List<Event> events = this.jpaQueryFactory.selectFrom(QEvent.event)
                 .rightJoin(QEvent.event.calendar, QCalendar.calendar)
-                .where(QCalendar.calendar.id.in(ids)
-                        .and(
-                                
-                                //TODO :  내일 여기부터
-                                QEvent.event.sDate.goe(startDate.withNano(0)).and(QEvent.event.sDate.loe(endDate.withNano(0)))
-                                        .or(QEvent.event.eDate.goe(startDate.withNano(0)).and(QEvent.event.eDate.loe(endDate.withNano(0)))
-                                        )))
+                .where(QCalendar.calendar.id.in(ids))
+//                        .and(
+//
+//                                //TODO :  내일 여기부터
+//                                QEvent.event.sDate.goe(startDate).and(QEvent.event.sDate.loe(endDate.withNano(0)))
+//                                        .or(QEvent.event.eDate.goe(startDate.withNano(0)).and(QEvent.event.eDate.loe(endDate.withNano(0)))
+//                                        )))
                 .orderBy(QCalendar.calendar.id.desc())
                 .fetch();
 

@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.rmi.AccessException;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -65,7 +64,7 @@ public class TodoApiController {
 
     @PostMapping("/item")
     public TodoDto insertTodoItem(@RequestBody TodoDto todoRequest) {
-        todoRequest.setDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT));
+        todoRequest.setCDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT));
         TodoDto result = this.todoService.save(todoRequest);
         return result;
     }
@@ -110,7 +109,7 @@ public class TodoApiController {
 
     @PostMapping("/category")
     public TodoCategoryDto inertTodoCategory(@RequestBody TodoCategoryDto todoCategoryDto) {
-        todoCategoryDto.setCDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT));
+        todoCategoryDto.setCDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT));
         return this.todoCategoryService.save(todoCategoryDto);
     }
 

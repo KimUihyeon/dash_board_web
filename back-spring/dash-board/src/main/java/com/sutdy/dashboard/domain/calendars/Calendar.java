@@ -5,7 +5,8 @@ import com.sutdy.dashboard.dto.CalendarDto;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Set;
 
@@ -19,6 +20,7 @@ import java.util.Set;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table( name = "calendar")
 public class Calendar {
 
     @Id
@@ -28,7 +30,7 @@ public class Calendar {
     private String title;
     private String description;
     private String color; // HexColor 예)#fff
-    private LocalDateTime cDate;
+    private Timestamp cDate;
 
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
@@ -36,7 +38,7 @@ public class Calendar {
     private Account account;
 
     @Setter
-    @OneToMany(fetch = FetchType.LAZY, mappedBy = "calendar", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "calendar")
 //    @JoinColumn(name = "eventId")
     private List<Event> event;
 

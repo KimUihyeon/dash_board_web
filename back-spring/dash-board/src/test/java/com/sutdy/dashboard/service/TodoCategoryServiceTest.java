@@ -12,7 +12,6 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.List;
 
 /**
@@ -34,7 +33,7 @@ public class TodoCategoryServiceTest {
         //given
         for (int i = 0; i < 10; i++) {
             TodoCategoryDto categoryDto = new TodoCategoryDto();
-            categoryDto.setCDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT));
+            categoryDto.setCDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT));
             this.todoCategoryService.save(categoryDto);
         }
 
@@ -56,7 +55,7 @@ public class TodoCategoryServiceTest {
     public void todoCategory_저장_테스트() {
         //given
         TodoCategoryDto category = TodoCategoryDto.builder()
-                .cDate(DateUtil.localDateTimeToString(DateUtil.now(),
+                .cDate(DateUtil.toString(DateUtil.now(),
                         ApplicationStringConfig.DATE_FORMAT))
                 .fontColor("black")
                 .icon("icon-test")
@@ -85,7 +84,7 @@ public class TodoCategoryServiceTest {
     public void todoCategory_수정_테스트() {
         //given
         TodoCategoryDto category = TodoCategoryDto.builder()
-                .cDate(DateUtil.localDateTimeToString(DateUtil.now(),
+                .cDate(DateUtil.toString(DateUtil.now(),
                         ApplicationStringConfig.DATE_FORMAT))
                 .fontColor("black")
                 .icon("icon-test")

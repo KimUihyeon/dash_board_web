@@ -3,7 +3,6 @@ package com.sutdy.dashboard.setting.util;
 import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.domain.todo.Todo;
 import com.sutdy.dashboard.dto.AccountDto;
-import com.sutdy.dashboard.dto.AccountDtoTest;
 import com.sutdy.dashboard.dto.TodoDto;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import org.junit.Assert;
@@ -12,8 +11,6 @@ import org.junit.runner.RunWith;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-
-import java.time.LocalDateTime;
 
 /**
  * @author kuh
@@ -50,14 +47,14 @@ public class ModelMapperTest {
 
         //when
         AccountDto dto = modelMapper.map(account, AccountDto.class);
-        dto.setCDate(DateUtil.localDateTimeToString(account.getCDate(), ApplicationStringConfig.DATE_FORMAT));
+        dto.setCDate(DateUtil.toString(account.getCDate(), ApplicationStringConfig.DATE_FORMAT));
 
         //then
 
         Assert.assertEquals(dto.getName(), account.getName());
         Assert.assertEquals(dto.getId(), account.getId());
         Assert.assertEquals(dto.getPw(), account.getPw());
-        Assert.assertEquals(dto.getCDate(), DateUtil.localDateTimeToString(account.getCDate(), ApplicationStringConfig.DATE_FORMAT));
+        Assert.assertEquals(dto.getCDate(), DateUtil.toString(account.getCDate(), ApplicationStringConfig.DATE_FORMAT));
     }
 
 
@@ -105,7 +102,7 @@ public class ModelMapperTest {
     public void modelConverter_기본맵핑_테스트(){
 
         TodoDto dto = TodoDto.builder()
-                .date(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                 .memo("memo test Logic")
                 .title("title test Logic")
                 .build();

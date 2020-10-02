@@ -1,9 +1,11 @@
 package com.sutdy.dashboard.domain.system;
 
+import com.sutdy.dashboard.setting.util.DateUtil;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+
 
 /**
  * @author kuh
@@ -14,7 +16,6 @@ import java.time.LocalDateTime;
 @Entity
 @Builder
 @Getter
-@NoArgsConstructor
 @AllArgsConstructor
 public class SystemError {
 
@@ -22,7 +23,7 @@ public class SystemError {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private LocalDateTime cDate = LocalDateTime.now();
+    private Timestamp cDate;
 
     private String errorMessage;
 
@@ -62,6 +63,10 @@ public class SystemError {
      * error가 발생한 라인수
      */
     private int lineNumber;
+
+    public SystemError(){
+        this.cDate = DateUtil.now();
+    }
 
     @Override
     public String toString() {

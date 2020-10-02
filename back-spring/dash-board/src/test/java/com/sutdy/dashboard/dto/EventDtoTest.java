@@ -10,8 +10,6 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDateTime;
-
 /**
  * dto - entity
  * modelMapper Test
@@ -28,7 +26,7 @@ public class EventDtoTest {
         EventDto dto = EventDto.builder()
                 .icon("icon")
                 .context("테스트 내용")
-                .cDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                 .title("Test title")
                 .build();
 
@@ -39,7 +37,7 @@ public class EventDtoTest {
         Assert.assertEquals(dto.getContext(), event.getContext());
         Assert.assertEquals(dto.getIcon(), event.getIcon());
         Assert.assertEquals(dto.getTitle(), event.getTitle());
-        Assert.assertEquals(dto.getCDate(), DateUtil.localDateTimeToString(event.getCDate() , ApplicationStringConfig.DATE_FORMAT));
+        Assert.assertEquals(dto.getCDate(), DateUtil.toString(event.getCDate() , ApplicationStringConfig.DATE_FORMAT));
         Assert.assertEquals(dto.getId(), event.getId());
     }
 
@@ -63,7 +61,7 @@ public class EventDtoTest {
         }
 
         //then
-        Assert.assertEquals(dto.getCDate(), DateUtil.localDateTimeToString(event.getCDate() , ApplicationStringConfig.DATE_FORMAT));
+        Assert.assertEquals(dto.getCDate(), DateUtil.toString(event.getCDate() , ApplicationStringConfig.DATE_FORMAT));
         Assert.assertEquals(dto.getContext(), event.getContext());
         Assert.assertEquals(dto.getIcon(), event.getIcon());
         Assert.assertEquals(dto.getTitle(), event.getTitle());
@@ -86,8 +84,8 @@ public class EventDtoTest {
         Event reconvertEvent = new EventDto().of(event).toEntity();
 
         //then
-        Assert.assertEquals(DateUtil.localDateTimeToString(reconvertEvent.getCDate(), ApplicationStringConfig.DATE_FORMAT)
-                , DateUtil.localDateTimeToString(event.getCDate() , ApplicationStringConfig.DATE_FORMAT));
+        Assert.assertEquals(DateUtil.toString(reconvertEvent.getCDate(), ApplicationStringConfig.DATE_FORMAT)
+                , DateUtil.toString(event.getCDate() , ApplicationStringConfig.DATE_FORMAT));
         Assert.assertEquals(reconvertEvent.getContext(), event.getContext());
         Assert.assertEquals(reconvertEvent.getIcon(), event.getIcon());
         Assert.assertEquals(reconvertEvent.getTitle(), event.getTitle());

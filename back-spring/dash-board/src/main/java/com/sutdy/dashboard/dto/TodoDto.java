@@ -11,7 +11,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.PropertyMap;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+
 
 /**
  * @author kuh
@@ -30,13 +31,13 @@ public class TodoDto implements ToConverter<Todo, TodoDto> {
 
     private String memo;
 
-    private String date;
-
     private boolean todoComplete;
 
     private boolean toDay; // 오늘 할일
 
     private boolean isImportant; // 중요
+
+    private String cDate;
 
     private String sDate;   // 스케줄 시작일
 
@@ -51,20 +52,16 @@ public class TodoDto implements ToConverter<Todo, TodoDto> {
     public Todo toEntity() {
         String dateFormat = ApplicationStringConfig.DATE_FORMAT;
 
-        LocalDateTime cDate = this.date == null ? null : DateUtil.stringToLocalDateTime(this.date, dateFormat);
-        LocalDateTime sDate = this.sDate == null ? null : DateUtil.stringToLocalDateTime(this.sDate, dateFormat);
-        LocalDateTime eDate = this.eDate == null ? null : DateUtil.stringToLocalDateTime(this.eDate, dateFormat);
-
         return Todo.builder()
                 .id(this.id)
-                .cDate(cDate)
                 .complete(this.todoComplete)
                 .contents(this.memo)
                 .title(this.title)
                 .isImportant(this.isImportant)
                 .toDay(this.toDay)
-                .sDate(sDate)
-                .eDate(eDate)
+                .cDate(DateUtil.toTimeStamp(this.cDate, dateFormat))
+                .sDate(DateUtil.toTimeStamp(this.sDate, dateFormat))
+                .eDate(DateUtil.toTimeStamp(this.eDate, dateFormat))
                 .build();
     }
 
@@ -81,15 +78,15 @@ public class TodoDto implements ToConverter<Todo, TodoDto> {
                 map().setToDay(source.isToDay());
                 map().setImportant(source.isImportant());
                 map().setSDate(
-                        DateUtil.localDateTimeToString(
+                        DateUtil.toString(
                                 source.getSDate(), ApplicationStringConfig.DATE_FORMAT)
                 );
                 map().setEDate(
-                        DateUtil.localDateTimeToString(
+                        DateUtil.toString(
                                 source.getEDate(), ApplicationStringConfig.DATE_FORMAT)
                 );
-                map().setDate(
-                        DateUtil.localDateTimeToString(
+                map().setCDate(
+                        DateUtil.toString(
                                 source.getCDate(), ApplicationStringConfig.DATE_FORMAT)
                 );
             }
@@ -97,15 +94,15 @@ public class TodoDto implements ToConverter<Todo, TodoDto> {
 
         TodoDto dto = ModelConverter.map(propertyMap, todo , TodoDto.class);
         dto.setSDate(
-                DateUtil.localDateTimeToString(
+                DateUtil.toString(
                         todo.getSDate(), ApplicationStringConfig.DATE_FORMAT)
         );
         dto.setEDate(
-                DateUtil.localDateTimeToString(
+                DateUtil.toString(
                         todo.getEDate(), ApplicationStringConfig.DATE_FORMAT)
         );
-        dto.setDate(
-                DateUtil.localDateTimeToString(
+        dto.setCDate(
+                DateUtil.toString(
                         todo.getCDate(), ApplicationStringConfig.DATE_FORMAT)
         );
         return dto;

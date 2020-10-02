@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -132,8 +133,8 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
             int yearTemp = Integer.parseInt(year);
             int monthTemp = Integer.parseInt(month);
 
-            LocalDateTime startDate = DateUtil.firstDayOfMonth(yearTemp, monthTemp, DateUtil.Time.start);
-            LocalDateTime endDate = DateUtil.lastDayOfMonth(yearTemp, monthTemp, DateUtil.Time.end);
+            Timestamp startDate = DateUtil.firstDayOfMonth(yearTemp, monthTemp, DateUtil.Time.start);
+            Timestamp endDate = DateUtil.lastDayOfMonth(yearTemp, monthTemp, DateUtil.Time.end);
             return this.calendarRepository.calendarFindByIdsWhereDateRange(ids, startDate, endDate)
                     .stream()
                     .map(c -> {

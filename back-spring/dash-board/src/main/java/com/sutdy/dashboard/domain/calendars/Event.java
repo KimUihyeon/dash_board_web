@@ -6,7 +6,7 @@ import com.sutdy.dashboard.setting.util.DateUtil;
 import lombok.*;
 
 import javax.persistence.*;
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
 
 /**
  * @author kuh
@@ -18,6 +18,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Entity
+@Table(name = "event")
 public class Event {
 
     @Id
@@ -28,13 +29,13 @@ public class Event {
     private String icon;
     private String context;
 
-    private LocalDateTime cDate; // 생성
-    private LocalDateTime uDate; // 업데이트
-    private LocalDateTime sDate; // 시작일
-    private LocalDateTime eDate; // 종료일
+    private Timestamp cDate; // 생성
+    private Timestamp uDate; // 업데이트
+    private Timestamp sDate; // 시작일
+    private Timestamp eDate; // 종료일
 
     @Setter
-    @ManyToOne(fetch = FetchType.LAZY)
+    @ManyToOne
     @JoinColumn(name = "calendarId")
     private Calendar calendar;
 
@@ -48,11 +49,11 @@ public class Event {
         if (!this.context.equals(dto.getContext())) {
             this.context = dto.getContext();
         }
-        if (!DateUtil.dateTimeCompare(dto.getSDate(), this.sDate, ApplicationStringConfig.DATE_FORMAT)) {
-            this.sDate = DateUtil.stringToLocalDateTime(dto.getSDate(), ApplicationStringConfig.DATE_FORMAT);
+        if (!DateUtil.compare(dto.getSDate(), this.sDate, ApplicationStringConfig.DATE_FORMAT)) {
+            this.sDate = DateUtil.toTimeStamp(dto.getSDate(), ApplicationStringConfig.DATE_FORMAT);
         }
-        if (!DateUtil.dateTimeCompare(dto.getEDate(), this.sDate, ApplicationStringConfig.DATE_FORMAT)) {
-            this.eDate = DateUtil.stringToLocalDateTime(dto.getEDate(), ApplicationStringConfig.DATE_FORMAT);
+        if (!DateUtil.compare(dto.getEDate(), this.sDate, ApplicationStringConfig.DATE_FORMAT)) {
+            this.eDate = DateUtil.toTimeStamp(dto.getEDate(), ApplicationStringConfig.DATE_FORMAT);
         }
         this.uDate = DateUtil.now();
     }

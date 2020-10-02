@@ -13,8 +13,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-import java.time.LocalDateTime;
-
 /**
  * dto - entity
  * modelMapper Test
@@ -32,7 +30,7 @@ public class AccountDtoTest {
     public void AccountDto_엔티티_컨버팅_테스트() {
         //given
         String pw = "";
-        String cDate = DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT);
+        String cDate = DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT);
         logger.info(cDate);
         try {
             pw = SecurityStringUtil.encryptMD5("123123");
@@ -56,7 +54,7 @@ public class AccountDtoTest {
         Assert.assertEquals(account.getId(), dto.getId());
         Assert.assertEquals(account.getPw(), dto.getPw());
         Assert.assertEquals
-                (DateUtil.localDateTimeToString(
+                (DateUtil.toString(
                         account.getCDate(), ApplicationStringConfig.DATE_FORMAT
                 ), dto.getCDate());
 
@@ -66,7 +64,7 @@ public class AccountDtoTest {
     public void AccountDto_컨버팅_테스트() {
         //given
         String pw = "";
-        String cDate = DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT);
+        String cDate = DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT);
         logger.info(cDate);
         try {
             pw = SecurityStringUtil.encryptMD5("123123");
@@ -91,7 +89,7 @@ public class AccountDtoTest {
         Assert.assertEquals(account.getId(), dto.getId());
         Assert.assertEquals(account.getPw(), dto.getPw());
         Assert.assertEquals
-                (DateUtil.localDateTimeToString(
+                (DateUtil.toString(
                         account.getCDate(), ApplicationStringConfig.DATE_FORMAT
                 ), dto.getCDate());
 
@@ -102,7 +100,7 @@ public class AccountDtoTest {
 
         //given
         String pw = "";
-        String cDate = DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT);
+        String cDate = DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT);
         logger.info(cDate);
         try {
             pw = SecurityStringUtil.encryptMD5("123123");

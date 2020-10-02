@@ -1,9 +1,9 @@
 package com.sutdy.dashboard.setting.util;
 
-import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.sql.Timestamp;
 import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.YearMonth;
@@ -19,84 +19,83 @@ public class DateUtil {
 
     private static Logger logger = LoggerFactory.getLogger(DateUtil.class);
 
-    public static LocalDateTime stringToLocalDateTime(String dateStr, String format) {
+    public static Timestamp toTimeStamp(String dateStr, String format) {
         if (dateStr == null) {
             return null;
         }
-
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(format);
-        return LocalDateTime.parse(dateStr, formatter);
+        return Timestamp.valueOf(LocalDateTime.parse(dateStr, formatter));
     }
 
-    public static String localDateTimeToString(LocalDateTime localDateTime, String format) {
-        if (localDateTime == null) {
+    public static String toString(Timestamp timestamp, String format) {
+        if (timestamp == null) {
             return null;
         }
         DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern(format);
-        return localDateTime.format(dateTimeFormatter);
+        return timestamp.toLocalDateTime().format(dateTimeFormatter);
     }
 
-    public static boolean dateTimeCompare(LocalDateTime localDateTime1, LocalDateTime localDateTime2, String format) {
+    public static boolean compare(Timestamp timestamp1, Timestamp timestamp2, String format) {
         try {
-            if (localDateTime1 == null && localDateTime2 == null) {
+            if (timestamp1 == null && timestamp2 == null) {
                 return true;
             }
-            return localDateTimeToString(localDateTime1, format).equals(localDateTimeToString(localDateTime2, format));
+            return toString(timestamp1, format).equals(toString(timestamp2, format));
         } catch (NullPointerException e) {
-            logger.error(e.getStackTrace().toString());
             return false;
         }
     }
 
-    public static boolean dateTimeCompare(String localDateTime1, LocalDateTime localDateTime2, String format) {
+    public static boolean compare(String dateStr1, String dateStr2, String format) {
         try {
-            LocalDateTime localDateTime_1 = stringToLocalDateTime(localDateTime1, format);
-            return dateTimeCompare(localDateTime_1, localDateTime2, format);
+            Timestamp t1 = toTimeStamp(dateStr1, format);
+            Timestamp t2 = toTimeStamp(dateStr2, format);
+            return compare(t1, t2, format);
         } catch (NullPointerException e) {
-            logger.error(e.getStackTrace().toString());
+            return false;
+        }
+    }
+
+    public static boolean compare(String dateStr1, Timestamp t2, String format) {
+        try {
+            Timestamp t1 = toTimeStamp(dateStr1, format);
+            return compare(t1, t2, format);
+        } catch (NullPointerException e) {
             return false;
         }
     }
 
 
-    public static LocalDateTime now() {
-        return LocalDateTime.now();
+    public static Timestamp now() {
+        return Timestamp.valueOf(LocalDateTime.now());
     }
 
     public static String now(String format) {
-        return localDateTimeToString(DateUtil.now(), format);
+        return toString(DateUtil.now(), format);
     }
 
-    public static LocalDateTime firstDayOfMonth(int year, int month, Time time) {
-        switch (time) {
-            case start: {
-                return LocalDateTime.of(year, month, 1,
-                        0, 0, 0 );
-            }
-            case end:
-            default: {
-                return LocalDateTime.of(year, month, 1,
-                        23, 59, 59);
-            }
-        }
+    public static Timestamp firstDayOfMonth(int year, int month, Time time) {
+        LocalDateTime ldt = null;
+
+        if (time == Time.start)
+            ldt = LocalDateTime.of(year, month, 1, 0, 0, 0);
+        else
+            ldt = LocalDateTime.of(year, month, 1, 23, 59, 59);
+
+        return Timestamp.valueOf(ldt);
     }
 
-    public static LocalDateTime lastDayOfMonth(int year, int month, Time time) {
+    public static Timestamp lastDayOfMonth(int year, int month, Time time) {
         YearMonth yearMonth = YearMonth.of(year, month);
         LocalDate localDate = yearMonth.atEndOfMonth();
 
-        switch (time) {
-            case start: {
-                return LocalDateTime.of(
-                        localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth(),
-                        0, 0, 0);
-            }
-            case end:
-            default: {
-                return LocalDateTime.of(
-                        localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth(),
-                        23, 59, 59);
-            }
-        }
+        LocalDateTime ldt = null;
+
+        if (time == Time.start)
+            ldt = LocalDateTime.of(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth(), 0, 0, 0);
+        else
+            ldt = LocalDateTime.of(localDate.getYear(), localDate.getMonthValue(), localDate.getDayOfMonth(), 23, 59, 59);
+
+        return Timestamp.valueOf(ldt);
     }
 }

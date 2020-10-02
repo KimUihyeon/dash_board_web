@@ -1,6 +1,5 @@
 package com.sutdy.dashboard.setting;
 
-import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.dto.AccountDto;
 import com.sutdy.dashboard.service.AccountService;
 import com.sutdy.dashboard.setting.util.DateUtil;
@@ -9,10 +8,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.context.event.ApplicationReadyEvent;
 import org.springframework.context.ApplicationListener;
-import org.springframework.context.event.EventListener;
 import org.springframework.stereotype.Component;
-
-import java.time.LocalDateTime;
 
 /**
  * @author kuh
@@ -54,7 +50,7 @@ public class ProjectSetup implements ApplicationListener<ApplicationReadyEvent> 
         logger.info("\t"+ pipelineNumber +". Account default data");
 
         AccountDto account = AccountDto.builder()
-                .cDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                 .id("admin@admin.com")
                 .pw("12341234")
                 .name("운영자")

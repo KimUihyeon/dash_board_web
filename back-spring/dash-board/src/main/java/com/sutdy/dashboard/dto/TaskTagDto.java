@@ -35,7 +35,7 @@ public class TaskTagDto implements ToConverter<Calendar, TaskTagDto> {
     public Calendar toEntity() {
         return Calendar.builder()
                 .color(this.color)
-                .cDate(DateUtil.stringToLocalDateTime(this.cDate, ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.toTimeStamp(this.cDate, ApplicationStringConfig.DATE_FORMAT))
                 .description(this.description)
                 .title(this.title)
                 .build();

@@ -2,8 +2,6 @@ package com.sutdy.dashboard.dto;
 
 
 import com.sutdy.dashboard.domain.calendars.Calendar;
-import com.sutdy.dashboard.domain.members.Account;
-import com.sutdy.dashboard.domain.todo.Todo;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.DateUtil;
 import com.sutdy.dashboard.setting.util.SecurityStringUtil;
@@ -14,10 +12,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
-import sun.rmi.runtime.Log;
-
-import java.time.LocalDateTime;
-import java.util.Date;
 
 /**
  * dto - entity
@@ -36,7 +30,7 @@ public class CalendarDtoTest {
 
         //given
         String pw = "";
-        String cDate = DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT);
+        String cDate = DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT);
         logger.info(cDate);
         try {
             pw = SecurityStringUtil.encryptMD5("123123");
@@ -80,7 +74,7 @@ public class CalendarDtoTest {
 
         //given
         String pw = "";
-        String cDate = DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT);
+        String cDate = DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT);
         logger.info(cDate);
         try {
             pw = SecurityStringUtil.encryptMD5("123123");
@@ -98,7 +92,7 @@ public class CalendarDtoTest {
 
         CalendarDto calendarDto = CalendarDto.builder()
                 .title("1")
-                .cDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                 .color("#fff")
                 .accountId(accountDto.toEntity().getId())
                 .description("테스트 설명")
@@ -118,7 +112,7 @@ public class CalendarDtoTest {
 
         //given
         String pw = "";
-        String cDate = DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT);
+        String cDate = DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT);
         logger.info(cDate);
         try {
             pw = SecurityStringUtil.encryptMD5("123123");

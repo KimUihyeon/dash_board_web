@@ -1,6 +1,5 @@
 package com.sutdy.dashboard.dto;
 
-import com.sutdy.dashboard.domain.calendars.Calendar;
 import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.dto.convert.interfacies.ToConverter;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
@@ -11,9 +10,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.PropertyMap;
-
-import javax.persistence.Id;
-import java.time.LocalDateTime;
 
 /**
  * @author kuh
@@ -43,10 +39,10 @@ public class AccountDto implements ToConverter<Account, AccountDto> {
                 .pw(this.pw)
                 .name(this.name)
                 .cDate(
-                        DateUtil.stringToLocalDateTime(this.cDate, ApplicationStringConfig.DATE_FORMAT)
+                        DateUtil.toTimeStamp(this.cDate, ApplicationStringConfig.DATE_FORMAT)
                 )
                 .dDate(
-                        DateUtil.stringToLocalDateTime(this.dDate, ApplicationStringConfig.DATE_FORMAT)
+                        DateUtil.toTimeStamp(this.dDate, ApplicationStringConfig.DATE_FORMAT)
                 )
                 .build();
     }
@@ -61,17 +57,17 @@ public class AccountDto implements ToConverter<Account, AccountDto> {
                 map().setId(source.getId());
                 map().setName(source.getName());
                 if(source.getCDate() != null){
-                    map().setCDate(DateUtil.localDateTimeToString(source.getCDate(), ApplicationStringConfig.DATE_FORMAT));
+                    map().setCDate(DateUtil.toString(source.getCDate(), ApplicationStringConfig.DATE_FORMAT));
                 }
                 if(source.getDDate() != null){
-                    map().setDDate(DateUtil.localDateTimeToString(source.getDDate(), ApplicationStringConfig.DATE_FORMAT));
+                    map().setDDate(DateUtil.toString(source.getDDate(), ApplicationStringConfig.DATE_FORMAT));
                 }
             }
         };
 
         AccountDto dto = ModelConverter.map(map, account, AccountDto.class);
-        dto.setCDate(DateUtil.localDateTimeToString(account.getCDate(), ApplicationStringConfig.DATE_FORMAT));
-        dto.setDDate(DateUtil.localDateTimeToString(account.getDDate(), ApplicationStringConfig.DATE_FORMAT));
+        dto.setCDate(DateUtil.toString(account.getCDate(), ApplicationStringConfig.DATE_FORMAT));
+        dto.setDDate(DateUtil.toString(account.getDDate(), ApplicationStringConfig.DATE_FORMAT));
         return dto;
     }
 }

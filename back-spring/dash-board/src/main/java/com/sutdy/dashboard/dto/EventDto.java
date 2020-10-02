@@ -1,6 +1,5 @@
 package com.sutdy.dashboard.dto;
 
-import com.sutdy.dashboard.domain.calendars.Calendar;
 import com.sutdy.dashboard.domain.calendars.Event;
 import com.sutdy.dashboard.dto.convert.interfacies.ToConverter;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
@@ -10,9 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.modelmapper.PropertyMap;
-
-import java.time.LocalDateTime;
 
 @Data
 @Builder
@@ -41,20 +37,20 @@ public class EventDto implements ToConverter<Event, EventDto> {
                 .title(this.title)
                 .icon(this.icon)
                 .context(this.context)
-                .cDate(DateUtil.stringToLocalDateTime(this.cDate, ApplicationStringConfig.DATE_FORMAT))
-                .uDate(DateUtil.stringToLocalDateTime(this.uDate, ApplicationStringConfig.DATE_FORMAT))
-                .sDate(DateUtil.stringToLocalDateTime(this.sDate, ApplicationStringConfig.DATE_FORMAT))
-                .eDate(DateUtil.stringToLocalDateTime(this.eDate, ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.toTimeStamp(this.cDate, ApplicationStringConfig.DATE_FORMAT))
+                .uDate(DateUtil.toTimeStamp(this.uDate, ApplicationStringConfig.DATE_FORMAT))
+                .sDate(DateUtil.toTimeStamp(this.sDate, ApplicationStringConfig.DATE_FORMAT))
+                .eDate(DateUtil.toTimeStamp(this.eDate, ApplicationStringConfig.DATE_FORMAT))
                 .build();
     }
 
     @Override
     public EventDto of(Event event) {
         EventDto eventDto = ModelConverter.map(event, EventDto.class);
-        eventDto.setCDate(DateUtil.localDateTimeToString(event.getCDate(), ApplicationStringConfig.DATE_FORMAT));
-        eventDto.setUDate(DateUtil.localDateTimeToString(event.getUDate(), ApplicationStringConfig.DATE_FORMAT));
-        eventDto.setSDate(DateUtil.localDateTimeToString(event.getSDate(), ApplicationStringConfig.DATE_FORMAT));
-        eventDto.setEDate(DateUtil.localDateTimeToString(event.getEDate(), ApplicationStringConfig.DATE_FORMAT));
+        eventDto.setCDate(DateUtil.toString(event.getCDate(), ApplicationStringConfig.DATE_FORMAT));
+        eventDto.setUDate(DateUtil.toString(event.getUDate(), ApplicationStringConfig.DATE_FORMAT));
+        eventDto.setSDate(DateUtil.toString(event.getSDate(), ApplicationStringConfig.DATE_FORMAT));
+        eventDto.setEDate(DateUtil.toString(event.getEDate(), ApplicationStringConfig.DATE_FORMAT));
         return eventDto;
 
     }

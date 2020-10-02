@@ -1,6 +1,7 @@
 package com.sutdy.dashboard.domain.calendars;
 
-import java.time.LocalDateTime;
+
+import java.sql.Timestamp;
 import java.util.List;
 
 /**
@@ -16,5 +17,5 @@ public interface CalendarCustomRepository {
 
     public List<Calendar> calendarFindByIds(Long[] ids);
 
-    public List<Calendar> calendarFindByIdsWhereDateRange(Long[] ids, LocalDateTime startDate, LocalDateTime endDate);
+    public List<Calendar> calendarFindByIdsWhereDateRange(Long[] ids, Timestamp startDate, Timestamp endDate);
 }

@@ -35,7 +35,7 @@ public class CalendarApiController {
 
     @PostMapping("/")
     public CalendarDto saveCalendar(@RequestBody CalendarDto calendarDto) throws NoSuchAlgorithmException {
-        calendarDto.setCDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT));
+        calendarDto.setCDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT));
         return this.calendarService.save(calendarDto);
     }
 
@@ -62,7 +62,7 @@ public class CalendarApiController {
 
     @PostMapping("/event")
     public EventDto saveEvent(@RequestBody EventDto eventDto) {
-        eventDto.setCDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT));
+        eventDto.setCDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT));
         return this.calendarService.eventSave(eventDto);
     }
 

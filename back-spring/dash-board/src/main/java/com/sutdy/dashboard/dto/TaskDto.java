@@ -9,7 +9,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.modelmapper.PropertyMap;
 
-import java.time.LocalDateTime;
+import java.sql.Timestamp;
+
 
 /**
  * @author kuh
@@ -25,9 +26,10 @@ public class TaskDto implements ToConverter<Event, TaskDto> {
     private Long id;
 
     private String title;
+
     private String description;
 //    private String color; // HexColor 예)#fff
-    private LocalDateTime cDate;
+    private Timestamp cDate;
 
 
     @Override

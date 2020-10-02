@@ -7,7 +7,6 @@ import com.sutdy.dashboard.setting.util.DateUtil;
 import com.sutdy.dashboard.setting.util.data.ModelConverter;
 import lombok.*;
 
-import java.time.LocalDateTime;
 import java.util.List;
 
 @Data
@@ -34,7 +33,7 @@ public class CalendarDto implements ToConverter<Calendar, CalendarDto> {
                 .title(this.title)
                 .description(this.description)
                 .color(this.color)
-                .cDate(DateUtil.stringToLocalDateTime(this.cDate, ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.toTimeStamp(this.cDate, ApplicationStringConfig.DATE_FORMAT))
                 .build();
     }
 
@@ -45,10 +44,10 @@ public class CalendarDto implements ToConverter<Calendar, CalendarDto> {
 //                .title(calendar.getTitle())
 //                .description(calendar.getDescription())
 //                .color(calendar.getColor())
-//                .cDate(DateUtil.localDateTimeToString(calendar.getCDate(), ApplicationStringConfig.DATE_FORMAT))
+//                .cDate(DateUtil.TimestampToString(calendar.getCDate(), ApplicationStringConfig.DATE_FORMAT))
 //                .build();
         CalendarDto dto = ModelConverter.map(calendar, CalendarDto.class);
-        dto.setCDate(DateUtil.localDateTimeToString(calendar.getCDate(), ApplicationStringConfig.DATE_FORMAT));
+        dto.setCDate(DateUtil.toString(calendar.getCDate(), ApplicationStringConfig.DATE_FORMAT));
         return dto;
 //        return dto;
     }

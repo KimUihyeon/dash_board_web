@@ -4,19 +4,15 @@ import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.domain.members.AccountRepository;
 import com.sutdy.dashboard.domain.todo.TodoCategory;
 import com.sutdy.dashboard.domain.todo.TodoCategoryRepository;
-import com.sutdy.dashboard.domain.todo.TodoRepository;
-import com.sutdy.dashboard.dto.AccountDto;
 import com.sutdy.dashboard.dto.TodoCategoryDto;
 import com.sutdy.dashboard.service.common.BaseCrudService;
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.util.DateUtil;
 import com.sutdy.dashboard.setting.util.StringUtil;
-import com.sutdy.dashboard.setting.util.data.ModelConverter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
-import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -44,7 +40,7 @@ public class TodoCategoryService extends BaseCrudService<TodoCategory, TodoCateg
         List<TodoCategoryDto> defaultData = new ArrayList<>();
         defaultData.add(TodoCategoryDto.builder()
                 .canModify(false)
-                .cDate(DateUtil.localDateTimeToString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
                 .title("기본 디렉토리")
                 .icon("el-icon-folder-delete")
                 .iconColor("white")

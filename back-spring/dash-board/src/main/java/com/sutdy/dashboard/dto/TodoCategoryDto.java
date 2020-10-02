@@ -9,7 +9,6 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.modelmapper.PropertyMap;
 
 /**
  * @author kuh
@@ -45,7 +44,7 @@ public class TodoCategoryDto implements ToConverter<TodoCategory, TodoCategoryDt
                 .title(this.title)
                 .icon(this.icon)
                 .canModify(this.canModify)
-                .cDate(DateUtil.stringToLocalDateTime(this.cDate, ApplicationStringConfig.DATE_FORMAT))
+                .cDate(DateUtil.toTimeStamp(this.cDate, ApplicationStringConfig.DATE_FORMAT))
                 .iconColor(this.iconColor)
                 .fontColor(this.fontColor)
                 .build();
@@ -55,7 +54,7 @@ public class TodoCategoryDto implements ToConverter<TodoCategory, TodoCategoryDt
     @Override
     public TodoCategoryDto of(TodoCategory todoCategory) {
         TodoCategoryDto categoryDto = ModelConverter.map(todoCategory, TodoCategoryDto.class);
-        categoryDto.setCDate(DateUtil.localDateTimeToString(todoCategory.getCDate(), ApplicationStringConfig.DATE_FORMAT));
+        categoryDto.setCDate(DateUtil.toString(todoCategory.getCDate(), ApplicationStringConfig.DATE_FORMAT));
         return categoryDto;
     }
 
