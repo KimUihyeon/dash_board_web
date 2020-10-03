@@ -37,7 +37,7 @@ import java.util.stream.Collectors;
 @RunWith(SpringRunner.class)
 public class CalendarServiceTest {
 
-    private Logger logger = LoggerFactory.getLogger(CalendarServiceTest.class);
+    private final Logger logger = LoggerFactory.getLogger(CalendarServiceTest.class);
 
     @Autowired
     private CalendarService calendarService;
@@ -101,7 +101,7 @@ public class CalendarServiceTest {
         short calCount = 3;
         short eventCount = 7;
 
-        List<CalendarDto> originCalendars = new ArrayList();
+        List<CalendarDto> originCalendars = new ArrayList<>();
         List<Long> savedEvents = new ArrayList<>();
 
         for (int j = 0; j < calCount; j++) {
@@ -173,13 +173,13 @@ public class CalendarServiceTest {
 
     @Test
     @Transactional
-    public void calendar_event_범위_리스트_불러오기_테스트() {
+    public void calendar_event_범위_리스트_가져오기_테스트() {
 
         //given
         short calCount = 3;
         short eventCount = 7;
 
-        List<CalendarDto> originCalendars = new ArrayList();
+        List<CalendarDto> originCalendars = new ArrayList<>();
         List<Long> savedEvents = new ArrayList<>();
 
         for (int j = 0; j < calCount; j++) {
