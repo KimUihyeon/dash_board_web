@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.rmi.AccessException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
@@ -58,16 +59,33 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
         return calendarDto;
     }
 
+
     @Override
     @Transactional
-    public CalendarDto save(CalendarDto dto) throws NoSuchAlgorithmException {
-        Calendar entity = dto.toEntity();
-        if (dto.getAccountId() != null) {
-            Account account = this.accountRepository.findById(dto.getAccountId())
-                    .orElseThrow(() -> new IllegalArgumentException(NOT_FIND_DATA));
+    @Deprecated
+    public CalendarDto save(CalendarDto dto) throws UnsupportedOperationException {
+        // ## note : 보안문제로 미사용
+        throw new UnsupportedOperationException("");
+    }
 
-            entity.setAccount(account);
+    /**
+     *
+     * @param dto request로 들어온 객체
+     * @param userId 필터를 타고 JWT로 생성된 userId
+     * @return
+     * @throws AccessException 권한처리
+     */
+    @Transactional
+    public CalendarDto save(CalendarDto dto, String userId) throws AccessException {
+        Calendar entity = dto.toEntity();
+        if(!entity.getAccount().getId().equals(userId)){
+            throw new AccessException("잘못된 접근 입니다.");
         }
+
+        Account account = this.accountRepository.findById(dto.getAccountId())
+                .orElseThrow(() -> new IllegalArgumentException(NOT_FIND_DATA));
+
+        entity.setAccount(account);
         return new CalendarDto().of(this.calendarRepository.save(entity));
     }
 

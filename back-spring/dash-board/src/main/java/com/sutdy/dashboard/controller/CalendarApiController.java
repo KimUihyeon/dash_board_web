@@ -34,7 +34,8 @@ public class CalendarApiController {
     }
 
     @PostMapping("/")
-    public CalendarDto saveCalendar(@RequestBody CalendarDto calendarDto) throws NoSuchAlgorithmException {
+    public CalendarDto saveCalendar(@RequestBody CalendarDto calendarDto, String userId) throws NoSuchAlgorithmException {
+        // String UserId -> 이부분 나중에 request jwt로 생성해서 넣어주도록 변경.
         calendarDto.setCDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT));
         return this.calendarService.save(calendarDto);
     }
