@@ -4,6 +4,7 @@ import Vuex from 'vuex'
 import { appStoreBudle } from './common/AppStore';
 import { userStoreBudle } from './common/UserStore';
 import { locationStoreBudle } from './common/LocationSotre';
+import { calendarStoreBudle } from './calendar/CalendarStore';
 import { todoStoreBudle } from './todo/TodoStore';
 import { weatherStoreBudle } from './weather/WeatherStore';
 import { timerStoreBudle } from './common/TimerStore'
@@ -11,7 +12,7 @@ import { timerStoreBudle } from './common/TimerStore'
 Vue.use(Vuex);
 
 
-let stores = [ appStoreBudle, userStoreBudle , locationStoreBudle , todoStoreBudle , weatherStoreBudle ,timerStoreBudle ];
+let stores = [ appStoreBudle, userStoreBudle , locationStoreBudle , todoStoreBudle , weatherStoreBudle ,timerStoreBudle , calendarStoreBudle ];
 
 /**
  *  state : {

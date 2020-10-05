@@ -4,6 +4,7 @@
         :visible.sync="show"
         :close-on-click-modal="false"
     >
+    
         <ValidationObserver v-slot="{ handleSubmit }">
             <el-form ref="form" label-width="120px">
                 <div>
@@ -39,6 +40,9 @@
                                 range-separator="To"
                                 start-placeholder="Start date"
                                 end-placeholder="End date"
+                                
+                                format="yyyy/MM/dd HH:mm:ss"
+                                value-format="yyyy/MM/dd HH:mm:ss"
                                 :change="()=>
                                     { console.log('change'); nextFouse(null, $refs.memo);}"
                             >
@@ -58,7 +62,29 @@
                         </el-form-item>
                     </ValidationProvider>
                 </div>
+                
+                <div>       
+                    <ValidationProvider name="required|" v-slot="{ errors }" rules="required">
+                        <el-form-item label="캘린더">
+                            <el-select v-model="cloneEvnet.calendarId" placeholder="Select">
+                                <SelectBox :items='cals'/>
+<!--                                 
+                                <el-option
+                                    v-for="item in cals"
+                                    :key="item.id"
+                                    :label="item.title"
+                                    :value="item.id">
+                                                                    
+                                        <span style="float: left">{{ item.title }}</span>
+                                        <span style="float: right; color: #8492a6; font-size: 13px">{{ item.title }}</span>  
+                                </el-option> -->
+                            </el-select>
+                        </el-form-item>
+                    </ValidationProvider>
+                </div>
+                
                 <div>
+                    {{ cloneEvnet.calendarId }}
                     {{ startEndDate }}
                 </div>
 
@@ -69,7 +95,7 @@
                             :rows="5" 
                             ref='memo'
                             placeholder="메모"
-                            v-model="cloneEvnet.memo"
+                            v-model="cloneEvnet.context"
                             size="small">
                         </el-input>
                     </el-form-item>
@@ -96,6 +122,7 @@
 <script>
 import { data, alert, rest, date } from '../../util';
 import { accountService } from '../../services';
+import SelectBox from '../../components/calendar/SelectBox';
 
 const name = 'EventFormModal';
 const props = { 
@@ -105,19 +132,24 @@ const props = {
         type : Function , 
         default :  () => {}
     },
-    event : Object
+    event : Object,
+    cals : Array
 };
+const components = {
+    SelectBox,
+}
 
 export default {
-    name,
-    props,
+    name, props, components,
     data() {
         return {
             cloneEvnet: {
                 title: '',
-                start: '',
-                end: '',
-                memo: '',
+                sDate: '',
+                eDate: '',
+                icon : '',
+                context : '',
+                calendarId : -1,
             },
             startEndDate: '',
             show: false,
@@ -128,9 +160,11 @@ export default {
         init() {
             this.cloneEvnet = {
                 title: '',
-                start: '',
-                end: '',
-                memo: '',
+                sDate: '',
+                eDate: '',
+                icon : '',
+                context : '',
+                calendarId : -1,
             };
         },
         submit() {
@@ -183,8 +217,8 @@ export default {
             let start = date.format(v[0], format);
             let end = date.format(v[1], format);
 
-            this.cloneEvnet.start = start;
-            this.cloneEvnet.end = end;
+            this.cloneEvnet.sDate = start;
+            this.cloneEvnet.eDate = end;
         },
     },
 };

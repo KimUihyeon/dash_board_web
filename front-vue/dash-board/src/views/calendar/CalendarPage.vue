@@ -8,7 +8,7 @@
                         <CalendarTagList 
                             :deleteClickHandle='tagDeleteHandle'
                             :updateSubmitHandle='tagUpdateHandle'
-                            :tags='tags'/>`
+                            :tags='getAllCalendar'/>`
 
                     </div>
                 </div>
@@ -36,7 +36,6 @@
                     <el-button size="mini" @click="reg" type="primary" round>새 이벤트 +</el-button>
                 </div>
 
-                <v-sheet height="600">
                     <v-calendar
                         ref="calendar"
                         v-model="calendar.value"
@@ -53,12 +52,15 @@
                         @click:more="showEvent"
                         @click:event="showEvent"
                         @change="updateCalcendar"
+                        
                     ></v-calendar>
+                <v-sheet height="600">
                 </v-sheet>
             </div>
         </div>
         <EventFromModal 
             :title='modal.title'
+            :cals='getAllCalendar'
             :submitAfterHandle='formSubmit'
             :showModal='modal.show'
         />
@@ -70,7 +72,8 @@ import Calendar from '../../components/calendar/Calendar';
 import CalendarTagList from '../../components/calendar/CalendarTagList';
 import EventFromModal from '../../components/calendar/EventFromModal';
 import ItmeAdd  from '../../components/todo/ItmeAdd';
-import { data, delay } from '../../util'
+import { mapGetters } from 'vuex';
+import { data, delay, alert } from '../../util'
 
 const name = 'CalendarPage';
 const components = { Calendar ,EventFromModal, ItmeAdd, CalendarTagList };
@@ -93,14 +96,7 @@ export default {
         },
     }),
     mounted(){
-        this.tags = [
-            { id : 1 , name : 'Test-행사' , isChecked : false, color : '#d80c0c'},
-            { id : 2 , name : 'Test-회사일' , isChecked : false, color : '#0ca3d8'},
-            { id : 3 , name : 'Test-공휴일' , isChecked : false, color : '#d80cb0'},
-            { id : 4 , name : 'Test-운동스케줄' , isChecked : false, color : '#3a0cd8'},
-            { id : 5 , name : 'Test-꾸아악' , isChecked : false, color : '#0cd8a5'},
-            
-        ]
+        this.$store.dispatch('fetch_my_calendars');
     },
     filters: {
         monthFormat: (value) => {
@@ -110,16 +106,34 @@ export default {
             return value;
         }
     },
+    computed : {
+        ...mapGetters(['getAllCalendar'])
+    },
     methods: {
         reg(){
             this.modal.show = false;
             delay.immediately(()=>{this.modal.show = true});
         },
-        formSubmit(task){
-            this.updateCalcendar({start : this.start , end : this.end});
+        formSubmit(event){
+            console.log(event);
+            //console.log({start : this.calendar.start , end : this.calendar.end});
+
+            this.$store.dispatch('save_event', { event })
+            //this.updateCalcendar({start : this.calendar.start , end : this.calendar.end});
         },
-        addTagInputHandle(v){
-            console.log(v);
+        addTagInputHandle(v , param){
+            if(!data.validation(param.keyWord, 'text' , [1, 15])){
+                alert.elMessageBox({ vueObject : this, type : 'error', message: '캘린더는 15자 미만 입니다.' });
+                return ;
+            }
+            
+            let cal = {
+                title : param.keyWord,
+                color : "#f0f",
+                description : "테스트 설명"
+            }
+            
+            this.$store.dispatch('save_calendar' , { cal });
         },
         updateCalcendar({ start, end }) {
             this.calendar.start = start;
