@@ -78,9 +78,10 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
     @Transactional
     public CalendarDto save(CalendarDto dto, String userId) throws AccessException {
         Calendar entity = dto.toEntity();
-        if(!entity.getAccount().getId().equals(userId)){
-            throw new AccessException("잘못된 접근 입니다.");
-        }
+
+//        if(!dto.getAccountId().equals(userId)){ ## 잠시 막아둠
+//            throw new AccessException("잘못된 접근 입니다.");
+//        }
 
         Account account = this.accountRepository.findById(dto.getAccountId())
                 .orElseThrow(() -> new IllegalArgumentException(NOT_FIND_DATA));

@@ -8,6 +8,7 @@ import com.sutdy.dashboard.setting.util.DateUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.rmi.AccessException;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
@@ -34,10 +35,10 @@ public class CalendarApiController {
     }
 
     @PostMapping("/")
-    public CalendarDto saveCalendar(@RequestBody CalendarDto calendarDto, String userId) throws NoSuchAlgorithmException {
+    public CalendarDto saveCalendar(@RequestBody CalendarDto calendarDto, String userId) throws NoSuchAlgorithmException, AccessException {
         // String UserId -> 이부분 나중에 request jwt로 생성해서 넣어주도록 변경.
         calendarDto.setCDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT));
-        return this.calendarService.save(calendarDto);
+        return this.calendarService.save(calendarDto , userId);
     }
 
 
