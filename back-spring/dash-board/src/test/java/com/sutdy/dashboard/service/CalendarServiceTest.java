@@ -22,6 +22,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
+import java.rmi.AccessException;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
@@ -90,6 +91,69 @@ public class CalendarServiceTest {
     public void cleanup() {
         this.accountService.delete(loginId);
         this.calendarRepository.deleteById(tempCalendarId);
+    }
+
+    @Test
+    @Transactional
+    public void calendar_all_리스트_불러오기_by_userId_테스트() throws AccessException, NoSuchAlgorithmException {
+        //given
+
+        AccountDto accountDto = new AccountDto().of(Account.builder()
+                .id("Test@naver.comTestTest")
+                .name("userName")
+                .cDate(DateUtil.now())
+                .build());
+        accountDto.setPw("123123123");
+
+        AccountDto account = this.accountService.save(accountDto);
+
+        List<CalendarDto> calendars = new ArrayList<>();
+        for (int i = 0; i < 10; i++) {
+
+            CalendarDto dto = CalendarDto.builder()
+                    .accountId(account.getId())
+                    .cDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
+                    .color("#fff")
+                    .description("test Data " + i)
+                    .title("테스트 캘린더 테그 생성 " + i)
+                    .build();
+            CalendarDto savedTag = this.calendarService.save(dto , account.getId());
+            calendars.add(savedTag);
+        }
+
+        List<Long> ids = calendars.stream().map(t -> t.getId()).collect(Collectors.toList());
+
+        //when
+        List<CalendarDto> findAll = this.calendarService.calendarsFindByUserId(account.getId());
+
+        //then
+        Assert.assertNotNull(findAll);
+        Assert.assertEquals(findAll.size(), calendars.size());
+
+        Assert.assertEquals(
+                findAll.stream()
+                        .filter(t -> t.getId() == ids.get(0)).collect(Collectors.toList())
+                        .get(0)
+                        .getTitle(),
+                calendars.stream()
+                        .filter(t -> t.getId() == ids.get(0)).collect(Collectors.toList())
+                        .get(0)
+                        .getTitle()
+        );
+
+
+        Assert.assertEquals(
+                findAll.stream()
+                        .filter(t -> t.getId() == ids.get(ids.size() - 1)).collect(Collectors.toList())
+                        .get(0)
+                        .getTitle(),
+                calendars.stream()
+                        .filter(t -> t.getId() == ids.get(ids.size() - 1)).collect(Collectors.toList())
+                        .get(0)
+                        .getTitle()
+        );
+
+
     }
 
 

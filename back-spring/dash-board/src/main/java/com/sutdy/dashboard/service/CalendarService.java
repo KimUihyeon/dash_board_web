@@ -65,7 +65,19 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
     @Deprecated
     public CalendarDto save(CalendarDto dto) throws UnsupportedOperationException {
         // ## note : 보안문제로 미사용
-        throw new UnsupportedOperationException("");
+
+        Calendar entity = dto.toEntity();
+        Account account = this.accountRepository.findById(dto.getAccountId())
+                .orElseThrow(() -> new IllegalArgumentException(NOT_FIND_DATA));
+
+//        if(!dto.getAccountId().equals(userId)){ ## 잠시 막아둠
+//            throw new AccessException("잘못된 접근 입니다.");
+//        }
+
+        entity.setAccount(account);
+        return new CalendarDto().of(this.calendarRepository.save(entity));
+
+        //throw new UnsupportedOperationException("");
     }
 
     /**

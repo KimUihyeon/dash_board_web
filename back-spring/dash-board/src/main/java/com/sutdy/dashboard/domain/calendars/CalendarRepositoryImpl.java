@@ -39,7 +39,7 @@ public class CalendarRepositoryImpl extends QuerydslRepositorySupport implements
 
     @Override // TODO : 이거 테스트 만들기.
     public List<Calendar> calendarsFindByUserId(String userId) {
-        return this.jpaQueryFactory.select(QCalendar.calendar)
+        return this.jpaQueryFactory.selectFrom(QCalendar.calendar)
                 .where(QCalendar.calendar.account.id.eq(userId))
                 .fetch();
     }
