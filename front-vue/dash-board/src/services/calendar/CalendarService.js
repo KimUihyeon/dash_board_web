@@ -12,7 +12,15 @@ const addCalendar = (cal) =>{
         ...cal,
         accountId : 'admin@admin.com'
     }
-    return rest.post(`${base_url}/`, calendar );
+    return rest.post(`${base_url}/`, calendar ); 
+}
+
+const deleteCalendar = (cal) =>{
+    return rest.delete_(`${base_url}/${cal.id}`);
+}
+
+const updateCalendar = (cal) =>{
+    return rest.patch(`${base_url}/${cal.id}`, cal);
 }
 
 
@@ -20,4 +28,6 @@ const addCalendar = (cal) =>{
 export const calendarService = {
     getUserCalendar,
     addCalendar,
+    deleteCalendar,
+    updateCalendar,
 };

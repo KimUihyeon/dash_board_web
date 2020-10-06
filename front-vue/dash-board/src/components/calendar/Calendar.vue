@@ -76,6 +76,7 @@ export default {
                 initialView: 'dayGridMonth', 
                 plugins: [ dayGridPlugin, interactionPlugin ],
                 headerToolbar :false, // 툴바 가리기 
+                fixedWeekCount : false,
 
                 eventStartEditable: true , // 이벤트 관련
                 eventDurationEditable : true , // 이벤트 드레그 허용

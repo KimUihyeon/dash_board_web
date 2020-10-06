@@ -6,9 +6,9 @@
                 <div class="flex-1 padding-5 text-align-l">
                     <div class="calendar-tags">    
                         <CalendarTagList 
-                            :deleteClickHandle='tagDeleteHandle'
-                            :updateSubmitHandle='tagUpdateHandle'
-                            :tags='getAllCalendar'/>`
+                            :deleteClickHandle='calendarDelete'
+                            :updateSubmitHandle='calendarUpdate'
+                            :tags='getAllCalendar'/>
 
                     </div>
                 </div>
@@ -35,27 +35,6 @@
                     :onResizeEvnet="(e)=>{  }"
                     :onDropEvent="(e)=>{  }"
                 />
-<!-- 
-                <v-sheet height="600">
-                    <v-calendar
-                        ref="calendar"
-                        v-model="calendar.value"
-                        color="primary"
-                        locale='ko'
-                        :day-format="(e)=>e.day"
-                        :show-month-on-first='false'
-                        :weekdays="[0, 1, 2, 3, 4, 5, 6]"
-                        :type="'month'"
-                        :events="calendar.events"
-                        :event-overlap-mode="'stack'"
-                        :event-overlap-threshold="30"
-                        :event-color="(e)=>e.color"
-                        @click:more="showEvent"
-                        @click:event="showEvent"
-                        @change="updateCalcendar"
-                        
-                    ></v-calendar>
-                </v-sheet> -->
             </div>
         </div>
         <EventFromModal 
@@ -79,17 +58,8 @@ const name = 'CalendarPage';
 const components = { Calendar ,EventFromModal, ItmeAdd, CalendarTagList };
 
 export default {
-    name,
-    components,
+    name, components,
     data: () => ({
-        tags : [],
-        calendar : {
-            value: '',
-            events: [],
-            colors: ['blue', 'indigo', 'deep-purple', 'cyan', 'green', 'orange', 'grey darken-1'],
-            start: '',
-            end: '',
-        },
         modal : { 
             show : false,
             title : '',
@@ -98,14 +68,6 @@ export default {
     mounted(){
         this.$store.dispatch('fetch_my_calendars');
     },
-    filters: {
-        monthFormat: (value) => {
-            if(value < 10) {
-                return '0' + value;
-            }
-            return value;
-        }
-    },
     computed : {
         ...mapGetters(['getAllCalendar'])
     },
@@ -113,41 +75,39 @@ export default {
         showModal(){ this.modal.show = false; delay.immediately(()=>{this.modal.show = true}); },
         formSubmit(event){
             console.log(event);
-            //console.log({start : this.calendar.start , end : this.calendar.end});
-
             this.$store.dispatch('save_event', { event })
-            //this.updateCalcendar({start : this.calendar.start , end : this.calendar.end});
         },
         addTagInputHandle(v , param){
-            if(!data.validation(param.keyWord, 'text' , [1, 15])){
+            if(!data.validation(param.keyWord, 'text' , [0, 15])){
                 alert.elMessageBox({ vueObject : this, type : 'error', message: '캘린더는 15자 미만 입니다.' });
                 return ;
             }
-            
-            let cal = {
-                title : param.keyWord,
-                color : "#f0f",
-                description : "테스트 설명"
-            }
-            
+            const cal = { title : param.keyWord, color : "#04D3FC" };
+
             this.$store.dispatch('save_calendar' , { cal });
         },
-        updateCalcendar({ start, end }) {
-            this.calendar.start = start;
-            this.calendar.end = end;
+        calendarUpdate({id, title , color}){
+            const findCalendar = this.getAllCalendar.filter((t)=> t.id == id)[0];
+            const cal = { ...findCalendar };
+            let isChanged = false;
 
-            // 업데이트 로직
-            this.calendar.events = this.test_getEventService();
+            if(!data.isNull(title) && cal.title != title ){ cal.title = title; isChanged = true;}
+            if(!data.isNull(color) && cal.color != color ){ cal.color = color; isChanged = true;}
+
+            if(isChanged){
+                this.$store.dispatch('patch_calendar', { cal }).then((res)=>{
+
+                }).catch(err =>{
+                    
+                })
+            }
         },
-        tagUpdateHandle({id, name}){
-            console.log(id);
-            console.log(name);
-        },
-        tagDeleteHandle({id}){
+        calendarDelete({id}){
             console.log(id + '삭제됨');
-        },
-        showEvent(e,t) {
-            console.log(e);
+            console.log();
+
+            const cal = { id };
+            this.$store.dispatch('remove_calendar', { cal });
         },
         test_getEventService(){
             console.log('업데이트');

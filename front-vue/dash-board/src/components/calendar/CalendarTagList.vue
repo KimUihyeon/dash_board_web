@@ -1,6 +1,5 @@
 <template>
     <div>
-        {{tags}}
         <div class="calendar-tag-item" v-for="(d, i) in tags" v-bind:key="i" >
             <CalendarTagItem 
                 :value='d.title'

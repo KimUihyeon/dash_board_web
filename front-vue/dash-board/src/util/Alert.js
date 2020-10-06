@@ -51,7 +51,7 @@ const elConfirm = (
             type : type
             }).then(() => {
                 if(isNull(okCallback)){
-                    elMessageBox(vueObject , 'success' , '확인 되었습니다.');
+                    elMessageBox({ vueObject, type :'success' , message : '확인 되었습니다.' });
                 }
                 else{
                     okCallback();
@@ -60,7 +60,7 @@ const elConfirm = (
             }).catch((e) => {
                 console.log(e);
                 if(isNull(cancelCallback)){
-                    elMessageBox(vueObject , 'info' , '취소 되었습니다.');
+                    elMessageBox({ vueObject, type :'success' , info : '취소 되었습니다.' });
                 }
                 else{
                     cancelCallback();

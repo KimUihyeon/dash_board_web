@@ -44,6 +44,7 @@ const actions = {
         return new Promise((resolve , reject)=>{
             calendarService.getUserCalendar(userId).then(res =>{
                 console.log(res);
+                context.commit('SET_ALL_CALENDAR', { cals : res});
                 resolve(res)
             }).catch(err=>{
                 reject(err);
@@ -55,6 +56,31 @@ const actions = {
             calendarService.addCalendar(payload.cal).then(res =>{
                 console.log(res);
                 context.commit('ADD_ALL_CALENDAR', {cals : res})
+                resolve(res);
+            }).catch(err =>{
+                console.log(err);
+                reject(err);
+            })
+        })
+    },
+    remove_calendar : function (context, payload) {
+        return new Promise((resolve , reject)=>{
+            calendarService.deleteCalendar(payload.cal).then(res=>{
+                console.log(res);
+                context.commit('REMOVE_CALENDAR', {cal : res})
+                resolve(res);
+            }).catch(err=>{
+                console.log(err)
+                reject(err);
+            })
+
+        })
+    },
+    patch_calendar : function (context , payload) {
+        return new Promise((resolve , reject)=>{
+            calendarService.updateCalendar(payload.cal).then(res =>{
+                console.log(res);
+                context.commit('PATCH_CALENDAR', {cal : res})
                 resolve(res);
             }).catch(err =>{
                 console.log(err);
@@ -82,6 +108,24 @@ const mutation = {
     },
     ADD_ALL_CALENDAR : function (state , payload) {
         state.calendar.allCal.push(payload.cals);
+    },
+    REMOVE_CALENDAR : function (state, payload){
+        let { cal } = payload;
+        state.calendar.allCal = state.calendar.allCal
+                                .filter(t=> t.id !== cal.id);
+    },
+    PATCH_CALENDAR : function (state , payload) {
+        let { cal } = payload;
+        console.log(cal);
+        
+        state.calendar.allCal = state.calendar.allCal.map(t=>{
+            if(t.id === cal.id){
+                return {
+                    ...cal
+                }
+            }
+            return t;
+        })
     },
     SET_RSEPONSE_CALENDAR : function (state , payload) {
         state.calendar.response_cal = payload.cals;

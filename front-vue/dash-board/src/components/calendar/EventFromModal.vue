@@ -40,9 +40,6 @@
                                 range-separator="To"
                                 start-placeholder="Start date"
                                 end-placeholder="End date"
-                                
-                                format="yyyy/MM/dd HH:mm:ss"
-                                value-format="yyyy/MM/dd HH:mm:ss"
                                 :change="()=>
                                     { console.log('change'); nextFouse(null, $refs.memo);}"
                             >
@@ -68,24 +65,9 @@
                         <el-form-item label="캘린더">
                             <el-select v-model="cloneEvnet.calendarId" placeholder="Select">
                                 <SelectBox :items='cals'/>
-<!--                                 
-                                <el-option
-                                    v-for="item in cals"
-                                    :key="item.id"
-                                    :label="item.title"
-                                    :value="item.id">
-                                                                    
-                                        <span style="float: left">{{ item.title }}</span>
-                                        <span style="float: right; color: #8492a6; font-size: 13px">{{ item.title }}</span>  
-                                </el-option> -->
                             </el-select>
                         </el-form-item>
                     </ValidationProvider>
-                </div>
-                
-                <div>
-                    {{ cloneEvnet.calendarId }}
-                    {{ startEndDate }}
                 </div>
 
                 <div>
@@ -157,20 +139,22 @@ export default {
         };
     },
     methods: {
-        init() {
-            this.cloneEvnet = {
-                title: '',
-                sDate: '',
-                eDate: '',
-                icon : '',
-                context : '',
-                calendarId : -1,
-            };
+        init(eventObj) {
+            if(data.isNull(eventObj)) {
+                this.cloneEvnet = {
+                    title: '',
+                    sDate: '',
+                    eDate: '',
+                    icon : '',
+                    context : '',
+                    calendarId : -1,
+                };
+            }else {
+                this.cloneEvnet = eventObj;
+            }
         },
         submit() {
-
             this.close();
-
             setTimeout(()=>{
                 this.submitAfterHandle(this.cloneEvnet);
             },10)
@@ -240,6 +224,9 @@ export default {
 }
 .el-range-separator {
     width: 30px !important;
+}
+.el-form-item__content > div {
+    width: 100%;
 }
 
 @media only all and (min-width: 768px) {

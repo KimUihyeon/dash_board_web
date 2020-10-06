@@ -3,7 +3,8 @@
         <div class="tag-item-container padding-5" :class="isEditMode ? 'edit-mode-container': ''">
             <span v-show="isEditMode">
                 <div class="edit-title-area tag-name-color display-f margin-b-3 padding-b-5" >
-                    <el-input class="font-size-14 margin-l-3 margin-r-3" maxlength="10" size="mini" v-model="edit.name"></el-input>
+                    <el-input 
+                            @keydown.enter.native="updateProcess" class="font-size-14 margin-l-3 margin-r-3" maxlength="10" size="mini" v-model="edit.name"></el-input>
                     
                     <span class="color-picker">
                         <el-color-picker v-model="edit.color" size="mini"></el-color-picker>
@@ -12,11 +13,11 @@
                 <div class="tag-item-button-box text-align-r">
                     
                     <el-tooltip class="item" effect="dark" :content="'삭제'">
-                        <span class="el-icon-delete color-red margin-r-5" @click="()=> { deleteClickHandle({ id : id }); }"></span>
+                        <span class="el-icon-delete color-red margin-r-5" @click="deleteProcess"></span>
                     </el-tooltip>
                     
                     <el-tooltip class="item" :content="'저장'">
-                        <span class="el-icon-check color-green" @click="()=> { updateSubmitHandle({id : id, name : value}); }"></span>
+                        <span class="el-icon-check color-green" @click="updateProcess"></span>
                     </el-tooltip>
                     
                     
@@ -31,7 +32,7 @@
                     <span class="text-dot-dot-dot font-size-14 margin-l-5 margin-r-5" @dblclick="editMode">{{value}}</span>
                 </span>
                 
-                <el-color-picker v-model="color" size="mini" @change="colorChange"></el-color-picker>
+                <el-color-picker v-model="edit.color" size="mini" @change="colorChange"></el-color-picker>
             </span>
             <div class="tag-item-button-box">
                 <span v-show="!isEditMode">
@@ -42,6 +43,9 @@
 </template>
 
 <script>
+import { date } from '../../util';
+import { alert } from '../../util/Alert';
+import { delay } from '../../util/Delay';
 let name = 'CalendarTagItem';
 let props = { 
     id : Number,
@@ -71,11 +75,49 @@ export default {
             }
         }
     },
+    mounted(){ this.propertySync(); },
     methods : {
         propertySync (){ this.edit.color = this.color; this.edit.name = this.value; },
         editMode() { this.propertySync(); this.isEditMode = true; },
         readMode() { this.propertySync(); this.isEditMode = false; },
-        colorChange(c){ console.log(c)}
+        colorChange(c){ console.log(c)},
+        deleteProcess(){ 
+            this.confirm(
+                '삭제하시겠습니까?' ,
+                '삭제하기', 
+                ()=>{ 
+                    this.readMode();
+                    this.deleteClickHandle({ id : this.id });
+                }
+            )
+        },
+        colorChange(c){ 
+            this.updateSubmitHandle({ id : this.id, color : this.edit.color});
+            this.readMode();
+        },
+        updateProcess(){
+            this.updateSubmitHandle({ id : this.id, title : this.edit.name});
+            this.readMode();
+            // this.confirm(
+            //     '변경 사항을 저장 하시겠습니까?' ,
+            //     '수정하기', 
+            //     ()=>{ 
+            //     }
+            // )
+        },
+        
+        confirm(confirmMsg, title , okCallback) {
+            alert.elConfirm(
+                 {
+                     confirmMsg, title,
+                     vueObject : this,
+                     type : 'Warning' ,
+                     okCallback : ()=>{ okCallback()},
+                     cancelCallback : ()=>{ this.readMode();}  
+                }
+            );
+        },
+        alert(message){ alert.elMessageBox({ vueObject : this , type :'success' , message  });},
     }
 }
 </script>
