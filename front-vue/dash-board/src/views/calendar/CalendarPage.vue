@@ -28,14 +28,15 @@
                 </div>
             </div>
             <div class="calendar-right flex-1">
-                <div class="calendar-header text-align-l margin-10 padding-5 font-size-23">
-                    <el-button size="mini" @click="()=>{$refs.calendar.prev()}" icon="el-icon-arrow-left" circle/>
-                    <span class="calendar-yymm margin-l-10 margin-r-10 text-bold">{{ calendar.end.year }}. {{ calendar.start.month | monthFormat }}</span>
-                    <el-button  size="mini" @click="()=>{$refs.calendar.next()}" icon="el-icon-arrow-right" circle></el-button>
-                    
-                    <el-button size="mini" @click="reg" type="primary" round>새 이벤트 +</el-button>
-                </div>
-
+                <Calendar :events="[
+                    { title: 'event 1', date: '2020-10-01' },
+                    { title: 'event 2', date: '2020-10-02' }]"
+                    :onButtonClick='showModal'
+                    :onResizeEvnet="(e)=>{  }"
+                    :onDropEvent="(e)=>{  }"
+                />
+<!-- 
+                <v-sheet height="600">
                     <v-calendar
                         ref="calendar"
                         v-model="calendar.value"
@@ -54,8 +55,7 @@
                         @change="updateCalcendar"
                         
                     ></v-calendar>
-                <v-sheet height="600">
-                </v-sheet>
+                </v-sheet> -->
             </div>
         </div>
         <EventFromModal 
@@ -110,10 +110,7 @@ export default {
         ...mapGetters(['getAllCalendar'])
     },
     methods: {
-        reg(){
-            this.modal.show = false;
-            delay.immediately(()=>{this.modal.show = true});
-        },
+        showModal(){ this.modal.show = false; delay.immediately(()=>{this.modal.show = true}); },
         formSubmit(event){
             console.log(event);
             //console.log({start : this.calendar.start , end : this.calendar.end});
