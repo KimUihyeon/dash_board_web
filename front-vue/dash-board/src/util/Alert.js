@@ -76,8 +76,50 @@ function logger(context , functionName){
     }
 }
 
+
+const prop = {
+    type : {
+        success : 'success',
+        error : 'error',
+    },
+
+    msg : {
+        editSuccess : '수정 완료',
+        deleteSuccess : '삭제 완료',
+        addSuccess : '추가',
+
+        cencleSuccess : '취소',
+
+        serverError : '처리되지 않았습니다.'
+    }
+}
+
+const alertClosure = (message , type) =>{
+    const prop = { message, type };
+    return (vueObject) =>{ 
+        prop.vueObject = vueObject;
+        elMessageBox(prop)
+    };
+}
+
+const addSuccessAlert = (vueObject)=>{ alertClosure(prop.msg.addSuccess, prop.type.success)(vueObject) }
+const editSuccessAlert = (vueObject) =>{ alertClosure(prop.msg.editSuccess, prop.type.success)(vueObject)}
+const deleteSuccessAlert = (vueObject) =>{ alertClosure(prop.msg.deleteSuccess, prop.type.success)(vueObject)}
+const cencleSuccessAlert = (vueObject) =>{ alertClosure(prop.msg.cencleSuccess, prop.type.success)(vueObject)}
+
+const serverErrorAlert = (vueObject) =>{ alertClosure(prop.msg.serverError, prop.type.error)(vueObject)}
+
+
+
 export const alert = {
     elConfirm,
     elMessageBox,
     logger,
+    prop,
+
+    addSuccessAlert,
+    editSuccessAlert,
+    deleteSuccessAlert,
+    cencleSuccessAlert,
+    serverErrorAlert,
 }
