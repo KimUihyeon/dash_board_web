@@ -4,6 +4,7 @@ import { alert as Alert } from './Alert';
 import { data as Data } from './Data';
 import { error as Error } from './Error'
 import { delay as Delay } from './Delay'
+import { modelMapper as ModelMapper } from './ModelMapper';
 
 
 
@@ -23,3 +24,4 @@ export const alert = Alert;
 export const error = Error;
 export const data = Data;
 export const delay = Delay;
+export const modelMapper = ModelMapper;
