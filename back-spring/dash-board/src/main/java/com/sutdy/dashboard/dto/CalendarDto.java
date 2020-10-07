@@ -7,6 +7,7 @@ import com.sutdy.dashboard.setting.util.DateUtil;
 import com.sutdy.dashboard.setting.util.data.ModelConverter;
 import lombok.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @Data
@@ -23,7 +24,9 @@ public class CalendarDto implements ToConverter<Calendar, CalendarDto> {
     private String cDate;
 
     private String accountId;
-    private List<EventDto> events;
+    private List<EventDto> events = new ArrayList<>( );
+
+    private boolean checked;
 
 
     @Override
@@ -34,6 +37,7 @@ public class CalendarDto implements ToConverter<Calendar, CalendarDto> {
                 .description(this.description)
                 .color(this.color)
                 .cDate(DateUtil.toTimeStamp(this.cDate, ApplicationStringConfig.DATE_FORMAT))
+                .checked(this.checked)
                 .build();
     }
 

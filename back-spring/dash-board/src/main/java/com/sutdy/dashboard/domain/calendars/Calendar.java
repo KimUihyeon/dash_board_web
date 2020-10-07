@@ -32,13 +32,15 @@ public class Calendar {
     private String color; // HexColor 예)#fff
     private Timestamp cDate;
 
+    private boolean checked;
+
     @Setter
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "accountId")
     private Account account;
 
     @Setter
-    @OneToMany(mappedBy = "calendar")
+    @OneToMany(mappedBy = "calendar" , fetch = FetchType.LAZY)
 //    @JoinColumn(name = "eventId")
     private List<Event> event;
 
@@ -51,6 +53,9 @@ public class Calendar {
         }
         if (dto.getColor() != null && !dto.getColor().equals(this.color)) {
             this.color = dto.getColor();
+        }
+        if(dto.isChecked() != this.checked){
+            this.checked = dto.isChecked();
         }
     }
 

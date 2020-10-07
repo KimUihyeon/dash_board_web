@@ -37,11 +37,52 @@ public class CalendarRepositoryImpl extends QuerydslRepositorySupport implements
                 .execute();
     }
 
-    @Override // TODO : 이거 테스트 만들기.
+    @Override
     public List<Calendar> calendarsFindByUserId(String userId) {
-        return this.jpaQueryFactory.selectFrom(QCalendar.calendar)
+
+        //TODO : Envet 조인되는거 테스트 만들기.
+        List<Calendar> cals = this.jpaQueryFactory.selectFrom(QCalendar.calendar)
                 .where(QCalendar.calendar.account.id.eq(userId))
                 .fetch();
+
+        return cals;
+
+//
+//        aaa.stream().map(t-> {
+//
+//            List<Event> aaaaa = t.getEvent();
+//            if(t.getEvent() == null){
+//
+//            }
+//
+//            return t;
+//        });
+
+//
+//        List<Event> events = this.jpaQueryFactory.selectFrom(QEvent.event)
+//                .rightJoin(QEvent.event.calendar, QCalendar.calendar)
+//                .where(QCalendar.calendar.account.id.eq(userId))
+//                .orderBy(QCalendar.calendar.id.desc())
+//                .fetch();
+//        Set<Calendar> cals = new HashSet<>();
+//
+//        for (Event event : events) {
+//            Calendar currentCal = event.getCalendar();
+//            if (!cals.contains(currentCal)) {
+//                cals.add(currentCal);
+//                currentCal.setEvent(new ArrayList());
+//            }
+//            currentCal.getEvent().add(event);
+//            event.setCalendar(null);
+//        }
+//        return new ArrayList<>(cals);
+
+//
+//        return this.jpaQueryFactory.selectFrom(QCalendar.calendar)
+//                .where(QCalendar.calendar.account.id.eq(userId))
+//                .fetch();
+
+
     }
 
     @Override

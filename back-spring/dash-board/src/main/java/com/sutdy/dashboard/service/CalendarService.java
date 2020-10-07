@@ -187,7 +187,14 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
     public List<CalendarDto> calendarsFindByUserId(String userId) {
         return this.calendarRepository.calendarsFindByUserId(userId)
                 .stream()
-                .map(c -> new CalendarDto().of(c))
+                .map(c -> {
+                    CalendarDto dto = new CalendarDto().of(c);
+                    dto.setEvents(new ArrayList<>());
+                    for(Event event : c.getEvent()){
+                        dto.getEvents().add(new EventDto().of(event));
+                    }
+                    return dto;
+                })
                 .collect(Collectors.toList());
     }
 
