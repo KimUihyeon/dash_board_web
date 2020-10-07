@@ -8,6 +8,7 @@
                         <CalendarTagList 
                             :deleteClickHandle='calendarDelete'
                             :updateSubmitHandle='calendarUpdate'
+                            :checkChangedHandle='calendarCheckHandle'
                             :tags='getAllCalendar'/>
 
                     </div>
@@ -23,24 +24,22 @@
                         fontColor="#fff"
                         fontSize="12px"
                         iconSize="17px"
-                        :inputEnterKeyPress_handle="addTagInputHandle"/>
+                        :inputEnterKeyPress_handle="calendarInputHandle"/>
                     
                 </div>
             </div>
             <div class="calendar-right flex-1">
-                <Calendar :events="[
-                    { title: 'event 1', date: '2020-10-01' },
-                    { title: 'event 2', date: '2020-10-02' }]"
-                    :onButtonClick='showModal'
-                    :onResizeEvnet="(e)=>{  }"
-                    :onDropEvent="(e)=>{  }"
+                <Calendar :events="getEvents"
+                    :onButtonClick='showEventModal'
+                    :onResizeEvnet="eventUpdate"
+                    :onDropEvent="eventUpdate"
                 />
             </div>
         </div>
         <EventFromModal 
             :title='modal.title'
             :cals='getAllCalendar'
-            :submitAfterHandle='formSubmit'
+            :submitAfterHandle='eventFormSubmit'
             :showModal='modal.show'
         />
     </div>
@@ -69,76 +68,81 @@ export default {
         this.$store.dispatch('fetch_my_calendars');
     },
     computed : {
-        ...mapGetters(['getAllCalendar'])
+        ...mapGetters(['getAllCalendar', 'getEvents']),
     },
     methods: {
-        showModal(){ this.modal.show = false; delay.immediately(()=>{this.modal.show = true}); },
-        formSubmit(event){
-            console.log(event);
-            this.$store.dispatch('save_event', { event })
+        showEventModal(){ this.modal.show = false; delay.immediately(()=>{this.modal.show = true}); },
+        eventFormSubmit(event){
+            if(data.isNull(event.id)){ // Event 추가
+                this.$store.dispatch('save_event', { event }).then(res=>{
+                    alert.addSuccessAlert(this);
+                }).catch(err=>{
+                    alert.serverErrorAlert(this);
+                })
+            }else {  // Event 수정
+                this.eventUpdate();
+            }
+            
         },
-        addTagInputHandle(v , param){
+        eventAdd(){
+
+        },
+        eventUpdate(e){
+            console.log(e)
+        },
+        eventDelete({ event }){
+            const okCallback = ()=>{
+                console.log(event.id , '삭제');
+            }
+            
+            alert.elConfirm({
+                vueObject: this,
+                type : 'Warning',
+                confirmMsg : 'event 삭제하시겠습니까??',
+                title : '할일 삭제',
+                okCallback ,
+                cancelCallback, });
+        },
+
+
+        calendarCheckHandle(checked, id){
+            this.calendarUpdate({id , checked });
+        },
+        calendarInputHandle(v , param){
             if(!data.validation(param.keyWord, 'text' , [0, 15])){
-                alert.elMessageBox({ vueObject : this, type : 'error', message: '캘린더는 15자 미만 입니다.' });
+                this.alert('캘린더는 15자 미만 입니다.','error');
                 return ;
             }
-            const cal = { title : param.keyWord, color : "#04D3FC" };
 
-            this.$store.dispatch('save_calendar' , { cal });
+            const cal = { title : param.keyWord, color : "#04D3FC" };
+            this.$store.dispatch('save_calendar' , { cal }).then(res=>{
+                alert.addSuccessAlert(this);
+            });
         },
-        calendarUpdate({id, title , color}){
+        calendarUpdate({id, title , color, checked}){
             const findCalendar = this.getAllCalendar.filter((t)=> t.id == id)[0];
             const cal = { ...findCalendar };
             let isChanged = false;
 
             if(!data.isNull(title) && cal.title != title ){ cal.title = title; isChanged = true;}
             if(!data.isNull(color) && cal.color != color ){ cal.color = color; isChanged = true;}
+            if(!data.isNull(checked) && cal.checked != checked ){ cal.checked = checked; isChanged = true;}
 
             if(isChanged){
-                this.$store.dispatch('patch_calendar', { cal }).then((res)=>{
-
+                this.$store.dispatch('patch_calendar', { cal }).then((res)=>{ 
+                    alert.editSuccessAlert(this);
                 }).catch(err =>{
-                    
+                    alert.serverErrorAlert(this);
                 })
             }
         },
         calendarDelete({id}){
-            console.log(id + '삭제됨');
-            console.log();
-
-            const cal = { id };
-            this.$store.dispatch('remove_calendar', { cal });
+            this.$store.dispatch('remove_calendar', { cal : { id } }).then((res)=>{
+                alert.deleteSuccessAlert(this);
+            }).catch(err =>{
+                alert.serverErrorAlert(this);
+            })
         },
-        test_getEventService(){
-            console.log('업데이트');
-            
-            return  [
-                {
-                    color: 'indigo',
-                    start: '2020-8-28',
-                    end: '2020-8-29',
-                    name: 'Meeting',
-                },
-                {
-                    color: 'indigo',
-                    start: '2020-8-28',
-                    end: '2020-8-29',
-                    name: 'Meeting',
-                },
-                {
-                    color: 'indigo',
-                    start: '2020-8-28',
-                    end: '2020-8-29',
-                    name: 'Meeting',
-                },
-                {
-                    color: 'indigo',
-                    start: '2020-8-28',
-                    end: '2020-8-29',
-                    name: 'Meeting',
-                },
-            ];
-        }
     },
 };
 </script>

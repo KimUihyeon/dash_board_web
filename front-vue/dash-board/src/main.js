@@ -66,6 +66,7 @@ Vue.component('ValidationProvider' , ValidationProvider);
 
 /** dotenv */
 import dotenv from 'dotenv'
+import { alert } from './util/Alert';
 dotenv.config();
 
 

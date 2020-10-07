@@ -127,8 +127,8 @@ export default {
         return {
             cloneEvnet: {
                 title: '',
-                sDate: '',
-                eDate: '',
+                sdate: '',
+                edate: '',  
                 icon : '',
                 context : '',
                 calendarId : -1,
@@ -143,11 +143,11 @@ export default {
             if(data.isNull(eventObj)) {
                 this.cloneEvnet = {
                     title: '',
-                    sDate: '',
-                    eDate: '',
+                    sdate: '',
+                    edate: '',
                     icon : '',
                     context : '',
-                    calendarId : -1,
+                    calendarId : this.cals[0].id,
                 };
             }else {
                 this.cloneEvnet = eventObj;
@@ -156,6 +156,7 @@ export default {
         submit() {
             this.close();
             setTimeout(()=>{
+                console.log(this.cloneEvnet)
                 this.submitAfterHandle(this.cloneEvnet);
             },10)
 
@@ -201,8 +202,8 @@ export default {
             let start = date.format(v[0], format);
             let end = date.format(v[1], format);
 
-            this.cloneEvnet.sDate = start;
-            this.cloneEvnet.eDate = end;
+            this.cloneEvnet.sdate = start;
+            this.cloneEvnet.edate = end;
         },
     },
 };

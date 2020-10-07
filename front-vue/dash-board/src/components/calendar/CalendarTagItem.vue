@@ -28,7 +28,7 @@
             </span>
             <span v-show="!isEditMode"  class="tag-name-color display-f">
                 <span class="display-b width-full display-f">
-                    <el-checkbox   size="medium"></el-checkbox>
+                    <el-checkbox  size="medium" @change="(v)=>{ onCheckChanged(v,id)}" v-bind:checked="checked"></el-checkbox>
                     <span class="text-dot-dot-dot font-size-14 margin-l-5 margin-r-5" @dblclick="editMode">{{value}}</span>
                 </span>
                 
@@ -50,9 +50,14 @@ let name = 'CalendarTagItem';
 let props = { 
     id : Number,
     value : String,
+    checked : Boolean,
     color : {
         type : String, 
         default : '#fff'
+    },
+    onCheckChanged : {
+        type :  Function,
+        default : (a)=>{}
     },
     deleteClickHandle : { 
         type :  Function,

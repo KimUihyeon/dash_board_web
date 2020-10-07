@@ -5,6 +5,8 @@
                 :value='d.title'
                 :id="d.id"
                 :color="d.color"
+                :checked='d.checked'
+                :onCheckChanged='checkChangedHandle'
                 :deleteClickHandle='deleteClickHandle'
                 :updateSubmitHandle='updateSubmitHandle'
                 />
@@ -26,6 +28,10 @@ import CalendarTagItem from './CalendarTagItem';
 let components = { CalendarTagItem };
 let props = {
     tags : Array,
+    checkChangedHandle: {
+        type :  Function,
+        default : (a)=>{}
+    },
     deleteClickHandle : { 
         type :  Function,
         default : (a)=>{}

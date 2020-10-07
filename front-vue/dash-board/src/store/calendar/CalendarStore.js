@@ -1,5 +1,6 @@
 import { rest } from "../../util/Rest";
 import { calendarService , eventService } from '../../services'
+import { date , modelMapper } from "../../util";
 
 /**
  *  Store 작성법
@@ -12,22 +13,30 @@ import { calendarService , eventService } from '../../services'
  */
 
 
+ const calendarRelrationEventToArray = (cals) => {
+     let events = [];
+     console.log(cals);
+     cals.filter(t=> t.checked).forEach((c)=>{
+         c.events.forEach(e=>{
+             events.push(modelMapper.tofullCalendarModel(c, e));
+         })
+     })
+     console.log(events);
+     return events;
+ }
+
 
 const state = {
     allCal : [],
-    selectedIds : [],
-    response_cal : [],
+    events : []
 }
 
 const getters = {
     getAllCalendar : function (state){
         return state.calendar.allCal;
     },
-    getSelectedIds : function (state){
-        return state.calendar.selectedIds;
-    },
-    getResponse_Cal : function (state){
-        return state .calendar.response_cal;
+    getEvents : function (state){
+        return state.calendar.events;
     }
 }
 
@@ -43,8 +52,9 @@ const actions = {
         const userId = 'admin@admin.com';
         return new Promise((resolve , reject)=>{
             calendarService.getUserCalendar(userId).then(res =>{
-                console.log(res);
-                context.commit('SET_ALL_CALENDAR', { cals : res});
+
+                context.commit('SET_ALL_CALENDAR', { cals : res });
+                context.commit('SYNC_EVENT');
                 resolve(res)
             }).catch(err=>{
                 reject(err);
@@ -54,8 +64,8 @@ const actions = {
     save_calendar : function (context , payload) {
         return new Promise((resolve , reject)=>{
             calendarService.addCalendar(payload.cal).then(res =>{
-                console.log(res);
-                context.commit('ADD_ALL_CALENDAR', {cals : res})
+                let cal = { ...res , events : [] }
+                context.commit('ADD_ALL_CALENDAR', { cal })
                 resolve(res);
             }).catch(err =>{
                 console.log(err);
@@ -66,8 +76,8 @@ const actions = {
     remove_calendar : function (context, payload) {
         return new Promise((resolve , reject)=>{
             calendarService.deleteCalendar(payload.cal).then(res=>{
-                console.log(res);
                 context.commit('REMOVE_CALENDAR', {cal : res})
+                context.commit('SYNC_EVENT');
                 resolve(res);
             }).catch(err=>{
                 console.log(err)
@@ -79,8 +89,8 @@ const actions = {
     patch_calendar : function (context , payload) {
         return new Promise((resolve , reject)=>{
             calendarService.updateCalendar(payload.cal).then(res =>{
-                console.log(res);
                 context.commit('PATCH_CALENDAR', {cal : res})
+                context.commit('SYNC_EVENT');
                 resolve(res);
             }).catch(err =>{
                 console.log(err);
@@ -91,9 +101,13 @@ const actions = {
     save_event : function (context , payload) {
         return new Promise((resolve , reject)=>{
             const loginId = 'admin@admin.com';
-            const event = payload.event;
+            const { event } = payload;
+            event.sdate += ' 00:00:00';
+            event.edate += ' 23:59:59';
 
             eventService.addEvent(event , loginId).then(res=>{
+                context.commit('ADD_EVENT',{ event : res})
+                context.commit('SYNC_EVENT');
                 resolve(res);
             }).catch(err=>{
                 reject(err);
@@ -107,7 +121,7 @@ const mutation = {
         state.calendar.allCal = payload.cals;
     },
     ADD_ALL_CALENDAR : function (state , payload) {
-        state.calendar.allCal.push(payload.cals);
+        state.calendar.allCal.push(payload.cal);
     },
     REMOVE_CALENDAR : function (state, payload){
         let { cal } = payload;
@@ -121,7 +135,8 @@ const mutation = {
         state.calendar.allCal = state.calendar.allCal.map(t=>{
             if(t.id === cal.id){
                 return {
-                    ...cal
+                    ...cal,
+                    events : t.events
                 }
             }
             return t;
@@ -133,6 +148,24 @@ const mutation = {
     SET_SELECTED_CAL_ID : function (state , payload) {
         state.calendar.selectedIds = payload.calIds;
     },
+    SYNC_EVENT : function (state) {
+        let cals = state.calendar.allCal;
+        let events = calendarRelrationEventToArray(cals);
+        console.log('SYNC_EVENT -> ', date.now('yyyy-MM-DD'));
+        
+        
+        state.calendar.events = events;
+    },
+    ADD_EVENT : function (state, payload) {
+        let { event } = payload;
+
+        state.calendar.allCal = state.calendar.allCal.map(t=> {
+            if(t.id == event.calendarId) {
+                t.events.push(payload.event)
+            }
+            return t;
+        })
+    }
 }
 
 

@@ -1,4 +1,6 @@
 import { format } from './DateUtil';
+const moment = require('moment');
+
 
 
 /**
@@ -38,11 +40,17 @@ const calendarEventToCalendarObejct = (c, e) =>{
 const tofullCalendarModel = (serverCalendar, serverEvent) =>{
     let c = serverCalendar;
     let e = serverEvent;
+    
+    let endDate =  moment(e.edate, "YYYY-MM-DD").add(1, 'days').format('YYYY-MM-DD');
      
     let event = {
         ...serverEvent,
-        start: format( e.sdate, 'yyyy-MM-DD'),
-        end:  format( e.edate, 'yyyy-MM-DD'),
+        // start: format( e.sdate, 'yyyy-MM-DD'),
+        // end:  format( e.edate, 'yyyy-MM-DD'),
+        start: e.sdate,
+        end: endDate, // 이값 +1 해줘야함.
+        allDay : true ,
+
         backgroundColor : c.color,
         borderColor :  c.color,
 

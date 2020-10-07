@@ -10,7 +10,8 @@
             <el-button size="mini" @click="onButtonClick" type="primary" round>새 이벤트 +</el-button>
         </div>
         <div>
-            <full-calendar ref="fullCalendar" :options="calendarOptions" />    
+            {{events}}
+            <full-calendar ref="fullCalendar" :options="calendarOptions"/>    
         </div>
         
     </div> 
@@ -70,23 +71,7 @@ export default {
             el:{
                 fullCalendar : {}
             },
-            calendarOptions: {
-                height: 650,
-                locale : koLocale,
-                initialView: 'dayGridMonth', 
-                plugins: [ dayGridPlugin, interactionPlugin ],
-                headerToolbar :false, // 툴바 가리기 
-                fixedWeekCount : false,
-
-                eventStartEditable: true , // 이벤트 관련
-                eventDurationEditable : true , // 이벤트 드레그 허용
-                eventResizableFromStart : true, // 이벤트 리사이즈 허용
-                
-                dateClick: this.handleDateClick,
-                eventResize : this.onResizeEvnet,
-                eventDrop : this.onDropEvent,
-                events: this.events
-            }
+            calendarOptions : this.getCalendarOption()
         }
     },
     methods: {
@@ -104,7 +89,37 @@ export default {
             if (!confirm("Are you sure about this change?")) {
                 info.revert();
             }
+        },
+        getCalendarOption : function () {
+            
+            return {
+                height: 650,
+                locale : koLocale,
+                initialView: 'dayGridMonth', 
+                plugins: [ dayGridPlugin, interactionPlugin ],
+                headerToolbar :false, // 툴바 가리기 
+                fixedWeekCount : false,
+
+                allDayMaintainDuration: true,
+                displayEventTime : false,
+
+                eventStartEditable: true , // 이벤트 관련
+                eventDurationEditable : true , // 이벤트 드레그 허용
+                eventResizableFromStart : true, // 이벤트 리사이즈 허용
+                
+                dateClick: this.handleDateClick,
+                eventResize : (e)=>{ console.log(e.event); console.log(e.oldEvent); this.onResizeEvnet(e.event) },
+                eventDrop : this.onDropEvent,
+                events: this.events,
+            }
         }
+    },
+    watch :{
+        events : function (e){
+            this.calendarOptions = this.getCalendarOption();
+            console.log('변경');
+        }
+
     }
 }
 
@@ -117,7 +132,6 @@ event  : {
     constraint: null
     display: "auto"
     durationEditable: undefined
-    
     
 
     id: ""
