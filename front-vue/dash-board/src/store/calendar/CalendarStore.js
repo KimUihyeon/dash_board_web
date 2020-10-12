@@ -108,7 +108,7 @@ const actions = {
             eventService.addEvent(event , loginId).then(res=>{
                 context.commit('ADD_EVENT',{ event : res}) 
                 context.commit('SYNC_EVENT');
-                resolve(res);
+                resolve(res); 
             }).catch(err=>{
                 reject(err);
             })
