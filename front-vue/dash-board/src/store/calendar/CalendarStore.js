@@ -109,7 +109,7 @@ const actions = {
                 context.commit('ADD_EVENT',{ event : res}) 
                 context.commit('SYNC_EVENT');
                 resolve(res); 
-            }).catch(err=>{
+            }).catch(err=>{ 
                 reject(err);
             })
         })
