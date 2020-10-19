@@ -18,7 +18,7 @@ const state = {
 
 const getters = {
   currentDateTime : function (state) {
-    return state.timer.time;
+    return state.timer.time; 
   },
 }
 
