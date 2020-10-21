@@ -30,13 +30,15 @@
             </div>
             <div class="calendar-right flex-1">
                 <Calendar :events="getEvents"
-                    :onButtonClick='showEventModal'
+                    :onButtonClick='showEventAddModal'
                     :onResizeEvnet="eventUpdate"
+                    :eventClick="showEventEditModal"
                     :onDropEvent="eventUpdate"
                 />
             </div>
         </div>
         <EventFromModal 
+            ref="eventFromModal"
             :title='modal.title'
             :cals='getAllCalendar'
             :submitAfterHandle='eventFormSubmit'
@@ -65,13 +67,22 @@ export default {
         },
     }),
     mounted(){
-        this.$store.dispatch('fetch_my_calendars');
+            const param = { userId : 'admin@admin.com' };
+            this.$store.dispatch('fetch_my_calendars', param );
     },
     computed : {
         ...mapGetters(['getAllCalendar', 'getEvents']),
     },
     methods: {
+        getCalendar(year){},
         showEventModal(){ this.modal.show = false; delay.immediately(()=>{this.modal.show = true}); },
+        showEventAddModal(){ this.$refs.eventFromModal.setEventObj({}); this.showEventModal(); },
+        showEventEditModal(e){ 
+            const event = {...this.getEvents.filter(t=>t.id==e.id)[0]};
+            this.$refs.eventFromModal.setEventObj(event);
+            this.showEventModal(); 
+        },
+        
         eventFormSubmit(event){
             console.log(event)
             if(data.isNull(event.id)){ // Event 추가
@@ -81,15 +92,20 @@ export default {
                     alert.serverErrorAlert(this);
                 })
             }else {  // Event 수정
-                this.eventUpdate();
+                console.log('업데이트 로직');
+                // this.eventUpdate();
             }
             
         },
-        eventAdd(){
-
-        },
         eventUpdate(e){
-            console.log(e)
+
+            let event = {
+                ...this.getEvents.filter(t=> t.id==e.id)[0],
+                sdate : e.startStr,
+                edate : e.endStr,
+            }
+
+            this.$store.dispatch('patch_event', { event })
         },
         eventDelete({ event }){
             const okCallback = ()=>{

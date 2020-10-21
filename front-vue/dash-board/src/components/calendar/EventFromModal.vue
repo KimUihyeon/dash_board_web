@@ -125,10 +125,11 @@ export default {
     name, props, components,
     data() {
         return {
+            eventObj : {},
             cloneEvnet: {
                 title: '',
                 sdate: '',
-                edate: '',  
+                edate: '',
                 icon : '',
                 context : '',
                 calendarId : -1,
@@ -139,8 +140,11 @@ export default {
         };
     },
     methods: {
-        init(eventObj) {
-            if(data.isNull(eventObj)) {
+        setEventObj(eventObj){
+            this.eventObj = eventObj;
+        },
+        init(e) {
+            if(data.isNull(e)) {
                 this.cloneEvnet = {
                     title: '',
                     sdate: '',
@@ -151,8 +155,19 @@ export default {
                 };
                 this.startEndDate = '';
             }else {
-                this.cloneEvnet = eventObj;
-                this.startEndDate = '';// 이거 만들어 줘야함.
+                console.log(e);
+                this.cloneEvnet = {
+                    id : e.id,
+                    title: e.title,
+                    sdate: e.sdate,
+                    edate: e.edate,
+                    icon :e.icon,
+                    context : e.context,
+                    calendarId : e.calendarId,
+                }
+                console.log(this.cloneEvnet);
+                // this.cloneEvnet.title = '123123123123';
+                this.startEndDate = ['2020-10-01', '2020-10-09'];// 이거 만들어 줘야함.
             }
         },
         submit() {
@@ -161,18 +176,6 @@ export default {
                 console.log(this.cloneEvnet)
                 this.submitAfterHandle(this.cloneEvnet);
             },10)
-
-            // accountService
-            //     .signup(this.title, this.pw)
-            //     .then((res) => {
-            //         setTimeout(() => {
-            //             this.show = false;
-            //         }, 50);
-            //     })
-            //     .catch((err) => {
-            //         this.show = false;
-            //         this.alert('error', err);
-            //     });
         },
         nextFouse(validationErr, nextElement) {
             if (data.isNull(validationErr)) {
@@ -191,11 +194,15 @@ export default {
         }
     },
     watch: {
+        cloneEvnet(v){
+            console.log(v)
+        },
         showModal(v) {
             this.show = v;
-            this.init();
+            this.init(this.eventObj);
         },
         startEndDate(v) {
+            console.log(v);
             if(data.isNull(v)){
                 return;
             }

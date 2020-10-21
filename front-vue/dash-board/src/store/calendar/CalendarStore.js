@@ -48,8 +48,8 @@ const actions = {
             context.commit('SET_RSEPONSE_CALENDAR', { cals : [] });
         });
     },
-    fetch_my_calendars : function (context){
-        const userId = 'admin@admin.com';
+    fetch_my_calendars : function (context , payload){
+        const { userId  }= payload ;
         return new Promise((resolve , reject)=>{
             calendarService.getUserCalendar(userId).then(res =>{
 
@@ -113,6 +113,24 @@ const actions = {
                 reject(err);
             })
         })
+    },
+    patch_event : function(context , payload){
+        return new Promise((resolve , reject)=>{
+            const { event } = payload;
+            const serverEvent = modelMapper.toServerEventModel(event);
+            serverEvent.sdate += ' 00:00:00';
+            serverEvent.edate += ' 23:59:59';
+
+            eventService.updateEvent(serverEvent).then(res=>{
+                
+                context.commit('PATCH_EVENT', { event : res })
+                context.commit('SYNC_EVENT');
+            }).catch(err=>{
+
+            })
+
+            
+        });
     }
 }
 
@@ -130,7 +148,6 @@ const mutation = {
     },
     PATCH_CALENDAR : function (state , payload) {
         let { cal } = payload;
-        console.log( '->>>>', cal.color);
         
         state.calendar.allCal = state.calendar.allCal.map(t=>{
             if(t.id === cal.id){
@@ -151,7 +168,7 @@ const mutation = {
     SYNC_EVENT : function (state) {
         let cals = state.calendar.allCal;
         let events = calendarRelrationEventToArray(cals);
-        console.log('SYNC_EVENT -> ', date.now('yyyy-MM-DD'));
+        console.log('SYNC_EVENT -> ', date.now());
         
         
         state.calendar.events = events;
@@ -165,6 +182,24 @@ const mutation = {
             }
             return t;
         })
+    },
+    PATCH_EVENT : function (state , payload){
+        let { event } = payload;
+        console.log(event);
+
+        let allCal = [...state.calendar.allCal];
+        allCal.forEach(c=>{
+            if(c.id == event.calendarId){
+                c.events.forEach(e=>{
+                    if(e.id == event.id){
+                        e.edate = event.edate;
+                        e.sdate = event.sdate;
+                    }
+                })
+            }
+        })
+
+        state.calendar.allCal = allCal;
     }
 }
 

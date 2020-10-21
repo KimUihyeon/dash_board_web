@@ -10,6 +10,8 @@ import com.sutdy.dashboard.dto.EventDto;
 import com.sutdy.dashboard.dto.CalendarDto;
 import com.sutdy.dashboard.service.common.BaseCrudService;
 import com.sutdy.dashboard.setting.util.DateUtil;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -28,6 +30,9 @@ import java.util.stream.Collectors;
  */
 @Service("calendarService")
 public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long> {
+
+
+    private static final Logger logger = LoggerFactory.getLogger(CalendarService.class);
 
     private EventRepository eventRepository;
     private CalendarRepository calendarRepository;
@@ -106,6 +111,10 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
     public EventDto eventUpdate(EventDto dto) {
         Event origin = this.eventRepository.findById(dto.getId())
                 .orElseThrow(() -> new IllegalArgumentException(NOT_FIND_DATA));
+
+        if(dto.getCalendarId() != origin.getCalendar().getId()){
+            logger.info("외래키 변경 발생");
+        }
 
         origin.patch(dto);
         return new EventDto().of(origin);

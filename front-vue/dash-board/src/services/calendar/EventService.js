@@ -15,12 +15,12 @@ const getUserEvent = (userId) => {
     return rest.get(`${base_url}/${userId}`, { userId : userId});
 }
 
-const deleteEvent = (cal) =>{
-    return rest.delete_(`${base_url}/${cal.id}`);
+const deleteEvent = (event) =>{
+    return rest.delete_(`${base_url}/${event.id}`);
 }
 
-const updateEvent = (cal) =>{
-    return rest.patch(`${base_url}/${cal.id}`, cal);
+const updateEvent = (event) =>{
+    return rest.patch(`${base_url}/${event.id}`, event);
 }
 
 export const eventService = {

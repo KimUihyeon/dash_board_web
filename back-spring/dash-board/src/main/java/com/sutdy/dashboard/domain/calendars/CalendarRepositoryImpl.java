@@ -40,7 +40,7 @@ public class CalendarRepositoryImpl extends QuerydslRepositorySupport implements
     @Override
     public List<Calendar> calendarsFindByUserId(String userId) {
 
-        //TODO : Envet 조인되는거 테스트 만들기.
+        //TODO : Envet 조인되는거 테스트 만들기. 날짜 조건 주기 .. !!
         List<Calendar> cals = this.jpaQueryFactory.selectFrom(QCalendar.calendar)
                 .where(QCalendar.calendar.account.id.eq(userId))
                 .fetch();

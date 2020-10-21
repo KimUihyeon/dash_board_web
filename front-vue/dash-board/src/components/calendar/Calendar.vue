@@ -56,6 +56,18 @@ const props = {
             }
         },
     },
+    yearChanged : {
+        type : Function,
+        default : (year) => {
+            console.log(year)
+        },
+    },
+    eventClick : {
+        type : Function,
+        default : (e) => {
+            console.log(e)
+        },
+    }
 }
 
 
@@ -107,9 +119,10 @@ export default {
                 eventDurationEditable : true , // 이벤트 드레그 허용
                 eventResizableFromStart : true, // 이벤트 리사이즈 허용
                 
-                dateClick: this.handleDateClick,
+                dateClick : (e)=>{ console.log(e); this.handleDateClick(e)},
                 eventResize : (e)=>{ console.log(e.event); console.log(e.oldEvent); this.onResizeEvnet(e.event) },
-                eventDrop : this.onDropEvent,
+                eventDrop : (e)=>{console.log(e.event); console.log(e.oldEvent);  this.onDropEvent(e.event)},
+                eventClick : (e)=>{ console.log(e.event); this.eventClick(e.event)},
                 events: this.events,
             }
         }
@@ -117,7 +130,6 @@ export default {
     watch :{
         events : function (e){
             this.calendarOptions = this.getCalendarOption();
-            console.log('변경');
         }
 
     }

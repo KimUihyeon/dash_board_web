@@ -68,8 +68,8 @@ public class CalendarApiController {
         return this.calendarService.eventSave(eventDto);
     }
 
-    @PatchMapping("/event")
-    public EventDto updateEvent(@RequestBody EventDto eventDto) {
+    @PatchMapping("/event/{id}")
+    public EventDto updateEvent(@RequestBody EventDto eventDto, @PathVariable Long id) {
         // patch 로직 짜야함
         return this.calendarService.eventUpdate(eventDto);
     }

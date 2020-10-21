@@ -53,19 +53,28 @@ const tofullCalendarModel = (serverCalendar, serverEvent) =>{
 
         backgroundColor : c.color,
         borderColor :  c.color,
-
-        // backgroundColor: ""
+        calendarId : c.id,
     }
     return event;
 }
 
+const toServerEventModel = (fullCalendar) => {
+    let c = fullCalendar;
 
-const toServerCalendarModel = (fullCalendar) =>{
-    let evnet = {
+    let endDate = moment(fullCalendar.edate, "YYYY-MM-DD").add(-1, 'days').format('YYYY-MM-DD');
+
+    let serverEvent = { 
+        ...fullCalendar,
+        edate : endDate,
+        sdate : fullCalendar.sdate
     }
+    return serverEvent;
 }
+
+
 
 
 export const modelMapper = {
     tofullCalendarModel,
+    toServerEventModel,
 }
