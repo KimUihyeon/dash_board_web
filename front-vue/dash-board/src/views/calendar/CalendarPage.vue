@@ -73,6 +73,7 @@ export default {
     methods: {
         showEventModal(){ this.modal.show = false; delay.immediately(()=>{this.modal.show = true}); },
         eventFormSubmit(event){
+            console.log(event)
             if(data.isNull(event.id)){ // Event 추가
                 this.$store.dispatch('save_event', { event }).then(res=>{
                     alert.addSuccessAlert(this);

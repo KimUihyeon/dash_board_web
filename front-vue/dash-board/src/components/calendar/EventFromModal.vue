@@ -149,8 +149,10 @@ export default {
                     context : '',
                     calendarId : this.cals[0].id,
                 };
+                this.startEndDate = '';
             }else {
                 this.cloneEvnet = eventObj;
+                this.startEndDate = '';// 이거 만들어 줘야함.
             }
         },
         submit() {

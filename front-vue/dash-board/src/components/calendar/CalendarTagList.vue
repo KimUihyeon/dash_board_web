@@ -10,13 +10,6 @@
                 :deleteClickHandle='deleteClickHandle'
                 :updateSubmitHandle='updateSubmitHandle'
                 />
-            <!-- <CalendarTagItem 
-                :label="'calendar-tag-item-' + d.id"
-                :value='d.name'
-                :id="d.id"
-                :deleteClickHandle='deleteClickHandle'
-                :updateSubmitHandle='updateSubmitHandle'
-                /> -->
         </div>
     </div>
 </template>

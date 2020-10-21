@@ -130,7 +130,7 @@ const mutation = {
     },
     PATCH_CALENDAR : function (state , payload) {
         let { cal } = payload;
-        console.log(cal);
+        console.log( '->>>>', cal.color);
         
         state.calendar.allCal = state.calendar.allCal.map(t=>{
             if(t.id === cal.id){

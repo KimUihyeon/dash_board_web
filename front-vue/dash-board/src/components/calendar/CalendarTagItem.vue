@@ -85,7 +85,7 @@ export default {
         propertySync (){ this.edit.color = this.color; this.edit.name = this.value; },
         editMode() { this.propertySync(); this.isEditMode = true; },
         readMode() { this.propertySync(); this.isEditMode = false; },
-        colorChange(c){ console.log(c)},
+        // colorChange(c){ console.log(c); },
         deleteProcess(){ 
             this.confirm(
                 '삭제하시겠습니까?' ,
@@ -123,6 +123,11 @@ export default {
             );
         },
         alert(message){ alert.elMessageBox({ vueObject : this , type :'success' , message  });},
+    },
+    watch : {
+        color : function (v){
+            this.propertySync();
+        }
     }
 }
 </script>
