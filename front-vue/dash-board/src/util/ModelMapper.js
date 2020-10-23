@@ -1,3 +1,4 @@
+import { date } from '.';
 import { format } from './DateUtil';
 const moment = require('moment');
 
@@ -41,7 +42,7 @@ const tofullCalendarModel = (serverCalendar, serverEvent) =>{
     let c = serverCalendar;
     let e = serverEvent;
     
-    let endDate =  moment(e.edate, "YYYY-MM-DD").add(1, 'days').format('YYYY-MM-DD');
+    let endDate = date.addDays(e.edate, 1);
      
     let event = {
         ...serverEvent,
@@ -58,16 +59,20 @@ const tofullCalendarModel = (serverCalendar, serverEvent) =>{
     return event;
 }
 
-const toServerEventModel = (fullCalendar) => {
-    let c = fullCalendar;
+const toServerEventModel = (fullCalendarEvent) => {
+    let e = fullCalendarEvent;
 
-    let endDate = moment(fullCalendar.edate, "YYYY-MM-DD").add(-1, 'days').format('YYYY-MM-DD');
+    let endDate = date.addDays(e.edate, -1);
 
     let serverEvent = { 
-        ...fullCalendar,
+        ...e,
         edate : endDate,
-        sdate : fullCalendar.sdate
+        sdate : e.sdate
     }
+    
+    console.log('toServerEventModel ', e);
+    console.log('serverEvent ', serverEvent);
+
     return serverEvent;
 }
 

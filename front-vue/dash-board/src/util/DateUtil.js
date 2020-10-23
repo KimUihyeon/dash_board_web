@@ -31,3 +31,25 @@ export const convertByUnixDateTime = (unix_DateTime,format) =>{
 export const format = (dateStr, format) =>{
     return moment(dateStr).format(format);
 }
+
+
+export const addDays = (date, addDays, format) => {
+    let _f = format;
+    if(_f === undefined || f === null){
+        _f = "YYYY-MM-DD"
+    }
+
+    return moment(date, _f).add(addDays, 'days').format(_f);
+}
+
+
+
+export const date = {
+    now,
+    convertByUnixDate : (dateTime) => {
+        return convertByUnixDateTime(dateTime);
+    },
+    format,
+    addDays,
+
+}
