@@ -89,7 +89,7 @@
                         v-if="MOD == 'EDIT'"
                         size="small"
                         type="danger"
-                        @click="()=>{}"
+                        @click="()=>{ deleteHandle(cloneEvnet) }"
                         round>일정 삭제</el-button
                     >
                 </div>
@@ -110,6 +110,10 @@ const props = {
     title : String,
     showModal: Boolean , 
     submitAfterHandle : { 
+        type : Function , 
+        default :  () => {}
+    },
+    deleteHandle : { 
         type : Function , 
         default :  () => {}
     },

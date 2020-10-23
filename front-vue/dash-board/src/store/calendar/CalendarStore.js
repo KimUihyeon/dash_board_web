@@ -131,6 +131,19 @@ const actions = {
 
             
         });
+    },
+    delete_event : function (context, payload) {
+        return new Promise((resolve , reject)=>{
+            const { event } = payload;
+            eventService.deleteEvent(event).then(res=>{
+                context.commit('DELETE_EVENT', { event : res })
+                context.commit('SYNC_EVENT');
+                resolve(res);
+            }).catch(err=>{
+                reject(err);
+            })
+        })
+
     }
 }
 
@@ -198,6 +211,15 @@ const mutation = {
         })
 
         state.calendar.allCal = allCal;
+    },
+    DELETE_EVENT : function (state , payload){
+        let { event } = payload;
+        let allCal = [...state.calendar.allCal];
+        allCal.forEach(c=>{
+            if(c.id == event.calendarId){
+                c.events = c.events.filter(e=> e.id != event.id);
+            }
+        })
     }
 }
 

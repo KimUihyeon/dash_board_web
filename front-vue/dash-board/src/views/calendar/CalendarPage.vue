@@ -41,6 +41,7 @@
             ref="eventFromModal"
             :cals='getAllCalendar'
             :submitAfterHandle='eventFormSubmit'
+            :deleteHandle='eventDelete'
             :showModal='modal.show'
         />
     </div>
@@ -115,18 +116,23 @@ export default {
 
             this.$store.dispatch('patch_event', { event })
         },
-        eventDelete({ event }){
+        eventDelete(e){
             const okCallback = ()=>{
-                console.log(event.id , '삭제');
+                this.$store.dispatch('delete_event', { event : e })
+                    .then(res=> { 
+                        alert.deleteSuccessAlert(this);
+                        this.modal.show = false; 
+                    })
+                    .catch(err=>{ alert.serverErrorAlert(this); });
             }
             
             alert.elConfirm({
                 vueObject: this,
                 type : 'Warning',
-                confirmMsg : 'event 삭제하시겠습니까??',
+                confirmMsg : `[${e.title}] 일정을 삭제하시겠습니까?`,
                 title : '할일 삭제',
                 okCallback ,
-                cancelCallback, });
+                cancelCallback : ()=>{}, });
         },
 
 

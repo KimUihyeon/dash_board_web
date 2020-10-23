@@ -20,6 +20,7 @@ const deleteEvent = (event) =>{
 }
 
 const updateEvent = (event) =>{
+    console.log(event)
     return rest.patch(`${base_url}/${event.id}`, event);
 }
 
