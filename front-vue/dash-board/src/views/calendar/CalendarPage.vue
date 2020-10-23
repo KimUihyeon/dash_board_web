@@ -39,7 +39,6 @@
         </div>
         <EventFromModal 
             ref="eventFromModal"
-            :title='modal.title'
             :cals='getAllCalendar'
             :submitAfterHandle='eventFormSubmit'
             :showModal='modal.show'
@@ -63,7 +62,6 @@ export default {
     data: () => ({
         modal : { 
             show : false,
-            title : '',
         },
     }),
     mounted(){
@@ -83,19 +81,29 @@ export default {
             this.showEventModal(); 
         },
         
-        eventFormSubmit(event){
-            console.log(event)
-            if(data.isNull(event.id)){ // Event 추가
-                this.$store.dispatch('save_event', { event }).then(res=>{
+        eventFormSubmit(e){
+            console.log('/',e);
+            if(data.isNull(e.id)){ // Event 추가
+                this.$store.dispatch('save_event', { event : e }).then(res=>{
                     alert.addSuccessAlert(this);
                 }).catch(err=>{
                     alert.serverErrorAlert(this);
                 })
             }else {  // Event 수정
-                console.log('업데이트 로직');
-                // this.eventUpdate();
+                let event = {
+                    ...this.getEvents.filter(t=> t.id==e.id)[0],
+                    title : e.title,
+                    context : e.context,
+                    edate : e.edate,
+                    sdate : e.sdate,
+                }
+
+                this.$store.dispatch('patch_event', { event }).then(res=>{
+                    alert.editSuccessAlert(this);
+                }).catch(err=>{
+                    alert.serverErrorAlert(this);
+                });
             }
-            
         },
         eventUpdate(e){
 

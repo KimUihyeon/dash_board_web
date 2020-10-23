@@ -71,6 +71,7 @@ public class CalendarApiController {
     @PatchMapping("/event/{id}")
     public EventDto updateEvent(@RequestBody EventDto eventDto, @PathVariable Long id) {
         // patch 로직 짜야함
+        eventDto.setUDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT));
         return this.calendarService.eventUpdate(eventDto);
     }
 

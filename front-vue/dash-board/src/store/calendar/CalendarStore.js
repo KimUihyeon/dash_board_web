@@ -122,11 +122,11 @@ const actions = {
             serverEvent.edate += ' 23:59:59';
 
             eventService.updateEvent(serverEvent).then(res=>{
-                
                 context.commit('PATCH_EVENT', { event : res })
                 context.commit('SYNC_EVENT');
+                resolve(res);
             }).catch(err=>{
-
+                reject(err);
             })
 
             
@@ -185,16 +185,14 @@ const mutation = {
     },
     PATCH_EVENT : function (state , payload){
         let { event } = payload;
-        console.log(event);
 
         let allCal = [...state.calendar.allCal];
         allCal.forEach(c=>{
             if(c.id == event.calendarId){
-                c.events.forEach(e=>{
-                    if(e.id == event.id){
-                        e.edate = event.edate;
-                        e.sdate = event.sdate;
-                    }
+                c.events = c.events.map(e=> {
+                    if(e.id == event.id)
+                        return event;
+                    return e;
                 })
             }
         })

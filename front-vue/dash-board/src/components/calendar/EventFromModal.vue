@@ -1,6 +1,6 @@
 <template>
     <el-dialog
-        :title="title"
+        :title="MOD == 'ADD' ? '일정 추가' : '일정 수정'"
         :visible.sync="show"
         :close-on-click-modal="false"
     >
@@ -43,17 +43,6 @@
                                 :change="()=>
                                     { console.log('change'); nextFouse(null, $refs.memo);}"
                             >
-                            <!-- <el-date-picker
-                                v-model="startEndDate"
-                                type="datetimerange"
-                                align="center"
-                                ref="start"
-                                unlink-panels
-                                range-separator="To"
-                                :default-time="['12:00:00','12:00:00']"
-                                start-placeholder="Start date"
-                                end-placeholder="End date"
-                            > -->
                             </el-date-picker>
                             <span class="validation-box">{{ errors[0] }}</span>
                         </el-form-item>
@@ -87,13 +76,21 @@
                         size="small" 
                         type="primary" 
                         @click="handleSubmit(submit)" 
-                        round>저장</el-button>
+                        round>{{ MOD == 'ADD' ? '추가' : '수정' }}</el-button>
 
                     <el-button
                         size="small"
                         type="danger"
-                        @click="close"
+                        @click="modalClose"
                         round>나가기</el-button
+                    >
+
+                    <el-button
+                        v-if="MOD == 'EDIT'"
+                        size="small"
+                        type="danger"
+                        @click="()=>{}"
+                        round>일정 삭제</el-button
                     >
                 </div>
             </el-form>
@@ -102,20 +99,20 @@
 </template>
 
 <script>
-import { data, alert, rest, date } from '../../util';
+import { data, alert, rest, date, delay } from '../../util';
 import { accountService } from '../../services';
 import SelectBox from '../../components/calendar/SelectBox';
 
 const name = 'EventFormModal';
 const props = { 
+    cals : Array,
+    event : Object,
     title : String,
     showModal: Boolean , 
     submitAfterHandle : { 
         type : Function , 
         default :  () => {}
     },
-    event : Object,
-    cals : Array
 };
 const components = {
     SelectBox,
@@ -125,87 +122,70 @@ export default {
     name, props, components,
     data() {
         return {
+            // eventObj : {},
+            // cloneEvnet: {
+            //     title: '',
+            //     sdate: '',
+            //     edate: '',
+            //     icon : '',
+            //     context : '',
+            //     calendarId : -1,
+            // },
+            show: false,
+            MOD : 'EDIT' |  'ADD',
             eventObj : {},
-            cloneEvnet: {
+            cloneEvnet: {},
+            startEndDate: '',
+        };
+    },
+    methods: {
+        modalClose(){ return new Promise((resolve , reject)=>{ this.show = false; resolve() })},
+        nextFouse(validationErr, nextElement) { if (data.isNull(validationErr)) { nextElement.focus()} },
+        submit() { this.modalClose().then(res=>{ this.submitAfterHandle(this.cloneEvnet) }); },
+        setEventObj(e){ this.eventObj = e; },
+        newEventObj(e){
+            return {
                 title: '',
                 sdate: '',
                 edate: '',
                 icon : '',
                 context : '',
-                calendarId : -1,
-            },
-            startEndDate: '',
-            show: false,
-            isBlurs: false,
-        };
-    },
-    methods: {
-        setEventObj(eventObj){
-            this.eventObj = eventObj;
+                calendarId : this.cals[0].id,
+            }
         },
+        copyEventObj(e){ 
+            return {
+                id : e.id,
+                title: e.title,
+                sdate: e.sdate,
+                edate: e.edate,
+                icon :e.icon,
+                context : e.context,
+                calendarId : e.calendarId,
+            }
+        },
+
         init(e) {
             if(data.isNull(e)) {
-                this.cloneEvnet = {
-                    title: '',
-                    sdate: '',
-                    edate: '',
-                    icon : '',
-                    context : '',
-                    calendarId : this.cals[0].id,
-                };
+                this.cloneEvnet = this.newEventObj(e);
+                this.MOD = 'ADD';
                 this.startEndDate = '';
             }else {
-                console.log(e);
-                this.cloneEvnet = {
-                    id : e.id,
-                    title: e.title,
-                    sdate: e.sdate,
-                    edate: e.edate,
-                    icon :e.icon,
-                    context : e.context,
-                    calendarId : e.calendarId,
-                }
-                console.log(this.cloneEvnet);
-                // this.cloneEvnet.title = '123123123123';
-                this.startEndDate = ['2020-10-01', '2020-10-09'];// 이거 만들어 줘야함.
+                this.cloneEvnet = this.copyEventObj(e);
+                this.MOD = 'EDIT';
+                const edate = date.format(e.sdate , 'yyyy-MM-DD');
+                const sdate = date.format(e.edate , 'yyyy-MM-DD');
+                this.startEndDate = [edate, sdate];
             }
         },
-        submit() {
-            this.close();
-            setTimeout(()=>{
-                console.log(this.cloneEvnet)
-                this.submitAfterHandle(this.cloneEvnet);
-            },10)
-        },
-        nextFouse(validationErr, nextElement) {
-            if (data.isNull(validationErr)) {
-                nextElement.focus();
-            }
-        },
-        alert(type, message) {
-            alert.elMessageBox({
-                vueObject: this,
-                type,
-                message,
-            });
-        },
-        close(){
-            this.show = false;
-        }
     },
     watch: {
-        cloneEvnet(v){
-            console.log(v)
-        },
-        showModal(v) {
-            this.show = v;
-            this.init(this.eventObj);
-        },
+        showModal(v) { this.show = v; this.init(this.eventObj); },
         startEndDate(v) {
-            console.log(v);
             if(data.isNull(v)){
                 return;
             }
+
             const format = 'YYYY-MM-DD';
 
             let start = date.format(v[0], format);
