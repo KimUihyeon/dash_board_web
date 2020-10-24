@@ -1,9 +1,15 @@
-const isNull = (object) => {
-    if(object === null || object === undefined || object === '' || ( object != null && typeof object == "object" && !Object.keys(object).length )) {    
+
+const _isUndefined = (obj) => obj === undefined || typeof obj === 'undefined';
+const _isEmptyStr = (str) => str === null || str === '' || _isUndefined(str) ;
+const _isNullObject = (obj) => obj != null && typeof obj == "object" && !Object.keys(obj).length;
+
+const isNull = (o) => {
+    if( _isEmptyStr(o) || _isEmptyStr(o) || _isNullObject(o)){
         return true;
     }
     return false;
 }
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////

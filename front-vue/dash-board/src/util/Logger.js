@@ -38,10 +38,21 @@ const error = (trace, msg) =>{
     console.error(_loggerHeaderMaker(logLevel.ERROR, trace), msg);
 }
 
+const undefined =(trace, value, isAlert) =>{
+    if(_applicationMode === 'DEV' || _devLoggervisible){
+        let lh = _loggerHeaderMaker(logLevel.DEV, trace);
+        if(isAlert || typeof isAlert == 'undefined'){
+            alert('undefined function');
+        }
+        console.log(lh, value);
+    }
+}
+
 
 export const logger = {
     dev,
     debug,
     warn,
-    error
+    error,
+    undefined
 }
