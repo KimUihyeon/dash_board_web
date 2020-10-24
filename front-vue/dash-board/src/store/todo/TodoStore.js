@@ -9,8 +9,7 @@
  */
 
 import { todoService, todoCategoryService } from "../../services";
-import { alert } from '../../util'
-import Axios from "axios";
+import { logger } from '../../util'
 
 
 const state = {
@@ -55,7 +54,7 @@ const actions = {
         return new Promise((resolve , reject) =>{
             todoService.getTodoList( filter , id)
                 .then(data=>{
-                    alert.logger('todo List download', 'fetch_todo_list');
+                    logger.debug('todoStore : fetch_todo_list');
                     context.commit('SET_TODO_LIST', { todoList : data });
                     resolve(data);
                 })
@@ -120,17 +119,9 @@ const actions = {
     },
 
     fetch_todo_categories: function (context , payload){
-        // let { loginId } = payload;
-
         return new Promise((resolve, reject)=>{
             todoCategoryService.getDatas()
                 .then(data =>{
-                    // const categories = data.map(t=>{
-                    //     return{
-                    //         ...t,
-                    //         param : 'category'
-                    //     }
-                    // })
                     const categories = data;
                     console.log(categories);
                     context.commit('SET_TODO_CATEGORIES' , { todoCategories : categories }); 
