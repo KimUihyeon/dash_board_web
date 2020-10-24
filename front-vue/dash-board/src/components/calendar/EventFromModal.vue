@@ -41,7 +41,7 @@
                                 start-placeholder="Start date"
                                 end-placeholder="End date"
                                 :change="()=>
-                                    { console.log('change'); nextFouse(null, $refs.memo);}"
+                                    { nextFouse(null, $refs.memo);}"
                             >
                             </el-date-picker>
                             <span class="validation-box">{{ errors[0] }}</span>

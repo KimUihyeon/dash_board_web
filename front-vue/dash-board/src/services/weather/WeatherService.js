@@ -116,8 +116,6 @@ const getWeatherDetailByLocation = async (location) =>{
         return res;
     });
 
-    // console.log(current);
-    // console.log(day5);
 }
 
 export const weatherService = {

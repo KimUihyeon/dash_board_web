@@ -23,6 +23,7 @@ import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'
 import interactionPlugin from '@fullcalendar/interaction'
 import koLocale from '@fullcalendar/core/locales/ko';
+import { logger } from '../../util'
 
 const ko_locate = ['일', '월', '화', '수', '목', '금', '토'];
 const name = 'Calendar';
@@ -35,12 +36,14 @@ const props = {
     },
     onEventFormSubmit : {
         type : Function,
-        default : (event) => {console.log(event)}
+        default : (event) => { 
+            logger.undefined(`${name} : onEventFormSubmit`, event); 
+        }
     },
     onResizeEvnet : {
         type : Function,
         default : (info) => {
-            console.log(info);
+            logger.undefined(`${name} : onResizeEvnet`, info); 
                 
             if (!confirm("Are you sure about this change?")) {
                 info.revert();
@@ -50,7 +53,7 @@ const props = {
     onDropEvent : {
         type : Function,
         default : (info) => {
-            console.log(info);
+            logger.undefined(`${name} : onDropEvent`, info); 
             if (!confirm("Are you sure about this change?")) {
                 info.revert();
             }
@@ -58,15 +61,11 @@ const props = {
     },
     yearChanged : {
         type : Function,
-        default : (year) => {
-            console.log(year)
-        },
+        default : (year) => { logger.undefined(`${name} : yearChanged`, info) },
     },
     eventClick : {
         type : Function,
-        default : (e) => {
-            console.log(e)
-        },
+        default : (e) => { logger.undefined(`${name} : eventClick`, info) },
     }
 }
 
