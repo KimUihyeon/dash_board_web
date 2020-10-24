@@ -2,3 +2,16 @@
 ## API Guide Url -> https://home.openweathermap.org/
 ## 오픈웨더 API 키
 VUE_APP_WEATHER_API=''; 
+
+
+## 서버 도메인
+VUE_APP_API_BASE_URL='';
+
+## 개발모드 | 배포모드 (DEV | REL)
+VUE_APP_MODE='';
+
+
+## 로그인 쿠기관련
+VUE_APP_COOKIE_NAME_LOGIN='';
+VUE_APP_COOKIE_NAME_LOGIN_HISOTRY='';
+VUE_APP_COOKIE_NAME_TOKEN='';
