@@ -173,9 +173,9 @@ export default {
             const cal = { ...findCalendar };
             let isChanged = false;
 
-            if(!data.isNull(title) && cal.title != title ){ cal.title = title; isChanged = true;}
-            if(!data.isNull(color) && cal.color != color ){ cal.color = color; isChanged = true;}
-            if(!data.isNull(checked) && cal.checked != checked ){ cal.checked = checked; isChanged = true;}
+            if(data.isNotNullAndDirty(cal.title, title)){ cal.title = title; isChanged = true;}
+            if(data.isNotNullAndDirty(cal.color, color)){ cal.color = color; isChanged = true;}
+            if(data.isNotNullAndDirty(cal.checked, checked)){ cal.checked = checked; isChanged = true;}
 
             if(isChanged){
                 this.$store.dispatch('patch_calendar', { cal }).then((res)=>{ 
