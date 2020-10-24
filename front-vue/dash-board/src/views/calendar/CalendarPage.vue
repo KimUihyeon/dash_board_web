@@ -53,7 +53,7 @@ import CalendarTagList from '../../components/calendar/CalendarTagList';
 import EventFromModal from '../../components/calendar/EventFromModal';
 import ItmeAdd  from '../../components/todo/ItmeAdd';
 import { mapGetters } from 'vuex';
-import { data, delay, alert } from '../../util'
+import { data, delay, alert, logger } from '../../util'
 
 const name = 'CalendarPage';
 const components = { Calendar ,EventFromModal, ItmeAdd, CalendarTagList };
@@ -73,17 +73,31 @@ export default {
         ...mapGetters(['getAllCalendar', 'getEvents']),
     },
     methods: {
-        getCalendar(year){},
         showEventModal(){ this.modal.show = false; delay.immediately(()=>{this.modal.show = true}); },
-        showEventAddModal(){ this.$refs.eventFromModal.setEventObj({}); this.showEventModal(); },
+        showEventAddModal(){ 
+            if(this.isEmptyCalendar()) {
+                alert.elMessageBox({
+                    vueObject : this ,
+                    type : alert.prop.type.error,
+                    message: '캘린더를 먼저 생성해 주세요.'
+                })
+
+                return;
+            }
+
+            this.$refs.eventFromModal.setEventObj({}); 
+            this.showEventModal();
+        },
         showEventEditModal(e){ 
             const event = {...this.getEvents.filter(t=>t.id==e.id)[0]};
             this.$refs.eventFromModal.setEventObj(event);
             this.showEventModal(); 
         },
-        
-        eventFormSubmit(e){
-            console.log('/',e);
+        isEmptyCalendar(){
+            return data.isNull(this.getAllCalendar) || this.getAllCalendar.length === 0;
+        },
+        eventFormSubmit(e){            
+            logger.dev(`${name} : eventFormSubmit`, e );
             if(data.isNull(e.id)){ // Event 추가
                 this.$store.dispatch('save_event', { event : e }).then(res=>{
                     alert.addSuccessAlert(this);
@@ -141,7 +155,11 @@ export default {
         },
         calendarInputHandle(v , param){
             if(!data.validation(param.keyWord, 'text' , [0, 15])){
-                this.alert('캘린더는 15자 미만 입니다.','error');
+                alert.elMessageBox({
+                    vueObject : this ,
+                    type : alert.prop.type.error,
+                    message: '캘린더는 1 ~ 15자 미만 입니다.'
+                })
                 return ;
             }
 
