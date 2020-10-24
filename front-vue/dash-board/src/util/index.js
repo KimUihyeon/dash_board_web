@@ -5,6 +5,7 @@ import { data as Data } from './Data';
 import { error as Error } from './Error'
 import { delay as Delay } from './Delay'
 import { modelMapper as ModelMapper } from './ModelMapper';
+import { logger as Logger }  from './Logger';
 
 
 
@@ -18,3 +19,4 @@ export const data = Data;
 export const delay = Delay;
 export const modelMapper = ModelMapper;
 export const date = Date;
+export const logger = Logger;

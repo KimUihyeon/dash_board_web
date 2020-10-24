@@ -1,6 +1,23 @@
 import { data } from "./Data";
 const isNull = data.isNull;
 
+const prop = {
+    type : {
+        success : 'success',
+        error : 'error',
+    },
+
+    msg : {
+        editSuccess : '수정 완료',
+        deleteSuccess : '삭제 완료',
+        addSuccess : '추가',
+
+        cencleSuccess : '취소',
+
+        serverError : '처리되지 않았습니다.'
+    }
+}
+
 /**
  * Element Ui Alert popup !
  * 
@@ -69,52 +86,43 @@ const elConfirm = (
 }
 
 
-function logger(context , functionName){
-    let VUE_APP_MODE = process.env.VUE_APP_MODE;
-    if(VUE_APP_MODE === 'DEV'){
-        console.log(` ${functionName} => `, context);
+// function logger(context , functionName){
+//     let VUE_APP_MODE = process.env.VUE_APP_MODE;
+//     if(VUE_APP_MODE === 'DEV'){
+//         console.log(` ${functionName} => `, context);
+//     }
+// }
+
+
+
+const alertClosure = (type)=>{    
+    const prop = { type };
+
+    return ( message )=>{
+        prop.message = message;
+        return (vueObject)=>{
+            prop.vueObject = vueObject;
+            elMessageBox(prop)
+        }
     }
 }
 
 
-const prop = {
-    type : {
-        success : 'success',
-        error : 'error',
-    },
+const successAlertClosure = (m) => {return alertClosure(prop.type.success)(m)}
+const errorAlertClosure = (m) => {return alertClosure(prop.type.error)(m)}
 
-    msg : {
-        editSuccess : '수정 완료',
-        deleteSuccess : '삭제 완료',
-        addSuccess : '추가',
+const addSuccessAlert = (v) => { successAlertClosure(prop.msg.addSuccess)(v) }
+const editSuccessAlert = (v) =>{ successAlertClosure(prop.msg.editSuccess)(v)}
+const deleteSuccessAlert = (v) =>{ successAlertClosure(prop.msg.deleteSuccess)(v)}
+const cencleSuccessAlert = (v) =>{ successAlertClosure(prop.msg.cencleSuccess)(v)}
 
-        cencleSuccess : '취소',
-
-        serverError : '처리되지 않았습니다.'
-    }
-}
-
-const alertClosure = (message , type) =>{
-    const prop = { message, type };
-    return (vueObject) =>{ 
-        prop.vueObject = vueObject;
-        elMessageBox(prop)
-    };
-}
-
-const addSuccessAlert = (vueObject)=>{ alertClosure(prop.msg.addSuccess, prop.type.success)(vueObject) }
-const editSuccessAlert = (vueObject) =>{ alertClosure(prop.msg.editSuccess, prop.type.success)(vueObject)}
-const deleteSuccessAlert = (vueObject) =>{ alertClosure(prop.msg.deleteSuccess, prop.type.success)(vueObject)}
-const cencleSuccessAlert = (vueObject) =>{ alertClosure(prop.msg.cencleSuccess, prop.type.success)(vueObject)}
-
-const serverErrorAlert = (vueObject) =>{ alertClosure(prop.msg.serverError, prop.type.error)(vueObject)}
+const serverErrorAlert = (v) =>{ errorAlertClosure(prop.msg.serverError)(v)}
 
 
 
 export const alert = {
     elConfirm,
     elMessageBox,
-    logger,
     prop,
 
     addSuccessAlert,
