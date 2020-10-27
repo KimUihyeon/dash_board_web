@@ -1,12 +1,13 @@
 ///////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////////////// {{Null Check}} //////////////////////////////////////////
 ///////////////////////////////////////////////////////////////////////////////////////////
-const _isUndefined = (obj) => obj === undefined || typeof obj === 'undefined';
-const _isEmptyStr = (str) => str === null || str === '' || _isUndefined(str) ;
-const _isNullObject = (obj) => obj != null && typeof obj == "object" && !Object.keys(obj).length;
+const isUndefined = (obj) => obj === undefined || typeof obj === 'undefined';
+const isEmptyStr = (str) => str === null || str === '' || isUndefined(str) ;
+const isEmptyArr = (arr) => isNullObject(arr) || arr.length === 0 ;
+const isNullObject = (obj) => obj != null && typeof obj == "object" && !Object.keys(obj).length ||  isUndefined(obj);
 
 const isNull = (o) => {
-    if( _isEmptyStr(o) || _isEmptyStr(o) || _isNullObject(o)){
+    if( isUndefined(o) || isEmptyStr(o) || isNullObject(o)){
         return true;
     }
     return false;
@@ -86,13 +87,19 @@ const validation = (text, type, range) =>{
 
 
 export const data = {
+    isUndefined,
+    isEmptyStr,
+    isEmptyArr,
+    isNullObject,
     isNull,
-    validation,
-    isNotNullAndDirty,
-    isDirty,
+    
     compare,
     different,
-    
+    isDirty,
+    isNotNullAndDirty,
+
+    validation,
+
     cookie : {
         createCookie,
         getCookie,

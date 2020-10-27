@@ -66,13 +66,14 @@ export default {
         },
     }),
     mounted(){
-            const param = { userId : 'admin@admin.com' };
-            this.$store.dispatch('fetch_my_calendars', param );
+        const param = { userId : 'admin@admin.com' };
+        this.$store.dispatch('fetch_my_calendars', param );
     },
     computed : {
         ...mapGetters(['getAllCalendar', 'getEvents']),
     },
     methods: {
+        isEmptyCalendar(){ return data.isEmptyArr(this.getAllCalendar) },
         showEventModal(){ this.modal.show = false; delay.immediately(()=>{this.modal.show = true}); },
         showEventAddModal(){ 
             if(this.isEmptyCalendar()) {
@@ -92,9 +93,6 @@ export default {
             const event = {...this.getEvents.filter(t=>t.id==e.id)[0]};
             this.$refs.eventFromModal.setEventObj(event);
             this.showEventModal(); 
-        },
-        isEmptyCalendar(){
-            return data.isNull(this.getAllCalendar) || this.getAllCalendar.length === 0;
         },
         eventFormSubmit(e){            
             logger.dev(`${name} : eventFormSubmit`, e );
@@ -169,8 +167,7 @@ export default {
             });
         },
         calendarUpdate({id, title , color, checked}){
-            const findCalendar = this.getAllCalendar.filter((t)=> t.id == id)[0];
-            const cal = { ...findCalendar };
+            const cal = { ...this.getAllCalendar.filter((t)=> t.id == id)[0] };
             let isChanged = false;
 
             if(data.isNotNullAndDirty(cal.title, title)){ cal.title = title; isChanged = true;}
