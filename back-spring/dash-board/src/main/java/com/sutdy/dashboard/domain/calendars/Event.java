@@ -7,6 +7,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.sql.Timestamp;
+import java.util.ArrayList;
 
 /**
  * @author kuh
@@ -34,10 +35,14 @@ public class Event {
     private Timestamp sDate; // 시작일
     private Timestamp eDate; // 종료일
 
-    @Setter
     @ManyToOne
     @JoinColumn(name = "calendarId")
     private Calendar calendar;
+
+
+    public void setCalendar(Calendar calendar){
+        this.calendar = calendar;
+    }
 
     public void patch(EventDto dto) {
         if (!this.title.equals(dto.getTitle())) {

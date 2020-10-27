@@ -139,9 +139,11 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
     public EventDto eventSave(EventDto dto) {
         Event entity = dto.toEntity();
         if (dto.getCalendarId() != null && dto.getCalendarId() > 0) {
-            entity.setCalendar(this.calendarRepository
+            Calendar calendar = this.calendarRepository
                     .findById(dto.getCalendarId())
-                    .orElseThrow(() -> new IllegalArgumentException("calendarId 값이 올바르지 않습니다.")));
+                    .orElseThrow(() -> new IllegalArgumentException("calendarId 값이 올바르지 않습니다."));
+
+            entity.setCalendar(calendar);
         }
         return new EventDto().of(this.eventRepository.save(entity));
     }
@@ -158,8 +160,8 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
                                 .map(c -> {
                                     CalendarDto dto = new CalendarDto().of(c);
 
-                                    if (c.getEvent() != null && c.getEvent().size() > 0) {
-                                        List<EventDto> eventDtos = c.getEvent() // Cast Event List
+                                    if (c.getEvents() != null && c.getEvents().size() > 0) {
+                                        List<EventDto> eventDtos = c.getEvents() // Cast Event List
                                 .stream()
                                 .map(e -> new EventDto().of(e)).collect(Collectors.toList());
                         dto.setEvents(eventDtos);
@@ -180,8 +182,8 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
                     .map(c -> {
                         CalendarDto dto = new CalendarDto().of(c);
 
-                        if (c.getEvent() != null && c.getEvent().size() > 0) {
-                            List<EventDto> eventDtos = c.getEvent() // Cast Event List
+                        if (c.getEvents() != null && c.getEvents().size() > 0) {
+                            List<EventDto> eventDtos = c.getEvents() // Cast Event List
                                     .stream()
                                     .map(e -> new EventDto().of(e)).collect(Collectors.toList());
                             dto.setEvents(eventDtos);
@@ -199,8 +201,12 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
                 .map(c -> {
                     CalendarDto dto = new CalendarDto().of(c);
                     dto.setEvents(new ArrayList<>());
-                    for(Event event : c.getEvent()){
-                        dto.getEvents().add(new EventDto().of(event));
+
+                    // TODO : 임시로직 persistentbag 떨어질떄랑 Null 떨어질때 비교하기.
+                    if(c.getEvents() != null) {
+                        for(Event event : c.getEvents()){
+                            dto.getEvents().add(new EventDto().of(event));
+                        }
                     }
                     return dto;
                 })

@@ -100,9 +100,8 @@ public class CalendarRepositoryImpl extends QuerydslRepositorySupport implements
             Calendar currentCal = event.getCalendar();
             if (!cals.contains(currentCal)) {
                 cals.add(currentCal);
-                currentCal.setEvent(new ArrayList());
             }
-            currentCal.getEvent().add(event);
+            currentCal.getEvents().add(event);
             event.setCalendar(null);
         }
         return new ArrayList<>(cals);
@@ -147,9 +146,8 @@ public class CalendarRepositoryImpl extends QuerydslRepositorySupport implements
             Calendar currentCal = event.getCalendar();
             if (!cals.contains(currentCal)) {
                 cals.add(currentCal);
-                currentCal.setEvent(new ArrayList());
             }
-            currentCal.getEvent().add(event);
+            currentCal.getEvents().add(event);
             event.setCalendar(null);
         }
         return new ArrayList<>(cals);

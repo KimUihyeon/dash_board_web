@@ -7,6 +7,7 @@ import lombok.*;
 import javax.persistence.*;
 
 import java.sql.Timestamp;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
@@ -39,10 +40,15 @@ public class Calendar {
     @JoinColumn(name = "accountId")
     private Account account;
 
-    @Setter
-    @OneToMany(mappedBy = "calendar" , fetch = FetchType.LAZY)
+//    @Setter
 //    @JoinColumn(name = "eventId")
-    private List<Event> event;
+    @OneToMany(mappedBy = "calendar")
+    private List<Event> events = new ArrayList<>();
+
+    public void add(Event event){
+        this.events.add(event);
+        event.setCalendar(this);
+    }
 
     public void patch(CalendarDto dto) {
         if (dto.getTitle() != null && !dto.getTitle().equals(this.title)) {

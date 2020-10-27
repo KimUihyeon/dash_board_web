@@ -19,6 +19,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import javax.transaction.Transactional;
@@ -58,7 +59,7 @@ public class CalendarServiceTest {
 
 
     @Before
-    public void createSampleData() throws NoSuchAlgorithmException {
+    public void createSampleData() throws NoSuchAlgorithmException, AccessException {
 
         AccountDto accountDto = null;
 
@@ -84,7 +85,7 @@ public class CalendarServiceTest {
                 .title("테스트 캘린더 테그 생성")
                 .build();
 
-        this.tempCalendarId = this.calendarService.save(dto).getId();
+        this.tempCalendarId = this.calendarService.save(dto ,loginId ).getId();
     }
 
     @After
@@ -118,6 +119,80 @@ public class CalendarServiceTest {
                     .title("테스트 캘린더 테그 생성 " + i)
                     .build();
             CalendarDto savedTag = this.calendarService.save(dto , account.getId());
+            calendars.add(savedTag);
+        }
+
+        List<Long> ids = calendars.stream().map(t -> t.getId()).collect(Collectors.toList());
+
+        //when
+        List<CalendarDto> findAll = this.calendarService.calendarsFindByUserId(account.getId());
+
+        //then
+        Assert.assertNotNull(findAll);
+        Assert.assertEquals(findAll.size(), calendars.size());
+
+        Assert.assertEquals(
+                findAll.stream()
+                        .filter(t -> t.getId() == ids.get(0)).collect(Collectors.toList())
+                        .get(0)
+                        .getTitle(),
+                calendars.stream()
+                        .filter(t -> t.getId() == ids.get(0)).collect(Collectors.toList())
+                        .get(0)
+                        .getTitle()
+        );
+
+
+        Assert.assertEquals(
+                findAll.stream()
+                        .filter(t -> t.getId() == ids.get(ids.size() - 1)).collect(Collectors.toList())
+                        .get(0)
+                        .getTitle(),
+                calendars.stream()
+                        .filter(t -> t.getId() == ids.get(ids.size() - 1)).collect(Collectors.toList())
+                        .get(0)
+                        .getTitle()
+        );
+
+
+    }
+
+    @Test
+    public void calendar_with_event_all_리스트_불러오기_by_userId_테스트() throws AccessException, NoSuchAlgorithmException {
+        //given
+
+        AccountDto accountDto = new AccountDto().of(Account.builder()
+                .id("Test@naver.comTestTest")
+                .name("userName")
+                .cDate(DateUtil.now())
+                .build());
+        accountDto.setPw("123123123");
+
+        AccountDto account = this.accountService.save(accountDto);
+
+        List<CalendarDto> calendars = new ArrayList<>();
+        for (int i = 0; i < 5; i++) {
+
+            CalendarDto dto = CalendarDto.builder()
+                    .accountId(account.getId())
+                    .cDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
+                    .color("#fff")
+                    .description("test Data " + i)
+                    .title("테스트 캘린더 테그 생성 " + i)
+                    .build();
+            CalendarDto savedTag = this.calendarService.save(dto , account.getId());
+
+            for(int j = 0 ; j< 3 ; j ++ ){
+                EventDto eventDto =  EventDto.builder()
+                        .cDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
+                        .title("테스트 일정 " + i + "" + j)
+                        .calendarId(savedTag.getId())
+                        .sDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
+                        .eDate(DateUtil.toString(DateUtil.now(), ApplicationStringConfig.DATE_FORMAT))
+                        .build();
+
+                this.calendarService.eventSave(eventDto);
+            }
             calendars.add(savedTag);
         }
 
