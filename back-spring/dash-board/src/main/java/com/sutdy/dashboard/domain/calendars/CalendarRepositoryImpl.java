@@ -9,6 +9,10 @@ import org.springframework.stereotype.Repository;
 
 import java.sql.Timestamp;
 import java.util.*;
+import java.util.stream.Collectors;
+
+import static com.querydsl.core.group.GroupBy.groupBy;
+import static com.querydsl.core.group.GroupBy.list;
 
 /**
  * @author kuh
@@ -39,13 +43,17 @@ public class CalendarRepositoryImpl extends QuerydslRepositorySupport implements
 
     @Override
     public List<Calendar> calendarsFindByUserId(String userId) {
+        Map<Calendar, List<Event>> transform = this.jpaQueryFactory.selectFrom(QCalendar.calendar)
+                .leftJoin(QCalendar.calendar.events, QEvent.event)
+                .transform(groupBy(QCalendar.calendar).as(list(QEvent.event)));
 
-        //TODO : Envet 조인되는거 테스트 만들기. 날짜 조건 주기 .. !!
-        List<Calendar> cals = this.jpaQueryFactory.selectFrom(QCalendar.calendar)
-                .where(QCalendar.calendar.account.id.eq(userId))
-                .fetch();
+        return transform.entrySet().stream().map(entity -> entity.getKey()).collect(Collectors.toList());
 
-        return cals;
+//        이전 코드 ..!
+//        List<Calendar> cals = this.jpaQueryFactory.selectFrom(QCalendar.calendar)
+//                .where(QCalendar.calendar.account.id.eq(userId))
+//                .fetch();
+//        return cals;
 
 //
 //        aaa.stream().map(t-> {

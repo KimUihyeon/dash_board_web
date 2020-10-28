@@ -158,6 +158,7 @@ public class CalendarServiceTest {
     }
 
     @Test
+    @Transactional
     public void calendar_with_event_all_리스트_불러오기_by_userId_테스트() throws AccessException, NoSuchAlgorithmException {
         //given
 
