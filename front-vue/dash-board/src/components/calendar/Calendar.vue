@@ -18,6 +18,12 @@
     
 </template>
 
+<style scoped>
+.calendar-yymm{
+    color: #fff !important;
+}
+</style>
+
 <script>
 import FullCalendar from '@fullcalendar/vue'
 import dayGridPlugin from '@fullcalendar/daygrid'

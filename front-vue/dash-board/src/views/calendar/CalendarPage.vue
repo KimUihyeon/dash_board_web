@@ -207,10 +207,14 @@ export default {
 }
 .calendar-container{
     border: 1px solid #fff;
+    background: #21212185;
 }
 </style>
 <style>
 .v-calendar-weekly__day-label{
     text-align: left !important;
+}
+.fc-col-header-cell-cushion , .fc-daygrid-day-number{
+    color: #fff !important;
 }
 </style>

@@ -22,13 +22,20 @@
       </el-dropdown> -->
 
       <span>
-          <RouterItem v-show='isLogin' icon="el-icon-s-home" to='/home' name='home' tooltip='홈'/>
-          <span class="line">|</span>
-          <RouterItem v-show='isLogin' icon="el-icon-circle-check" to='/todoCategory' name='todo' tooltip='투두리스트'/>
-          <RouterItem v-show='isLogin' icon="el-icon-date" to='/cal' name='calendar' tooltip='일정'/>
-          <span class="line">|</span>
-          <RouterItem v-show="!isLogin" icon="el-icon-lock" to='/logout' name='logout' tooltip='로그 아웃'/>
-          <RouterItem v-show="isLogin" icon="el-icon-user-solid" to='/signup' name="sign Up" tooltip='회원 가입'/>
+          <span v-if="isLogin">
+            <RouterItem icon="el-icon-s-home" to='/home' name='home' tooltip='홈'/>
+            <span class="line">|</span>
+                
+            <RouterItem icon="el-icon-circle-check" to='/todoCategory' name='todo' tooltip='투두리스트'/>
+            <RouterItem icon="el-icon-date" to='/cal' name='calendar' tooltip='일정'/>
+            <span class="line">|</span>
+            <RouterItem icon="el-icon-lock" to='/logout' name='logout' tooltip='로그 아웃'/>
+          </span>
+
+          <span v-else>
+
+            <RouterItem icon="el-icon-user-solid" to='/signup' name="sign Up" tooltip='회원 가입'/>
+          </span>
       </span>
 
       <Signup :submitHandle="()=>{}" :showModal='showSignup' /> 
