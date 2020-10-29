@@ -9,15 +9,14 @@ import TodoPage from '../views/todo/TodoPage.vue';
 import TodoCategoryPage from '../views/todo/TodoCategoryPage.vue';
 import CalendarPage from '../views/calendar/CalendarPage.vue'
 
-const logoutProcess = () => (to, from, next) => {
-    store
-        .dispatch('app_logout')
-        .then((auth) => {
-            return next(`/login`);
-        })
-        .catch((err) => {
-            return next(`/login`);
-        });
+const logoutStore = () =>{
+    return store.dispatch('app_logout');
+}
+
+const logout = () => (to, from, next) => {
+    logoutStore()
+        .then((auth) => { return next(`/login`); })
+        .catch((err) => { return next(`/login`); });
 };
 
 const authCheck = () => (to, from, next) => {
@@ -79,7 +78,7 @@ const routes = [
         path: '/Logout',
         name: 'Logout',
         component: TestPage,
-        beforeEnter: logoutProcess(),
+        beforeEnter: logout(),
     },
 ];
 
