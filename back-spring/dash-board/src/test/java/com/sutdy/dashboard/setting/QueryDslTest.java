@@ -1,8 +1,6 @@
 package com.sutdy.dashboard.setting;
 
 import com.querydsl.jpa.impl.JPAQueryFactory;
-//import com.sutdy.dashboard.domain.todo.QTodo;
-import com.sutdy.dashboard.domain.members.Account;
 import com.sutdy.dashboard.domain.todo.QTodo;
 import com.sutdy.dashboard.domain.todo.Todo;
 import com.sutdy.dashboard.domain.todo.TodoRepository;
@@ -98,18 +96,16 @@ public class QueryDslTest {
         }
 
         // then
-        //## TODO : 20.08.03 queryDsl안됨 검색하기
-        List<Todo> queryDslTodos = this.jpaQueryFactory.selectFrom(QTodo.todo)
+        List<Todo> todoList = this.jpaQueryFactory.selectFrom(QTodo.todo)
                 .where(QTodo.todo.id.in(pks))
                 .fetch();
-//        List<Todo> queryDslTodos = new ArrayList<>();
 
-        logger.debug("queryDslTodos size => " + jpaTodo.size());
+        logger.debug("todoList size => " + jpaTodo.size());
 
 
         // when
         boolean success = true;
-        for (Todo queryDslTodo : queryDslTodos) { // DataValidation
+        for (Todo queryDslTodo : todoList) { // DataValidation
             long pk = queryDslTodo.getId();
             Todo findTodo = jpaTodo.stream().filter(t -> t.getId() == pk).findFirst().orElse(null);
             if (findTodo == null) {
@@ -121,7 +117,7 @@ public class QueryDslTest {
         }
 
         if (success
-                && (queryDslTodos.size() == 0 || queryDslTodos.size() != jpaTodo.size())) { // Collection Size Validation
+                && (todoList.size() == 0 || todoList.size() != jpaTodo.size())) { // Collection Size Validation
             success = false;
         }
 

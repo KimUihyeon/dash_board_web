@@ -1,12 +1,16 @@
 package com.sutdy.dashboard.setting.filters;
 
 import com.sutdy.dashboard.setting.ApplicationStringConfig;
+import com.sutdy.dashboard.setting.PropertyFileManager;
 import com.sutdy.dashboard.setting.exception.impl.JwtTimeoutException;
 import com.sutdy.dashboard.setting.util.auth.AuthEnum;
 import com.sutdy.dashboard.setting.util.auth.AuthResponse;
 import com.sutdy.dashboard.setting.util.auth.AuthResponseFactory;
 import com.sutdy.dashboard.setting.util.auth.jwt.JWT;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.stereotype.Component;
+
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
@@ -15,8 +19,13 @@ import java.rmi.AccessException;
 import java.util.Enumeration;
 import java.util.List;
 
+
 @WebFilter( urlPatterns = "/*")
+@PropertySource(value = PropertyFileManager.ERROR_MGS_PROP, encoding = "utf-8")
 public class AuthenticationFilter implements Filter {
+
+    @Value("${not_access}")
+    private String NOT_ACCESS;
 
 
     @Override
@@ -33,8 +42,7 @@ public class AuthenticationFilter implements Filter {
             authResponse = JWT.auth(authentication);
         }
         catch (Exception e) {
-            //TODO : 차후 config 파일 만들기
-            throw new AccessException("권한이 없습니다.");
+            throw new AccessException(NOT_ACCESS);
         }
 
         
@@ -42,11 +50,10 @@ public class AuthenticationFilter implements Filter {
             default:
             case NoAuth:
             case WrongEncounter:{ // 잘못된 접근 , 인증실패
-                throw new AccessException("권한이 없습니다.");
+                throw new AccessException(NOT_ACCESS);
             }
             case TimeOut:{ // 타입아웃
                 try {
-                    // TODO : 이부분 테스트 필요
                     throw new JwtTimeoutException();
                 } catch (JwtTimeoutException e) {
                     e.printStackTrace();
@@ -65,14 +72,4 @@ public class AuthenticationFilter implements Filter {
     public void destroy() {
 
     }
-}
-
-class SpaceException extends Exception {
-
-    SpaceException(String msg) {
-
-        super(msg);
-
-    }
-
 }

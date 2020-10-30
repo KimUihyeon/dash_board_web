@@ -27,6 +27,9 @@ public abstract class ServiceErrorMessage {
     @Value("${fail_delete_jpa}")
     protected String FAIL_DELETE_JPA;
 
-    @Value("구현이 안된 메소드 입니다.")
+    @Value("${not_implement_mhthod}")
     protected String NOT_IMPLEMENT_METHOD;
+
+    @Value("${not_access}")
+    protected String NOT_ACCESS;
 }
