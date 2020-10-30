@@ -202,7 +202,6 @@ public class CalendarService extends BaseCrudService<Calendar, CalendarDto, Long
                     CalendarDto dto = new CalendarDto().of(c);
                     dto.setEvents(new ArrayList<>());
 
-                    // TODO : 임시로직 persistentbag 떨어질떄랑 Null 떨어질때 비교하기.
                     if(c.getEvents() != null) {
                         for(Event event : c.getEvents()){
                             dto.getEvents().add(new EventDto().of(event));

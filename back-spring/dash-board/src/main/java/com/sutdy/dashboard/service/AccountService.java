@@ -20,8 +20,6 @@ import javax.transaction.Transactional;
 import java.security.NoSuchAlgorithmException;
 
 /**
- * TODO : 로그인관련 서비스로 로직 세로만들기 !
- *
  * @author kuh
  * @since 2020.05.06
  */

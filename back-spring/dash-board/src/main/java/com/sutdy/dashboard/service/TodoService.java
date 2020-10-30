@@ -36,8 +36,6 @@ public class TodoService extends BaseCrudService<Todo, TodoDto, Long> {
         super(todoRepository);
         this.todoRepository = todoRepository;
         this.todoCategoryRepository = todoCategoryRepository;
-
-//        tempDataFactory.createTodoDatas(); // // TODO: 2020-05-21 임시데이터 만드는로직.. ! 추후 삭제!
     }
 
 
@@ -70,7 +68,6 @@ public class TodoService extends BaseCrudService<Todo, TodoDto, Long> {
         String userId = params.getFilterDetail().get("userId").toString();
 
         switch (params.getFilter().toUpperCase()) {
-            // TODO: 2020-08-10 Vue 데이터에서 오는 스펠링 변경할것 ,!  COMPLATE 로 검색
             case "COMPLETE": {
                 return this.todoRepository.todoListWhereCompleteByUserId(userId)
                         .stream()
