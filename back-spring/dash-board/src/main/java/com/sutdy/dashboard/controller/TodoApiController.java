@@ -34,8 +34,8 @@ public class TodoApiController {
 
 
     //////////// todoList
-    @GetMapping("/list")
-    public List<TodoDto> getTodoList(String userId, String filter, Long categoryId,
+    @GetMapping("/list/{categoryId}")
+    public List<TodoDto> getTodoList(@PathVariable Long categoryId, String userId, String filter,
                                      HttpServletResponse response, PagedResourcesAssembler assembler) throws IOException {
         /**
          * Todo : userid = 이거 널처리 할것 .. ! 널들어오면 Access Exception

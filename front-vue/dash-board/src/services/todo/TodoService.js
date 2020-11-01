@@ -31,7 +31,7 @@ const deleteTodoItme = (todoId) => {
 
 const getTodoList = ( filter , categoryId) => {
     let config = httpAuhorizationHeaderConfig();
-    return rest.get( base_url + '/list', { 
+    return rest.get( base_url + `/list/${categoryId}`, { 
         userId : getCurrentLoginID() ,
         filter , 
         categoryId 

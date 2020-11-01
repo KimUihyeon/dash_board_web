@@ -109,7 +109,7 @@ public class AuthApiControllerTest {
 
         String token = JWT.createToken(userId, userName, 3);
         MvcResult result = this.mockMvc.perform(get("/api/v1/todo/item/" + todo.getId())
-                .header("authentication", ""))
+                .header("authentication", token))
                 .andDo(print())
                 .andReturn();
 

@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebFilter;
 import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.rmi.AccessException;
+import java.util.ArrayList;
 import java.util.Enumeration;
 import java.util.List;
 
@@ -35,10 +36,21 @@ public class AuthenticationFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException, AccessException{
         HttpServletRequest httpServletRequest = (HttpServletRequest) request;
+        Enumeration<String> headerNames = httpServletRequest.getHeaderNames();
+
+        List<String> headers = new ArrayList<>();
+        if (headerNames != null) {
+            while (headerNames.hasMoreElements()) {
+                String headerName = headerNames.nextElement();
+                String header = httpServletRequest.getHeader(headerName);
+                headers.add(headerName);
+            }
+        }
+
 
         AuthResponse authResponse = AuthResponse.builder().authType(AuthEnum.NoAuth).build();
         try{
-            String authentication  = String.valueOf(httpServletRequest.getHeader("authentication"));
+            String authentication  = String.valueOf(httpServletRequest.getHeader("Authorization"));
             authResponse = JWT.auth(authentication);
         }
         catch (Exception e) {
