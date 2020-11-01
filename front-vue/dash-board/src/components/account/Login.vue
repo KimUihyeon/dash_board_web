@@ -5,16 +5,16 @@
                 <span class="user-icon login-title-icon"></span>
             </span>
         </div>
-
+        
         <div>
-            <el-input type="text" size="small" @keydown.enter.native="keyPress_handle" placeholder="ID" v-model="id"></el-input>
+            <el-input type="text" size="small" @keydown.enter.native="keyPressHandle" placeholder="ID" v-model="id"></el-input>
         </div>
 
         <div class="inputBox">
-            <el-input type="password" @keydown.enter.native="keyPress_handle" placeholder="pw" v-model="pw" size="small"></el-input>
+            <el-input type="password" @keydown.enter.native="keyPressHandle" placeholder="pw" v-model="pw" size="small"></el-input>
         </div>
         <div class="inputBox">
-            <el-button size="small" type="primary" class="loginButton" @click="keyPress_handle">login</el-button>
+            <el-button size="small" type="primary" class="loginButton" @click="keyPressHandle">login</el-button>
         </div>
         <div class="inputBox">
             <el-button type="success" size="small" class="loginButton" @click="showSiugnupHandle">Signup</el-button>
@@ -25,89 +25,78 @@
 <script>
 import { data, alert } from '../../util';
 import { accountService } from '../../services';
-import Signup from './Signup';
+import { delay } from '../../util/Delay';
 
 const name = 'Login';
-const components = { Signup };
+const props = {
+    showSiugnupHandle: {
+        type: Function,
+        default: () => {},
+    },
+}
 
 export default {
     name,
-    components,
-    props: {
-        showSiugnupHandle: {
-            type: Function,
-            default: () => {},
-        },
-    },
+    props,
     data() {
         return {
             pw: '',
             id: '',
-            isLoginCookie: false,
-            isAutoLogin: false,
             validation: {
                 pw: false,
                 id: false,
-                msg: '',
             },
             showSignUp: false,
         };
     },
     mounted() {
-        this.init();
+        this.cookieSync();
     },
     methods: {
-        init() {
-            let cookie = data.cookie.getCookie(process.env.VUE_APP_COOKIE_NAME_LOGIN_HISOTRY);
+        logout() { this.$store.dispatch('app_logout').then(() => { this.cookieSync(); }); },
+        cookieSync(){
+            const cookie = data.cookie.getCookie(process.env.VUE_APP_COOKIE_NAME_LOGIN_HISOTRY);
             this.id = data.cookie.getCookie(process.env.VUE_APP_COOKIE_NAME_LOGIN);
             this.pw = '';
-            this.isLoginCookie = !data.isNull(cookie) ? Boolean(cookie) : false;
         },
-        keyPress_handle: function(e) {
-            if (!this.validation.id) {
-                this.validation.msg = '아이디를 입력해주세요.(6자 이상)';
-            }
-            if (!this.validation.pw) {
-                this.validation.msg = '패스워드를 입력해주세요.(8자 이상, 20자 이하)';
-            }
+        keyPressHandle(e) {
+            if(this.isValidation()) {
 
-            if (!this.validation.pw || !this.validation.pw) {
-                alert.elMessageBox({
-                    vueObject: this,
-                    type: 'error',
-                    message: this.validation.msg,
-                });
-            } else {
-                this.$store
-                    .dispatch('app_login', { id: this.id, pw: this.pw })
-                    .then((res) => {
-                        let { authType } = res;
+                const account = {
+                    id : this.id,
+                    pw : this.pw
+                }
+
+                this.$store.dispatch('app_login', account)
+                    .then(({authType}) => {
                         if (authType === 'Auth') {
-                            setTimeout(() => {
-                                this.$router.push({ path: '/todoCategory' });
-                            }, 50);
+                            delay.immediately(()=>{ this.$router.push({ path: '/todoCategory' }); })
                         } else if (authType === 'NoAuth') {
-                            alert.elMessageBox({
-                                vueObject: this,
-                                type: 'error',
-                                message: '비밀번호 혹은 아이디를 확인해주세요.',
-                            });
+                            alert.userInfoCheckAlert(v);
                         }
                     })
                     .catch((err) => {
-                        alert.elMessageBox({
-                            vueObject: this,
-                            type: 'error',
-                            message: err,
-                        });
+                        alert.serverErrorAlert(v);
                     });
             }
         },
-        logout() {
-            this.$store.dispatch('app_logout').then(() => {
-                this.init();
-            });
-        },
+        isValidation (){
+            const message = '';
+            const type = 'error';
+            
+            if (!this.validation.id) {
+                message = '아이디를 입력해주세요.(6자 이상)';
+                alert.elMessageBox({ vueObject: this, type, message });
+                return false;
+            }
+            else if (!this.validation.pw) {
+                message = '패스워드를 입력해주세요.(8자 이상, 20자 이하)';
+                alert.elMessageBox({ vueObject: this, type, message });
+                return false;
+            }
+
+            return true;
+        }
     },
     watch: {
         pw(val, olbVal) {

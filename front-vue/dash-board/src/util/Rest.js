@@ -20,45 +20,45 @@ export function get(url, dataObject , config ){
     //     }
     // }
 
-    return Axios({
-        method : 'get',
-        url : apiurl,
-        headers :{
-            "Access-Control-Allow-Origin" : "*",
-            "Content-type": "Application/json",
-            "Authorization": `Bearer askdljaskldj012idji2op12d`
-        }
-    }).then((res)=>{ return res})
-    .catch((err)=>{ return err});
+    // return Axios({
+    //     method : 'get',
+    //     url : apiurl,
+    //     headers :{
+    //         "Access-Control-Allow-Origin" : "*",
+    //         "Content-type": "Application/json",
+    //         "Authorization": `Bearer askdljaskldj012idji2op12d`
+    //     }
+    // }).then((res)=>{ return res})
+    // .catch((err)=>{ return err});
 
     // aa.then
-    // return Axios.get(apiurl, { 
-    //     headers : {
-    //         authentication : 'aaa'
-    //     }}).then(res=>{
-    //     return res.data;
-    // });
+    return Axios.get(apiurl, { 
+        headers : {
+            authentication : 'aaa'
+        }}).then(res=>{
+        return res.data;
+    });
 }
 
 
 export function post(url, data , config){
     
-    return Axios({
-        method : 'get',
-        data : data,
-        url ,
-        headers :{
-            authentication : 'aaa'
-        }
-    }).then((res)=>{ return res})
-    .catch((err)=>{ return err});
-
-    // return Axios.post(url, data , {
-    //     headers : {
+    // return Axios({
+    //     method : 'get',
+    //     data : data,
+    //     url ,
+    //     headers :{
     //         authentication : 'aaa'
-    //     }}).then(res=>{
-    //     return res.data;
-    // });
+    //     }
+    // }).then((res)=>{ return res})
+    // .catch((err)=>{ return err});
+
+    return Axios.post(url, data , {
+        headers : {
+            authentication : 'aaa'
+        }}).then(res=>{
+        return res.data;
+    });
 }
 
 export function patch(url , dataObject){

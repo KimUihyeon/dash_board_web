@@ -59,7 +59,7 @@ public class ApplicationConfig implements WebMvcConfigurer {
 //                        HttpHeaders.AUTHORIZATION);
     }
 
-    @Bean
+//    @Bean
     public FilterRegistrationBean authFilterConfiguration(){
         List<String> urlPatterns = new ArrayList<>();
         // ##배포용 개발용 구분

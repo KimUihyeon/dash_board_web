@@ -2,13 +2,9 @@
     <el-dialog
         title="아이디 찾기"
         :visible.sync="show"
-        :close="
-            () => {
-                showModal();
-            }
-        "
-        :close-on-click-modal="false"
-    >
+        :close="() => {showModal();}"
+        :close-on-click-modal="false">
+
         <ValidationObserver v-slot="{ handleSubmit }">
             <el-form ref="form" label-width="120px">
                 <div>
@@ -16,27 +12,16 @@
                         <el-form-item label="id">
                             <el-input
                                 type="text"
-                                @keydown.enter.native="
-                                    () => {
-                                        nextFouse(errors, $refs.pw);
-                                    }
-                                "
+                                @keydown.enter.native="() => {nextFouse(errors, $refs.pw);}"
                                 :suffix-icon="isIdConfirm ? 'el-icon-check' : ''"
                                 placeholder="email 형식 (****@email.com)"
                                 ref="id"
                                 v-model="id"
-                                size="small"
-                            >
+                                size="small">
                                 <el-button
                                     slot="append"
                                     v-if="isIdConfirm == false"
-                                    @click="
-                                        () => {
-                                            emailConfirm(errors);
-                                        }
-                                    "
-                                    >중복확인</el-button
-                                >
+                                    @click="() => {emailDuplication(errors);}">중복확인</el-button>
                             </el-input>
                             <span class="validation-box">{{ errors[0] }}</span>
                         </el-form-item>
@@ -48,16 +33,11 @@
                         <el-form-item label="password">
                             <el-input
                                 type="password"
-                                @keydown.enter.native="
-                                    () => {
-                                        nextFouse(errors, $refs.pwConfirm);
-                                    }
-                                "
+                                @keydown.enter.native="() => {nextFouse(errors, $refs.pwConfirm);}"
                                 placeholder="영문 숫자 조합 8자리 이상."
                                 ref="pw"
                                 v-model="pw"
-                                size="small"
-                            ></el-input>
+                                size="small"></el-input>
                             <span class="validation-box">{{ errors[0] }}</span>
                         </el-form-item>
                     </ValidationProvider>
@@ -68,16 +48,11 @@
                         <el-form-item>
                             <el-input
                                 type="password"
-                                @keydown.enter.native="
-                                    () => {
-                                        nextFouse(errors, $refs.name);
-                                    }
-                                "
+                                @keydown.enter.native="() => {nextFouse(errors, $refs.name);}"
                                 placeholder="패스워드 재입력"
                                 ref="pwConfirm"
                                 v-model="pwConfirm"
-                                size="small"
-                            ></el-input>
+                                size="small"></el-input>
                             <span class="validation-box">{{ errors[0] }}</span>
                         </el-form-item>
                     </ValidationProvider>
@@ -88,35 +63,23 @@
                         <el-form-item label="name">
                             <el-input
                                 type="text"
-                                @keydown.enter.native="
-                                    () => {
-                                        nextFouse(errors, $refs.name);
-                                        handleSubmit(submit);
-                                    }
-                                "
+                                @keydown.enter.native="() => {nextFouse(errors, $refs.name);handleSubmit(formSubmit);}"
                                 placeholder="닉네임"
                                 ref="name"
                                 v-model="name"
-                                size="small"
-                            ></el-input>
+                                size="small"></el-input>
                             <span class="validation-box">{{ errors[0] }}</span>
                         </el-form-item>
                     </ValidationProvider>
                 </div>
 
                 <div style="text-align: center;">
-                    <el-button size="small" type="primary" @click="handleSubmit(submit)" round>가입하기</el-button>
+                    <el-button size="small" type="primary" @click="handleSubmit(formSubmit)" round>가입하기</el-button>
                     <el-button
                         size="small"
                         type="danger"
-                        @click="
-                            () => {
-                                show = false;
-                            }
-                        "
-                        round
-                        >나가기</el-button
-                    >
+                        @click="() => {show = false;}"
+                        round>나가기</el-button>
                 </div>
             </el-form>
         </ValidationObserver>
@@ -126,6 +89,7 @@
 <script>
 import { data, alert, rest } from '../../util';
 import { accountService } from '../../services';
+import { delay } from '../../util/Delay';
 
 const name = 'FindPwId';
 const props = { showModal: Boolean };
@@ -142,52 +106,36 @@ export default {
         };
     },
     methods: {
+        nextFouse(validationErr, nextElement) { if (data.isNull(validationErr)) { nextElement.focus(); } },
         init() {
             this.email = '';
             this.pw = '';
             this.name = '';
             this.isIdConfirm = false;
         },
-        submit() {
-            if (this.isIdConfirm === false) {
-                this.alert('error', '아이디 중복확인을 해주세요');
-                return;
-            }
-
-            accountService
-                .signup(this.id, this.pw)
-                .then((res) => {
-                    setTimeout(() => {
-                        this.show = false;
-                    }, 50);
-                })
-                .catch((err) => {
-                    this.show = false;
-                    this.alert('error', err);
-                });
-        },
-        nextFouse(validationErr, nextElement) {
-            if (data.isNull(validationErr)) {
-                nextElement.focus();
+        formSubmit() {
+            if (this.isEmailDuplicateCheck() === true){
+                accountService.signup(this.id, this.pw)
+                    .then((res) => { delay.immediately(()=>{this.show = false})})
+                    .catch((err) => { this.show = false; alert.serverErrorAlert(this); });
             }
         },
-        alert(type, message) {
-            alert.elMessageBox({
-                vueObject: this,
-                type,
-                message,
-            });
+        isEmailDuplicateCheck(){
+            if(this.isIdConfirm == false){ 
+                alert.duplicateAlert(this);
+            }
+            return this.isIdConfirm;
         },
-        emailConfirm(errors, value) {
-            if (!data.isNull(errors)) {
+        emailDuplication(e, v){
+            if (!data.isNull(e)) {
                 return;
             } else {
                 accountService.duplicateCheck(this.id).then((res) => {
                     if (res === false) {
-                        this.alert('success', '사용가능한 아이디 입니다.');
+                        alert.notDuplicateEmailSuccessAlert(this);
                         this.isIdConfirm = true;
                     } else {
-                        this.alert('error', '이미 사용중인 아이디 입니다.');
+                        alert.isDuplicateEmailSuccessAlert(this);
                         this.isIdConfirm = false;
                     }
                 });
@@ -195,13 +143,8 @@ export default {
         },
     },
     watch: {
-        showModal(v) {
-            this.show = v;
-            this.init();
-        },
-        id(v) {
-            this.isIdConfirm = false;
-        },
+        id(v) { this.isIdConfirm = false; },
+        showModal(v) { this.show = v; this.init(); },
     },
 };
 </script>

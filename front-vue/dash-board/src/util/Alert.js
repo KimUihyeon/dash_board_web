@@ -14,7 +14,11 @@ const prop = {
 
         cencleSuccess : '취소',
 
-        serverError : '처리되지 않았습니다.'
+        serverError : '처리되지 않았습니다.',
+        notDuplicateEmail : '사용 가능한 이메일 입니다.',
+        isDuplicateEmail : '이미 존재하는 이메일 입니다.',
+        emailDuplicateCheck : '이메일 중복 확인을 해주세요.',
+        userInfoCheck : '비밀번호 혹은 아이디를 확인해주세요.',
     }
 }
 
@@ -86,15 +90,6 @@ const elConfirm = (
 }
 
 
-// function logger(context , functionName){
-//     let VUE_APP_MODE = process.env.VUE_APP_MODE;
-//     if(VUE_APP_MODE === 'DEV'){
-//         console.log(` ${functionName} => `, context);
-//     }
-// }
-
-
-
 const alertClosure = (type)=>{    
     const prop = { type };
 
@@ -115,8 +110,15 @@ const addSuccessAlert = (v) => { successAlertClosure(prop.msg.addSuccess)(v) }
 const editSuccessAlert = (v) =>{ successAlertClosure(prop.msg.editSuccess)(v)}
 const deleteSuccessAlert = (v) =>{ successAlertClosure(prop.msg.deleteSuccess)(v)}
 const cencleSuccessAlert = (v) =>{ successAlertClosure(prop.msg.cencleSuccess)(v)}
+const notDuplicateEmailSuccessAlert = (v) =>{ successAlertClosure(prop.msg.notDuplicateEmail)(v) } // 사용 가능한 이메일 입니다.
 
+const duplicateAlert = (v) => { errorAlertClosure(prop.msg.emailDuplicateCheck)(v) }
+
+
+const userInfoCheckAlert = (v) => { errorAlertClosure(prop.msg.userInfoCheck)(v)}
+const isDuplicateEmailSuccessAlert = (v) =>{ errorAlertClosure(prop.msg.isDuplicateEmail)(v) } // 이미 존재하는 이메일 입니다.
 const serverErrorAlert = (v) =>{ errorAlertClosure(prop.msg.serverError)(v)}
+
 
 
 
@@ -130,4 +132,8 @@ export const alert = {
     deleteSuccessAlert,
     cencleSuccessAlert,
     serverErrorAlert,
+    notDuplicateEmailSuccessAlert,
+    isDuplicateEmailSuccessAlert,
+    duplicateAlert,
+    userInfoCheckAlert
 }
