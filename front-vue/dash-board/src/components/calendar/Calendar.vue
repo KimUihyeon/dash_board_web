@@ -4,7 +4,6 @@
         <div class="calendar-header text-align-l margin-10 padding-5 font-size-23">
             <el-button size="mini" @click="()=>{this.prevMonth()}" icon="el-icon-arrow-left" circle/>
             <span class="calendar-yymm margin-l-10 margin-r-10 text-bold">{{date}} </span>
-            <!-- {{ calendar.end.year }}. {{ calendar.start.month | monthFormat }} -->
             <el-button  size="mini" @click="()=>{this.nextMonth()}" icon="el-icon-arrow-right" circle></el-button>
             
             <el-button size="mini" @click="onButtonClick" type="primary" round>새 이벤트 +</el-button>

@@ -13,7 +13,7 @@
 </template>
 
 <script>
-const name = 'selectBox';
+const name = 'SelectBox';
 const props = { 
     items : Array
 }

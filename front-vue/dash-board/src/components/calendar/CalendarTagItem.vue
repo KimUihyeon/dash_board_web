@@ -85,7 +85,6 @@ export default {
         propertySync (){ this.edit.color = this.color; this.edit.name = this.value; },
         editMode() { this.propertySync(); this.isEditMode = true; },
         readMode() { this.propertySync(); this.isEditMode = false; },
-        // colorChange(c){ console.log(c); },
         deleteProcess(){ 
             this.confirm(
                 '삭제하시겠습니까?' ,
@@ -103,12 +102,6 @@ export default {
         updateProcess(){
             this.updateSubmitHandle({ id : this.id, title : this.edit.name});
             this.readMode();
-            // this.confirm(
-            //     '변경 사항을 저장 하시겠습니까?' ,
-            //     '수정하기', 
-            //     ()=>{ 
-            //     }
-            // )
         },
         
         confirm(confirmMsg, title , okCallback) {

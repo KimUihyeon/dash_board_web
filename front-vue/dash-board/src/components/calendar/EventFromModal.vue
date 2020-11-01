@@ -126,15 +126,6 @@ export default {
     name, props, components,
     data() {
         return {
-            // eventObj : {},
-            // cloneEvnet: {
-            //     title: '',
-            //     sdate: '',
-            //     edate: '',
-            //     icon : '',
-            //     context : '',
-            //     calendarId : -1,
-            // },
             show: false,
             MOD : 'EDIT' |  'ADD',
             eventObj : {},
