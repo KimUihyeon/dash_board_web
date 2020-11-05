@@ -9,7 +9,7 @@
                     <div class="chk-span-container">
                         <i 
                             v-bind:class="cloneItem.todoComplete ? 'active' : ''"
-                            class="el-icon-check todo-center text-center"
+                            class="el-icon-check todo-center text-center" 
                             style="font-size:24px"></i>
                         <i 
                             v-bind:class="!cloneItem.todoComplete ? 'active' : ''"
