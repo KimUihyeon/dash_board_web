@@ -72,11 +72,11 @@ export default {
                         if (authType === 'Auth') {
                             delay.immediately(()=>{ this.$router.push({ path: '/todoCategory' }); })
                         } else if (authType === 'NoAuth') {
-                            alert.userInfoCheckAlert(v);
+                            alert.userInfoCheckAlert(this);
                         }
                     })
                     .catch((err) => {
-                        alert.serverErrorAlert(v);
+                        alert.serverErrorAlert(this);
                     });
             }
         },

@@ -18,7 +18,6 @@ const getCurrentWeather= (cityId) => {
                +`appid=${_API_KEY}&`
                +`lang=kr&`
                +`units=metric&`;
-
     return rest.get(url).then(res=>{
         let { coord , main , name , weather , wind } = res;
 
