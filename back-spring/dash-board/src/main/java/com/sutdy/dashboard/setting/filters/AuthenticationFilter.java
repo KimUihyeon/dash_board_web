@@ -1,15 +1,12 @@
 package com.sutdy.dashboard.setting.filters;
 
-import com.sutdy.dashboard.setting.ApplicationStringConfig;
 import com.sutdy.dashboard.setting.PropertyFileManager;
-import com.sutdy.dashboard.setting.exception.impl.JwtTimeoutException;
+import com.sutdy.dashboard.setting.exception.impl.JwtAuthException;
 import com.sutdy.dashboard.setting.util.auth.AuthEnum;
 import com.sutdy.dashboard.setting.util.auth.AuthResponse;
-import com.sutdy.dashboard.setting.util.auth.AuthResponseFactory;
 import com.sutdy.dashboard.setting.util.auth.jwt.JWT;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
 
 import javax.servlet.*;
 import javax.servlet.annotation.WebFilter;
@@ -66,8 +63,8 @@ public class AuthenticationFilter implements Filter {
             }
             case TimeOut:{ // 타입아웃
                 try {
-                    throw new JwtTimeoutException();
-                } catch (JwtTimeoutException e) {
+                    throw new JwtAuthException();
+                } catch (JwtAuthException e) {
                     e.printStackTrace();
                 }
             }

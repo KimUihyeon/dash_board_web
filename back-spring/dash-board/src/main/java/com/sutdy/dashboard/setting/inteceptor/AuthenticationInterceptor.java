@@ -1,13 +1,12 @@
 package com.sutdy.dashboard.setting.inteceptor;
 
-import com.sutdy.dashboard.dto.AccountDto;
 import com.sutdy.dashboard.service.AccountService;
+import com.sutdy.dashboard.setting.exception.impl.JwtAuthException;
+import com.sutdy.dashboard.setting.exception.impl.JwtTimeoutException;
 import com.sutdy.dashboard.setting.util.auth.AuthResponse;
-import com.sutdy.dashboard.setting.util.auth.jwt.JWT;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpHeaders;
 import org.springframework.stereotype.Component;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
@@ -23,10 +22,13 @@ import java.util.Enumeration;
 @Component
 public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
 
+    private final Logger logger = LoggerFactory.getLogger(AuthenticationInterceptor.class);
+
+    private final static String TOKEN_NAME = "Authorization";
+
     @Autowired
     private AccountService accountService;
 
-    Logger logger = LoggerFactory.getLogger(AuthenticationInterceptor.class);
 
 
     @Override
@@ -45,56 +47,35 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
     }
 
     @Override
-    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
+    public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception , JwtAuthException, JwtTimeoutException {
 
+        // preflight 처리
+        final String currentMethod = request.getMethod();
 
-        Enumeration datas = request.getHeaderNames();
+        if(currentMethod.toUpperCase().equals("OPTIONS")) {
 
-        while (datas.hasMoreElements()) {
-            String key = datas.nextElement().toString();
-            String value = request.getHeader(key);
-            logger.info("key : " + key + "\t||\tvalue: " + value);
+            response.addHeader("Access-Control-Allow-Origin", "*");
+            response.addHeader("Access-Control-Allow-Methods","GET, OPTIONS, HEAD, PUT, POST");
+            response.addHeader("Access-Control-Allow-Headers","Origin, X-Requested-With, Content-Type, Accept, withcredentials ," + TOKEN_NAME);
+            response.setStatus(HttpServletResponse.SC_OK);
+            return true;
+        }
+
+        final String jwt = request.getHeader(TOKEN_NAME);
+        AuthResponse authResponse = this.accountService.auth(jwt);
+
+        switch (authResponse.getAuthType()){
+            case Auth:
+                return super.preHandle(request, response, handler);
+
+            case TimeOut:
+                throw new JwtTimeoutException("로그인 시간이 만료되었습니다. 다시 로그인 해주세요."); // TODO : config로 빼기
+
+            case WrongEncounter:
+            case NoAuth: throw new JwtAuthException("인가되지 않은 로그인 정보입니다. 다시 로그인 해주세요."); // TODO : config로 빼기
         }
 
         return super.preHandle(request, response, handler);
-
-//        System.out.println(request.getRequestURI());
-//        System.out.println("authentication");
-//
-//        String jwt2 = request.getHeader("authentication");
-//        try {
-//
-//            AuthResponse jwtState = JWT.auth(jwt2);
-//
-//            switch (jwtState.getAuthType()) {
-//                case Auth: {
-//                    try {
-//                        AccountDto findMember = accountService.findById(jwtState.getId());
-//
-//                        if (findMember != null) {
-//                            return super.preHandle(request, response, handler);
-//                        } else {
-//                            response.sendError(HttpServletResponse.SC_FORBIDDEN);
-//                            return false;
-//                        }
-//                    } catch (Exception e) {
-//                        response.sendError(HttpServletResponse.SC_FORBIDDEN);
-//                        return false;
-//                    }
-//                }
-//                case WrongEncounter:
-//                case NoAuth:
-//                case TimeOut: {
-//                    response.sendError(HttpServletResponse.SC_FORBIDDEN);
-//                    return false;
-//                }
-//            }
-//        } catch (Exception e) {
-//            response.sendError(HttpServletResponse.SC_UNAUTHORIZED);
-//        }
-//
-//        return super.preHandle(request, response, handler);
-
     }
 
 }

@@ -1,6 +1,7 @@
 package com.sutdy.dashboard.setting.exception;
 
 import com.sutdy.dashboard.service.SystemErrorService;
+import com.sutdy.dashboard.setting.exception.impl.JwtAuthException;
 import com.sutdy.dashboard.setting.exception.impl.JwtTimeoutException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -95,7 +96,23 @@ public class ExceptionAdvice {
         systemErrorService.save(0, e);
         return ErrorResponseFactory.create(HttpStatus.BAD_REQUEST, e.getMessage());
     }
-    
+
+
+    /**
+     * TODO : 검증 필요
+     * JwtTimeoutException
+     * Jwt 인증시 인증서 만료 Exception을 발생하기 위함.
+     *
+     * @param e JwtTimeoutException
+     * @return
+     */
+    @ExceptionHandler(JwtAuthException.class)
+    public ResponseEntity<ErrorResponse> jwtAuthExceptionHandle(JwtAuthException e){
+
+        systemErrorService.save(0, e);
+        return ErrorResponseFactory.create(HttpStatus.UNAUTHORIZED, e.getMessage());
+    }
+
 
     /**
      * TODO : 검증 필요
@@ -106,10 +123,10 @@ public class ExceptionAdvice {
      * @return
      */
     @ExceptionHandler(JwtTimeoutException.class)
-    public ResponseEntity<ErrorResponse> jwtTimeoutExceptionHandle(JwtTimeoutException e){
+    public ResponseEntity<ErrorResponse> jwtTimeoutExceptionHandle(JwtAuthException e){
 
         systemErrorService.save(0, e);
-        return ErrorResponseFactory.create(HttpStatus.INTERNAL_SERVER_ERROR, e.getMessage());
+        return ErrorResponseFactory.create(HttpStatus.UNAUTHORIZED, e.getMessage());
     }
 
 

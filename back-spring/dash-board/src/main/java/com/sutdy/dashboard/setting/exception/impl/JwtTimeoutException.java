@@ -1,11 +1,15 @@
 package com.sutdy.dashboard.setting.exception.impl;
 
-public class JwtTimeoutException extends Exception {
-
+/**
+ * JwtTimeoutException
+ *
+ * @author Kimuihyeon
+ * @since 2020.11.10
+ */
+public class JwtTimeoutException extends Exception{
     public JwtTimeoutException() {
         super();
     }
-
     public JwtTimeoutException(String msg) {
         super(msg);
     }

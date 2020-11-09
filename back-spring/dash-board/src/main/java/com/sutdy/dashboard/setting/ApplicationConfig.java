@@ -35,10 +35,13 @@ public class ApplicationConfig implements WebMvcConfigurer {
         logger.info("authenticationInterceptor resit");
 
         String[] excludePatterns = {
-                "/api/v1/common/login",
+//                "/api/v1/common/login",
+//                "/api/v1/auth",
+                "/api/v1/account/*"
         };
 
         registry.addInterceptor(authenticationInterceptor)
+                
                 .excludePathPatterns(excludePatterns)
                 .addPathPatterns("/**")
                 .order(1);
