@@ -18,7 +18,11 @@ import java.util.Enumeration;
 import java.util.List;
 
 
+/**
+ * 미사용중 ...
+ */
 @WebFilter( urlPatterns = "/*")
+@Deprecated
 @PropertySource(value = PropertyFileManager.ERROR_MGS_PROP, encoding = "utf-8")
 public class AuthenticationFilter implements Filter {
 
