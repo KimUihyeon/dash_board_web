@@ -73,7 +73,7 @@ const actions = {
         return new Promise((resolve , reject)=>{
             if (!data.isNull(userId)) {
     
-                rest.post( authApi , { token }).then(({authType}) => {
+                rest.authPost( authApi , { token }).then(({authType}) => {
 
                     if (authType === 'Auth') { // 인증완료
                         context.commit('SET_IS_LOGIN', { isLogin : true});

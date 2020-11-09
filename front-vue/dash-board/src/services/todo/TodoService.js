@@ -10,7 +10,7 @@ const base_url = getBaseUrl() + '/v1/todo';
  */
 const updateTodoItem = ( todoItem , categoryId) => {
     let url = base_url + `/item/${todoItem.id}`;
-    return rest.patch(url, {
+    return rest.authPatch(url, {
         ...todoItem,
         ...categoryId,
         userId : getCurrentLoginID()
@@ -18,7 +18,7 @@ const updateTodoItem = ( todoItem , categoryId) => {
 }
 
 const addTodoItem = ( todoItem ,categoryId) => {
-    return rest.post( base_url + '/item', {
+    return rest.authPost( base_url + '/item', {
         ...todoItem,
         categoryId,
         userId : getCurrentLoginID()
@@ -26,26 +26,21 @@ const addTodoItem = ( todoItem ,categoryId) => {
 }
 
 const deleteTodoItme = (todoId) => {
-    return rest.delete_( base_url + `/item/${todoId}`);
+    return rest.authDelete( base_url + `/item/${todoId}`);
 }
 
 const getTodoList = ( filter , categoryId) => {
-    let config = httpAuhorizationHeaderConfig();
-    return rest.get( base_url + `/list/${categoryId}`, { 
+    return rest.authGet( base_url + `/list/${categoryId}`, { 
         userId : getCurrentLoginID() ,
         filter , 
         categoryId 
-    }, config);
+    });
 }
 
-const getTodoItem = (todoId) => {
-
-}
 
 export const todoService = {
     updateTodoItem,
     deleteTodoItme,
     getTodoList,
-    getTodoItem,
     addTodoItem
 };

@@ -8,20 +8,20 @@ const addEvent = (event, userId) =>{
         ...event,
         userid : userId,
     }
-    return rest.post(`${base_url}/`, _event);
+    return rest.authPost(`${base_url}/`, _event);
 }
 
 const getUserEvent = (userId) => { 
-    return rest.get(`${base_url}/${userId}`, { userId : userId});
+    return rest.authGet(`${base_url}/${userId}`, { userId : userId});
 }
 
 const deleteEvent = (event) =>{
-    return rest.delete_(`${base_url}/${event.id}`);
+    return rest.authDelete(`${base_url}/${event.id}`);
 }
 
 const updateEvent = (event) =>{
     console.log(event)
-    return rest.patch(`${base_url}/${event.id}`, event);
+    return rest.authPatch(`${base_url}/${event.id}`, event);
 }
 
 export const eventService = {

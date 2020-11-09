@@ -22,7 +22,7 @@ export const getCurrentLoginID = () =>{
 export const httpAuhorizationHeaderConfig =  () =>{
     return { 
         headers : { 
-            Authorization : 'Bearer ' + data.cookie.getCookie(__COOKIE_POPS.TOKEN)
+            Authorization : 'bearer ' + data.cookie.getCookie(__COOKIE_POPS.TOKEN)
         }
     }
 };

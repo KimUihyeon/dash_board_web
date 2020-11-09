@@ -6,16 +6,16 @@ const base_url = getBaseUrl() + '/v1/todo';
 
 const getDatas = () =>{
     const userId = getCurrentLoginID();
-    return rest.get(base_url + `/categories/${userId}`);
+    return rest.authGet(base_url + `/categories/${userId}`);
 }
 
 const get = (id) =>{
     const userId = getCurrentLoginID();
-    return rest.get(base_url + `/category/${id}`, { userId , id });
+    return rest.authGet(base_url + `/category/${id}`, { userId , id });
 }
 
 const addItem = (todoCategory) =>{
-    return  rest.post(base_url + `/category` , { userId : getCurrentLoginID() , ...todoCategory});
+    return  rest.authPost(base_url + `/category` , { userId : getCurrentLoginID() , ...todoCategory});
 }
 
 const modifyItem = (todoCategory) =>{
@@ -23,7 +23,7 @@ const modifyItem = (todoCategory) =>{
 };
 
 const deleteItem = (id) =>{
-    return rest.patch(base_url + `/category/${id}` , { userId : getCurrentLoginID(), id});
+    return rest.authDelete(base_url + `/category/${id}` , { userId : getCurrentLoginID(), id});
 }
 
 
