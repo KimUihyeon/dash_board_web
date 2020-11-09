@@ -13,19 +13,32 @@ import java.util.Enumeration;
  * @since 2020.11.10
  */
 
-public class RequestLoop {
+public class RequestAnalysis {
 
-    private static final Logger logger = LoggerFactory.getLogger(RequestLoop.class);
+    private static final Logger logger = LoggerFactory.getLogger(RequestAnalysis.class);
 
-    public static void headerLoop(HttpServletRequest request){
-
+    /**
+     * 해당 request에 묻어온 Header 다 찍어줌
+     *
+     * @param request HttpServletRequest
+     */
+    public static void headerFullLog(HttpServletRequest request) {
         Enumeration datas = request.getHeaderNames();
-        logger.info(request.getRequestURI());
 
         while (datas.hasMoreElements()) {
             String key = datas.nextElement().toString();
-            String value = request.getHeader(key);
-            logger.info("key : " + key + "\t||\tvalue: " + value);
+            headerLog(request, key);
         }
+    }
+
+    /**
+     * 해당 request에 묻어온 Header의 Header이름으로 탐색해서 로그에 찍어줌
+     *
+     * @param request    HttpServletRequest
+     * @param headerName headerParameter Name
+     */
+    public static void headerLog(HttpServletRequest request, String headerName) {
+        String value = request.getHeader(headerName);
+        logger.info("key : " + headerName + "\t||\tvalue: " + value);
     }
 }
