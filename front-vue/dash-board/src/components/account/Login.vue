@@ -81,7 +81,7 @@ export default {
             }
         },
         isValidation (){
-            const message = '';
+            let message = '';
             const type = 'error';
             
             if (!this.validation.id) {
