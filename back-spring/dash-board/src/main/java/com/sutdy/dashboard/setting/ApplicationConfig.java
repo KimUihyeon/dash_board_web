@@ -33,10 +33,15 @@ public class ApplicationConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         logger.info("authenticationInterceptor resit");
+
+        String[] excludePatterns = {
+                "/api/v1/common/login",
+        };
+
         registry.addInterceptor(authenticationInterceptor)
-//                .excludePathPatterns("/api/v1/common/login")
-//                .addPathPatterns("/api/*")
-                .addPathPatterns("/**");
+                .excludePathPatterns(excludePatterns)
+                .addPathPatterns("/**")
+                .order(1);
     }
 
     @Override
@@ -44,20 +49,26 @@ public class ApplicationConfig implements WebMvcConfigurer {
         logger.info("CORS resit");
 
         String[] origins = {
-                "*",
-                "http://localhost:3000/"
+                "http://localhost:3000"
         };
 
         registry.addMapping("/**")
                 .allowedOrigins(origins)
-                .allowedMethods(HttpMethod.GET.toString(),
-                        HttpMethod.POST.toString(),
-                        HttpMethod.PATCH.toString(),
-                        HttpMethod.GET.toString(),
-                        HttpMethod.DELETE.toString());
-//                .allowedHeaders(HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,
-//                        HttpHeaders.AUTHORIZATION);
+                .allowedMethods(
+                        HttpMethod.GET.name(),
+                        HttpMethod.POST.name(),
+                        HttpMethod.PATCH.name(),
+                        HttpMethod.OPTIONS.name(),
+                        HttpMethod.DELETE.name())
+                .allowedHeaders(
+                        "Authentication",
+                        HttpHeaders.ACCESS_CONTROL_ALLOW_HEADERS,
+                        HttpHeaders.WWW_AUTHENTICATE,
+                        HttpHeaders.CONTENT_TYPE,
+                        HttpHeaders.AUTHORIZATION)
+                .allowCredentials(true);
     }
+
 
 //    @Bean
     public FilterRegistrationBean authFilterConfiguration(){

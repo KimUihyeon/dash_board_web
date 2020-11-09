@@ -47,16 +47,17 @@ public class AuthenticationInterceptor extends HandlerInterceptorAdapter {
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler) throws Exception {
 
+
+        Enumeration datas = request.getHeaderNames();
+
+        while (datas.hasMoreElements()) {
+            String key = datas.nextElement().toString();
+            String value = request.getHeader(key);
+            logger.info("key : " + key + "\t||\tvalue: " + value);
+        }
+
         return super.preHandle(request, response, handler);
 
-//        Enumeration datas = request.getHeaderNames();
-//
-//        while (datas.hasMoreElements()) {
-//            String key = datas.nextElement().toString();
-//            String value = request.getHeader(key);
-//            logger.info("key : " + key + "\t||\tvalue: " + value);
-//        }
-//
 //        System.out.println(request.getRequestURI());
 //        System.out.println("authentication");
 //
