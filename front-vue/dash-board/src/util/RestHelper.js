@@ -9,7 +9,7 @@ const _COOKIE_POPS = {
 } 
 
 const _createJWT = () =>{
-    return `Bearer ${data.cookie.getCookie(_COOKIE_POPS.TOKEN)}`;
+    return `bearer ${data.cookie.getCookie(_COOKIE_POPS.TOKEN)}`;
 }
 
 const createAuthAxios = () =>{
