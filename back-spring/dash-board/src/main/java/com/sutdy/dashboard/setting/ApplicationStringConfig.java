@@ -13,4 +13,6 @@ public class ApplicationStringConfig {
     public final static String JWT_ENCRYPTION_KEY = "rladmlgusWkdWkdaos";
     public final static String WEB_URL = ServletUriComponentsBuilder.fromCurrentContextPath().build().toString() +".com";
     public final static String STRING_ENCRYPTION_KEY = "Rndkdkdkdkdk";
+
+    public final static String JWT_HEADER_KEY_NAME = "Authorization";
 }
